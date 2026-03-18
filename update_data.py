@@ -34,7 +34,7 @@ def get_nps_data() -> dict:
     """
     return {
         "a_value": 2989352,           # 전년도 전체 가입자 평균소득 (원/년)
-        "replacement_rate": 0.40,      # 소득대체율 (40%)
+        "replacement_rate": 0.43,      # 소득대체율 (43%, 2026년 개정)
         "max_monthly_income": 5900000, # 기준소득월액 상한 (원/월)
         "min_monthly_income": 370000   # 기준소득월액 하한 (원/월)
     }
