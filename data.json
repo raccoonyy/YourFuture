@@ -2,7 +2,7 @@
   "updated_at": "2025-12-06",
   "nps": {
     "a_value": 2989352,
-    "replacement_rate": 0.40,
+    "replacement_rate": 0.43,
     "max_monthly_income": 5900000,
     "min_monthly_income": 370000
   },
@@ -12,15 +12,18 @@
     "inflation_rate": 0.025
   },
   "wage_curve": {
-    "20s": 0.05,
-    "30s": 0.05,
-    "40s": 0.03,
-    "50s_early": 0.00,
-    "50s_late": -0.02
+    "20_24": 0.054,
+    "25_29": 0.045,
+    "30_34": 0.035,
+    "35_39": 0.037,
+    "40_44": 0.048,
+    "45_49": 0.060,
+    "50_54": 0.056,
+    "55_59": 0.061
   },
   "employment": {
-    "average_start_age": 32,
-    "average_start_income": 30000000
+    "average_start_age": 30,
+    "average_start_income": 37460000
   },
   "receiving": {
     "start_age": 65,
