@@ -16,46 +16,70 @@
   <meta name="twitter:description" content="나이와 연봉만 입력하면 국민연금 vs. 개인연금 예상 수령액을 바로 확인할 수 있습니다. S&P500 ETF, TDF, 예금형 등 대표 개인연금 상품과 세후 기준으로 비교하고, 내 연금의 손익분기점까지 알아보세요.">
   <meta name="twitter:image" content="https://raccoonyy.github.io/NotAnotherPension/docs/preview.png">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'] },
+          colors: {
+            brand: { 50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8', 800: '#1e3a5f', 900: '#0f172a' },
+            surface: { 50: '#f8fafc', 100: '#f1f5f9', 200: '#e2e8f0' }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <style>
+    body { font-feature-settings: 'ss01', 'tnum'; }
+    .input-field { transition: border-color 0.2s, box-shadow 0.2s; }
+    .input-field:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+    .btn-primary { transition: all 0.2s; }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 8px 25px -5px rgba(37, 99, 235, 0.4); }
+    .btn-primary:active { transform: translateY(0); }
+    .card { border: 1px solid #e2e8f0; }
+  </style>
 </head>
-<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
-  <div class="container mx-auto px-4 py-8 max-w-2xl">
+<body class="bg-surface-50 min-h-screen text-gray-800 antialiased">
+  <div class="container mx-auto px-4 py-10 max-w-2xl">
 
     <!-- 헤더 -->
-    <div class="text-center mb-8">
-      <h1 class="text-4xl font-bold text-gray-800 mb-2">
+    <header class="text-center mb-10">
+      <div class="inline-flex items-center gap-2 px-3 py-1 bg-brand-100 text-brand-700 text-xs font-semibold rounded-full mb-4 tracking-wide uppercase">2026년 개정안 반영</div>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-900 tracking-tight mb-2">
         NotAnotherPension
       </h1>
-      <p class="text-gray-600">
+      <p class="text-gray-500 text-base">
         국민연금 vs. 개인연금 계산기
       </p>
-    </div>
+    </header>
 
     <!-- 입력 폼 -->
-    <div id="input-section" class="bg-white rounded-2xl shadow-xl p-8 mb-8">
-      <div class="space-y-6">
+    <div id="input-section" class="card bg-white rounded-2xl shadow-sm p-8 mb-10">
+      <div class="space-y-5">
         <!-- 나이 입력 -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">현재 나이</label>
+          <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">현재 나이</label>
           <div class="flex items-center gap-3">
             <input type="number" id="currentAge" value="30" min="20" max="59"
-                   class="flex-1 px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
-            <span class="text-gray-500 text-lg">세</span>
+                   class="input-field flex-1 px-4 py-3 text-lg bg-surface-50 border border-gray-200 rounded-xl outline-none font-semibold text-brand-900">
+            <span class="text-gray-400 text-base font-medium">세</span>
           </div>
         </div>
 
         <!-- 연봉 입력 -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">연봉 (세전)</label>
+          <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">연봉 (세전)</label>
           <div class="flex items-center gap-3">
             <input type="number" id="annualSalary" value="5000" min="1"
-                   class="flex-1 px-4 py-3 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
-            <span class="text-gray-500 text-lg">만원</span>
+                   class="input-field flex-1 px-4 py-3 text-lg bg-surface-50 border border-gray-200 rounded-xl outline-none font-semibold text-brand-900">
+            <span class="text-gray-400 text-base font-medium">만원</span>
           </div>
         </div>
 
         <!-- 계산 버튼 -->
         <button id="calculate-btn" onclick="handleCalculate()"
-                class="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-lg font-semibold rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg">
+                class="btn-primary w-full py-4 bg-brand-600 text-white text-base font-semibold rounded-xl shadow-md">
           <span id="btn-text">내 국민연금 미리보기</span>
           <span id="btn-loading" class="hidden">
             <svg class="animate-spin inline w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24">
@@ -72,77 +96,74 @@
     <div id="result-section" class="hidden space-y-6">
 
       <!-- 히어로 카드: 납부 vs 수령 비교 -->
-      <div class="bg-white rounded-2xl shadow-xl p-8">
-        <h2 class="text-xl font-bold text-gray-800 mb-6 text-center">
-          🎯 내 국민연금 예상 수령액 (간단 추정치)
+      <div class="card bg-white rounded-2xl shadow-sm p-8">
+        <h2 class="text-lg font-bold text-brand-900 mb-6 text-center tracking-tight">
+          내 국민연금 예상 수령액
         </h2>
 
         <div class="grid grid-cols-2 gap-4 mb-6">
           <!-- 총 납부액 -->
-          <div class="bg-gray-50 border-2 border-gray-200 rounded-xl p-6 text-center">
-            <div class="text-sm text-gray-600 font-medium mb-2">예상 총 납부액</div>
-            <div id="total-contribution" class="text-2xl font-bold text-gray-700">-</div>
-            <div class="text-xs text-gray-500 mt-1">(본인 부담분)</div>
+          <div class="bg-surface-50 border border-gray-200 rounded-xl p-5 text-center">
+            <div class="text-xs text-gray-500 font-semibold uppercase tracking-wider mb-2">예상 총 납부액</div>
+            <div id="total-contribution" class="text-2xl font-extrabold text-gray-700 tabular-nums">-</div>
+            <div class="text-xs text-gray-400 mt-1">본인 부담분</div>
           </div>
 
           <!-- 총 수령액 -->
-          <div class="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-300 rounded-xl p-6 text-center relative overflow-hidden">
-            <div class="text-sm text-blue-600 font-medium mb-2">예상 총 수령액</div>
-            <div id="total-receiving" class="text-2xl font-bold text-blue-700">-</div>
+          <div class="bg-brand-50 border border-brand-200 rounded-xl p-5 text-center">
+            <div class="text-xs text-brand-600 font-semibold uppercase tracking-wider mb-2">예상 총 수령액</div>
+            <div id="total-receiving" class="text-2xl font-extrabold text-brand-700 tabular-nums">-</div>
             <div id="receiving-period" class="text-xs text-gray-500 mt-1">-</div>
           </div>
         </div>
 
         <!-- 핵심 메시지: 수익률 -->
-        <div id="hero-message" class="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-5 text-center">
-          <div class="text-green-800 font-medium mb-2">
-            💰 내가 낸 돈의 <span id="return-multiplier" class="text-2xl font-bold text-green-600">-</span>배를 돌려받습니다!
+        <div id="hero-message" class="bg-brand-50 border border-brand-200 rounded-xl p-5 text-center">
+          <div class="text-brand-800 font-medium text-sm mb-1">
+            내가 낸 돈의 <span id="return-multiplier" class="text-2xl font-extrabold text-brand-600 mx-0.5">-</span>배를 돌려받습니다
           </div>
-          <p class="text-sm text-green-700">
-            국민연금은 물가에 연동되어 매년 인상되고,<br>
-            살아있는 한 평생 지급됩니다.
+          <p class="text-xs text-brand-600">
+            물가에 연동되어 매년 인상 / 살아있는 한 평생 지급
           </p>
         </div>
       </div>
 
       <!-- 상세 정보 카드 -->
       <div class="grid grid-cols-2 gap-4">
-        <!-- 월 수령액 (시작~85세) -->
-        <div class="bg-white rounded-xl shadow-lg p-5 text-center">
-          <div class="text-3xl mb-2">📊</div>
-          <div class="text-sm font-medium text-gray-500 mb-2">월 수령액 (세후)</div>
-          <div id="nps-monthly-range" class="text-lg font-bold text-blue-600 leading-relaxed">-</div>
-          <div class="text-xs text-gray-400 mt-1">물가 연동 적용</div>
+        <!-- 월 수령액 -->
+        <div class="card bg-white rounded-xl shadow-sm p-5 text-center">
+          <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">월 수령액 (세후)</div>
+          <div id="nps-monthly-range" class="text-base font-bold text-brand-700 leading-relaxed">-</div>
+          <div class="text-xs text-gray-400 mt-2">물가 연동 적용</div>
         </div>
 
         <!-- 납입 정보 -->
-        <div class="bg-white rounded-xl shadow-lg p-5 text-center">
-          <div class="text-3xl mb-2">⏱️</div>
-          <div class="text-sm font-medium text-gray-500 mb-2">남은 납입 기간</div>
-          <div id="contribution-years" class="text-2xl font-bold text-indigo-600">-</div>
-          <div class="text-xs text-gray-400 mt-1">60세까지</div>
+        <div class="card bg-white rounded-xl shadow-sm p-5 text-center">
+          <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">남은 납입 기간</div>
+          <div id="contribution-years" class="text-2xl font-extrabold text-brand-700 tabular-nums">-</div>
+          <div class="text-xs text-gray-400 mt-2">60세까지</div>
         </div>
       </div>
 
       <!-- 추가 정보 -->
-      <div class="bg-white rounded-xl shadow-lg p-6">
-        <h3 class="text-lg font-bold text-gray-800 mb-4">📋 상세 정보</h3>
-        <div class="space-y-3 text-sm">
-          <div class="flex justify-between items-center py-2 border-b border-gray-100">
-            <span class="text-gray-600">월 평균 납입액 (본인 부담분)</span>
-            <span id="monthly-contribution" class="font-semibold text-gray-800">-</span>
+      <div class="card bg-white rounded-xl shadow-sm p-6">
+        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">상세 정보</h3>
+        <div class="space-y-0 text-sm">
+          <div class="flex justify-between items-center py-3 border-b border-surface-200">
+            <span class="text-gray-500">월 평균 납입액 (본인 부담분)</span>
+            <span id="monthly-contribution" class="font-bold text-brand-900 tabular-nums">-</span>
           </div>
-          <div class="flex justify-between items-center py-2 border-b border-gray-100">
-            <span class="text-gray-600">연금 개시 연령</span>
-            <span id="pension-start-age" class="font-semibold text-gray-800">-</span>
+          <div class="flex justify-between items-center py-3 border-b border-surface-200">
+            <span class="text-gray-500">연금 개시 연령</span>
+            <span id="pension-start-age" class="font-bold text-brand-900">-</span>
           </div>
-          <div class="flex justify-between items-center py-2 border-b border-gray-100">
-            <span class="text-gray-600">예상 수령 기간</span>
-            <span id="receiving-years" class="font-semibold text-gray-800">-</span>
+          <div class="flex justify-between items-center py-3 border-b border-surface-200">
+            <span class="text-gray-500">예상 수령 기간</span>
+            <span id="receiving-years" class="font-bold text-brand-900">-</span>
           </div>
-          <div class="flex justify-between items-center py-2">
-            <span class="text-gray-600">기대수명</span>
-            <span id="life-expectancy" class="font-semibold text-gray-800">-</span>
+          <div class="flex justify-between items-center py-3">
+            <span class="text-gray-500">기대수명</span>
+            <span id="life-expectancy" class="font-bold text-brand-900">-</span>
           </div>
         </div>
       </div>
@@ -150,53 +171,92 @@
       <!-- 개인연금 비교 (동적 렌더링) -->
       <div id="private-pension-section" class="hidden space-y-4"></div>
 
-      <!-- 국민연금 장점 -->
-      <div class="bg-blue-50 rounded-xl p-6">
-        <h3 class="text-lg font-bold text-blue-800 mb-3">✨ 국민연금의 장점</h3>
-        <ul class="space-y-2 text-sm text-blue-700">
-          <li class="flex items-start gap-2">
-            <span class="text-blue-500 mt-0.5">✓</span>
-            <span><strong>물가연동</strong>: 매년 물가상승률만큼 연금액 인상</span>
-          </li>
-          <li class="flex items-start gap-2">
-            <span class="text-blue-500 mt-0.5">✓</span>
-            <span><strong>종신지급</strong>: 살아있는 한 평생 지급 (장수 리스크 대비)</span>
-          </li>
-          <li class="flex items-start gap-2">
-            <span class="text-blue-500 mt-0.5">✓</span>
-            <span><strong>유족연금</strong>: 사망 시 배우자에게 50~60% 지급</span>
-          </li>
-          <li class="flex items-start gap-2">
-            <span class="text-blue-500 mt-0.5">✓</span>
-            <span><strong>안정성</strong>: 국가가 지급을 보장하는 공적연금</span>
-          </li>
-        </ul>
-      </div>
+      <!-- 연금상품별 연간 수령액 표 (접기/펼치기) -->
+      <details id="yearly-table-section" class="hidden card bg-white rounded-xl shadow-sm">
+        <summary class="px-6 py-4 cursor-pointer text-brand-900 font-semibold hover:text-brand-700 flex items-center justify-between text-sm">
+          <span>연금상품별 연간 수령액 비교</span>
+          <svg class="w-4 h-4 text-gray-400 transition-transform details-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+          </svg>
+        </summary>
+        <div class="px-6 pb-6">
+          <p class="text-xs text-gray-400 mb-3">
+            * 국민연금: 물가연동 (매년 인상) | 개인연금: 고정 수령액 | 모든 금액은 세후 기준
+          </p>
+          <div class="overflow-x-auto">
+            <table id="yearly-receiving-table" class="min-w-full text-sm">
+              <!-- JavaScript로 동적 생성 -->
+            </table>
+          </div>
+        </div>
+      </details>
+      <style>
+        details[open] .details-arrow { transform: rotate(180deg); }
+      </style>
 
-      <!-- 행동 유도 -->
-      <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl shadow-xl p-6 text-white text-center">
-        <h3 class="text-xl font-bold mb-2">🚀 더 자세히 알아보기</h3>
-        <p class="text-indigo-100 mb-4 text-sm">
-          개인연금 비교, 연금 개시 연령 조정, 연도별 수령액 등
-        </p>
-        <div class="flex flex-col sm:flex-row gap-3 justify-center">
-          <!-- <a href="./advanced.html" class="px-6 py-3 bg-white text-indigo-600 font-semibold rounded-xl hover:bg-indigo-50 transition-colors">
-            고급 계산기 →
-          </a> -->
-          <a href="./guide.html" class="px-6 py-3 bg-indigo-500 text-white font-semibold rounded-xl hover:bg-indigo-400 transition-colors">
-            연금 설계 가이드
-          </a>
+      <!-- 국민연금 장점 -->
+      <div class="card bg-white rounded-xl shadow-sm p-6">
+        <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">국민연금의 장점</h3>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="flex items-start gap-2.5 p-3 bg-surface-50 rounded-lg">
+            <div class="w-5 h-5 rounded-full bg-brand-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="w-3 h-3 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+            </div>
+            <div>
+              <div class="text-sm font-semibold text-brand-900">물가연동</div>
+              <div class="text-xs text-gray-500 mt-0.5">매년 물가상승률만큼 인상</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-2.5 p-3 bg-surface-50 rounded-lg">
+            <div class="w-5 h-5 rounded-full bg-brand-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="w-3 h-3 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+            </div>
+            <div>
+              <div class="text-sm font-semibold text-brand-900">종신지급</div>
+              <div class="text-xs text-gray-500 mt-0.5">평생 지급, 장수 리스크 대비</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-2.5 p-3 bg-surface-50 rounded-lg">
+            <div class="w-5 h-5 rounded-full bg-brand-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="w-3 h-3 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+            </div>
+            <div>
+              <div class="text-sm font-semibold text-brand-900">유족연금</div>
+              <div class="text-xs text-gray-500 mt-0.5">배우자에게 50~60% 지급</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-2.5 p-3 bg-surface-50 rounded-lg">
+            <div class="w-5 h-5 rounded-full bg-brand-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="w-3 h-3 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>
+            </div>
+            <div>
+              <div class="text-sm font-semibold text-brand-900">국가 보장</div>
+              <div class="text-xs text-gray-500 mt-0.5">국가가 지급을 보장하는 공적연금</div>
+            </div>
+          </div>
         </div>
       </div>
 
+      <!-- 행동 유도 -->
+      <div class="card bg-brand-900 rounded-2xl shadow-sm p-6 text-center">
+        <h3 class="text-lg font-bold text-white mb-1">더 자세히 알아보기</h3>
+        <p class="text-brand-200 mb-4 text-sm">
+          안정적인 노후를 위한 연금 설계 전략
+        </p>
+        <a href="./guide.html" class="inline-block px-6 py-2.5 bg-white text-brand-900 text-sm font-semibold rounded-lg hover:bg-brand-50 transition-colors">
+          연금 설계 가이드 →
+        </a>
+      </div>
+
       <!-- 접기/펼치기: 계산 가정 -->
-      <details class="bg-white rounded-xl shadow-lg">
-        <summary class="px-6 py-4 cursor-pointer text-gray-600 hover:text-gray-800">
-          📋 계산 가정 및 면책 조항
+      <details class="card bg-white rounded-xl shadow-sm">
+        <summary class="px-6 py-4 cursor-pointer text-gray-500 hover:text-gray-700 text-sm font-medium flex items-center justify-between">
+          <span>계산 가정 및 면책 조항</span>
+          <svg class="w-4 h-4 text-gray-400 transition-transform details-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
         </summary>
-        <div class="px-6 pb-6 text-sm text-gray-500 space-y-2">
+        <div class="px-6 pb-6 text-xs text-gray-500 space-y-1.5 leading-relaxed">
           <p>• 2026년 국민연금 개정안 적용 (보험료율 9%→13% 단계적 인상, 소득대체율 43%)</p>
-          <p>• 평균 취업 연령: 30세 (<a href="https://news.incruit.com/news/newsview.asp?newsno=437372" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">인크루트 2025 설문</a>)</p>
+          <p>• 평균 취업 연령: 30세 (<a href="https://news.incruit.com/news/newsview.asp?newsno=437372" target="_blank" rel="noopener noreferrer" class="text-brand-600 hover:underline">인크루트 2025 설문</a>)</p>
           <p>• 물가상승률: 최근 20년 평균 (<span id="inflation-display">2.5%</span>) 적용</p>
           <p>• 기대수명: 통계청 장래 기대수명 중위값 적용</p>
           <p>• 국민연금 세금: 연금소득 간이세율 5% 적용 (연 350만원 공제 후), 총수령액에 반영</p>
@@ -206,18 +266,20 @@
           <p>• 개인연금 수수료: S&P500 0.03%, TDF 0.5%, 예금형 0%</p>
           <p>• 개인연금 세금: 연 1,500만원 이하 저율과세(3.3~5.5%), 초과 시 분리과세(16.5%)와 종합과세(누진세율) 중 유리한 쪽 적용</p>
           <p class="text-amber-600 font-medium pt-2">
-            ⚠️ 본 계산은 참고용이며, 실제 수령액은 경제 상황, 정책 변화 등에 따라 달라질 수 있습니다.
+            본 계산은 참고용이며, 실제 수령액은 경제 상황, 정책 변화 등에 따라 달라질 수 있습니다.
           </p>
         </div>
       </details>
     </div>
 
     <!-- 푸터 -->
-    <div class="text-center mt-8 text-gray-500 text-sm">
-      <!-- <a href="./advanced.html" class="text-blue-600 hover:underline">고급 계산기</a>
-      · -->
-      <a href="./guide.html" class="text-blue-600 hover:underline">연금 설계 가이드</a>
-    </div>
+    <footer class="text-center mt-10 pb-6">
+      <div class="text-xs text-gray-400">
+        <a href="./guide.html" class="text-brand-600 hover:text-brand-700 font-medium">연금 설계 가이드</a>
+        <span class="mx-2">·</span>
+        <span>NotAnotherPension</span>
+      </div>
+    </footer>
   </div>
 
   <script>
@@ -229,6 +291,8 @@
     let INFLATION_RATE = 0.025;
     let LIFE_EXPECTANCY_DATA = {};
     let AGE_WAGE_GROWTH = null;
+    let FUND_PRODUCTS = [];  // CSV에서 로드한 실제 연금저축펀드 상품
+    const FUTURE_RETURN_RATE = 0.0772; // 상위 500개 펀드 평균 수익률
 
     const DEFAULT_DATA = {
       updated_at: "2025-01-01",
@@ -406,13 +470,68 @@
       return Object.keys(result).length > 0 ? result : null;
     }
 
+    async function loadPensionFundCSV() {
+      try {
+        const response = await fetch('./data/100lifeplan_fund.csv');
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const text = await response.text();
+        const lines = text.split('\n');
+        const products = [];
+
+        function parseCSVLine(line) {
+          const result = [];
+          let current = '';
+          let inQuotes = false;
+          for (let i = 0; i < line.length; i++) {
+            const char = line[i];
+            if (char === '"') { inQuotes = !inQuotes; }
+            else if (char === ',' && !inQuotes) { result.push(current.trim()); current = ''; }
+            else { current += char; }
+          }
+          result.push(current.trim());
+          return result;
+        }
+
+        for (let i = 8; i < lines.length; i++) {
+          const cols = parseCSVLine(lines[i]);
+          if (!cols[0]?.trim()) continue;
+
+          const name = cols[0].trim();
+          const bank = cols[1]?.trim() || '';
+
+          let returnRate = 0, returnYears = 0;
+          if (parseFloat(cols[17]) > 0) { returnRate = parseFloat(cols[17]); returnYears = 10; }
+          else if (parseFloat(cols[16]) > 0) { returnRate = parseFloat(cols[16]); returnYears = 7; }
+          else if (parseFloat(cols[15]) > 0) { returnRate = parseFloat(cols[15]); returnYears = 5; }
+          else if (parseFloat(cols[14]) > 0) { returnRate = parseFloat(cols[14]); returnYears = 3; }
+
+          let feeRate = parseFloat(cols[21]) || parseFloat(cols[20]) || parseFloat(cols[19]) || parseFloat(cols[18]) || 0;
+
+          if (returnRate === 0 || returnRate > 30 || returnRate < -30) continue;
+
+          products.push({
+            id: `fund_${i - 8}`,
+            name, bank,
+            return: returnRate / 100,
+            returnYears,
+            fee: feeRate / 100
+          });
+        }
+        return products;
+      } catch (error) {
+        console.warn('연금저축펀드 CSV 로드 실패:', error.message);
+        return [];
+      }
+    }
+
     async function loadAllData() {
-      const [_, inflationRate, lifeExpectancy, agedCompensation] = await Promise.all([
-        loadData(), loadInflationData(), loadLifeExpectancyData(), loadAgedCompensationData()
+      const [_, inflationRate, lifeExpectancy, agedCompensation, fundProducts] = await Promise.all([
+        loadData(), loadInflationData(), loadLifeExpectancyData(), loadAgedCompensationData(), loadPensionFundCSV()
       ]);
       INFLATION_RATE = inflationRate || 0.025;
       LIFE_EXPECTANCY_DATA = lifeExpectancy || { 2025: 84.5 };
       AGE_WAGE_GROWTH = agedCompensation;
+      FUND_PRODUCTS = fundProducts || [];
     }
 
     // ============================================================
@@ -640,6 +759,40 @@
     }
 
     /**
+     * 실제 연금저축펀드 상품 계산 (CSV 데이터 기반)
+     * 과거 수익률 + 미래 예상 수익률 적용
+     */
+    function calculateFundPension(incomes, product, receivingYears) {
+      const pastReturn = product.return - product.fee;
+      const futureReturn = product.return - product.fee;
+      const currentYear = new Date().getFullYear();
+
+      let totalContribution = 0;
+      let balance = 0;
+
+      for (const item of incomes) {
+        const standardMonthly = getStandardMonthlyIncome(item.income);
+        const rate = getContributionRate(item.year);
+        const annualContribution = standardMonthly * 12 * rate / 2;
+        const isPastYear = (item.year ?? currentYear) < currentYear;
+        const effectiveReturn = isPastYear ? pastReturn : futureReturn;
+        balance = balance * (1 + effectiveReturn) + annualContribution;
+        totalContribution += annualContribution;
+      }
+
+      const monthlyBenefit = Math.round(balance / (receivingYears * 12));
+
+      return {
+        productName: product.name,
+        bank: product.bank || '',
+        returnRate: product.return,
+        fee: product.fee,
+        totalBalance: Math.round(balance),
+        monthlyBenefit
+      };
+    }
+
+    /**
      * 손익분기점 수익률 계산 (이진탐색, 세후 기준)
      * 개인연금 세후 총수령액이 국민연금 세후 총수령액과 같아지는 수익률
      * @param {number} npsTotal - 국민연금 총 수령액 (물가연동+세후)
@@ -740,6 +893,11 @@
         // 손익분기점 계산
         const breakevenRate = calculateBreakevenRate(npsTotal, incomes, receivingYears);
 
+        // 실제 연금저축펀드 계산 (수익률 상위 정렬)
+        const fundResults = FUND_PRODUCTS
+          .map(p => calculateFundPension(incomes, p, receivingYears))
+          .sort((a, b) => b.totalBalance - a.totalBalance);
+
         // 결과 표시
         renderResults({
           currentAge,
@@ -751,6 +909,7 @@
           contributionYears: 60 - currentAge,
           receivingYears,
           privatePensions,
+          fundResults,
           breakevenRate
         });
 
@@ -763,7 +922,7 @@
     }
 
     function renderResults(data) {
-      const { currentAge, pensionStartAge, expectedLifespan, nps, npsNetMonthly, npsTotal, contributionYears, receivingYears, privatePensions, breakevenRate } = data;
+      const { currentAge, pensionStartAge, expectedLifespan, nps, npsNetMonthly, npsTotal, contributionYears, receivingYears, privatePensions, fundResults, breakevenRate } = data;
 
       const returnMultiplier = (npsTotal / nps.selfContribution).toFixed(1);
       const monthlyContribution = Math.round(nps.selfContribution / contributionYears / 12);
@@ -797,9 +956,165 @@
       // 개인연금 비교 렌더링
       renderPrivatePensionComparison(privatePensions, npsNetMonthly, npsTotal, breakevenRate);
 
+      // 연간 수령액 표 렌더링
+      renderYearlyReceivingTable({
+        npsMonthlyBenefit: nps.monthlyBenefit,
+        pensionStartAge,
+        expectedLifespan,
+        privatePensions,
+        fundResults,
+        currentAge
+      });
+
       // 결과 영역 표시
       document.getElementById('result-section').classList.remove('hidden');
       document.getElementById('result-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function renderYearlyReceivingTable(data) {
+      const { npsMonthlyBenefit, pensionStartAge, expectedLifespan, privatePensions, fundResults, currentAge } = data;
+      const table = document.getElementById('yearly-receiving-table');
+      const section = document.getElementById('yearly-table-section');
+      if (!table || !section) return;
+
+      // 기본 2종 (예금형 제외) + 실제 펀드 상품을 합친 전체 목록
+      const allProducts = [
+        ...privatePensions.filter(pp => pp.productId !== 'savings').map(pp => ({
+          name: pp.productName,
+          returnRate: pp.returnRate,
+          fee: pp.productId === 'sp500' ? 0.0003 : pp.productId === 'tdf2050' ? 0.005 : 0,
+          monthlyBenefit: pp.monthlyBenefit,
+          isSimple: true
+        })),
+        ...fundResults.map(f => ({
+          name: f.productName,
+          bank: f.bank,
+          returnRate: f.returnRate,
+          fee: f.fee,
+          monthlyBenefit: f.monthlyBenefit,
+          isSimple: false
+        }))
+      ];
+
+      const currentYear = new Date().getFullYear();
+      const years = expectedLifespan - pensionStartAge + 1;
+
+      // 1차 패스: 총합 먼저 계산
+      let totalNPS = 0;
+      const totalPP = allProducts.map(() => 0);
+
+      for (let age = pensionStartAge; age <= expectedLifespan; age++) {
+        const yearsFromStart = age - pensionStartAge;
+        const npsGrossMonthly = Math.round(npsMonthlyBenefit * Math.pow(1 + INFLATION_RATE, yearsFromStart));
+        const npsTax = calculateNPSTax(npsGrossMonthly);
+        totalNPS += (npsGrossMonthly - npsTax) * 12;
+
+        for (let i = 0; i < allProducts.length; i++) {
+          const annualBenefit = allProducts[i].monthlyBenefit * 12;
+          const tax = calculatePrivatePensionTax(annualBenefit, age);
+          totalPP[i] += Math.round(annualBenefit - tax);
+        }
+      }
+
+      // 헤더
+      let headerRow = '<tr class="bg-surface-100">';
+      headerRow += '<th class="px-2 py-2.5 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider sticky left-0 z-20 bg-surface-100 min-w-[60px] border-r border-surface-200">연령</th>';
+      headerRow += '<th class="px-2 py-2.5 text-center text-xs font-semibold text-brand-700 uppercase tracking-wider sticky left-[60px] z-20 bg-surface-100 min-w-[130px] border-r border-surface-200">국민연금<br><span class="font-normal normal-case tracking-normal">(물가연동)</span></th>';
+      for (const pp of allProducts) {
+        const displayName = pp.name.length > 14 ? pp.name.substring(0, 14) + '...' : pp.name;
+        const netRate = ((pp.returnRate - (pp.fee || 0)) * 100).toFixed(1);
+        headerRow += `<th class="px-2 py-2.5 text-center text-xs font-semibold text-gray-500 min-w-[130px]" title="${pp.name}${pp.bank ? ' (' + pp.bank + ')' : ''}\n수익률 ${(pp.returnRate * 100).toFixed(1)}% − 수수료 ${((pp.fee || 0) * 100).toFixed(2)}%">${displayName}<br><span class="font-normal text-gray-400">(연 ${netRate}%)</span></th>`;
+      }
+      headerRow += '</tr>';
+
+      // 총합 행 (제목행 바로 아래)
+      let totalRow = '<tr class="bg-brand-50 font-bold border-b-2 border-brand-200">';
+      totalRow += `<td class="px-2 py-2.5 text-center text-brand-900 sticky left-0 z-10 bg-brand-50 min-w-[60px] border-r border-brand-100">${years}년<br><span class="text-xs font-semibold">총합</span></td>`;
+      totalRow += `<td class="px-2 py-2.5 text-center text-brand-800 sticky left-[60px] z-10 bg-brand-50 min-w-[130px] border-r border-brand-100 tabular-nums">${formatCurrency(totalNPS)}</td>`;
+      for (let i = 0; i < allProducts.length; i++) {
+        const diff = totalPP[i] - totalNPS;
+        const diffColor = diff >= 0 ? 'text-emerald-600' : 'text-red-500';
+        const diffSign = diff >= 0 ? '+' : '';
+        totalRow += `<td class="px-2 py-2.5 text-center text-brand-900 tabular-nums">${formatCurrency(totalPP[i])}<br><span class="text-xs font-normal ${diffColor}">(${diffSign}${formatCurrency(diff)})</span></td>`;
+      }
+      totalRow += '</tr>';
+
+      // 데이터 행 (70~85세 구간은 접기)
+      const FOLD_START = 70;
+      const FOLD_END = 85;
+      let dataRows = '';
+      let foldedRows = '';
+      let hasFolded = false;
+
+      for (let age = pensionStartAge; age <= expectedLifespan; age++) {
+        const yearsFromStart = age - pensionStartAge;
+        const yearAtAge = currentYear + (age - currentAge);
+
+        const npsGrossMonthly = Math.round(npsMonthlyBenefit * Math.pow(1 + INFLATION_RATE, yearsFromStart));
+        const npsTax = calculateNPSTax(npsGrossMonthly);
+        const npsNetMonthly = npsGrossMonthly - npsTax;
+        const npsAnnual = npsNetMonthly * 12;
+
+        const isFolded = age >= FOLD_START && age <= FOLD_END;
+        const isHighlight = age === pensionStartAge || age === expectedLifespan;
+        const bgColor = isHighlight ? 'bg-brand-50' : (age % 5 === 0 ? 'bg-surface-50' : 'bg-white');
+
+        let row = `<tr class="border-b border-surface-200 ${bgColor}${isFolded ? ' folded-row hidden' : ''}">`;
+        row += `<td class="px-2 py-2 text-center font-medium text-gray-600 sticky left-0 z-10 ${bgColor} min-w-[60px] border-r border-surface-200 text-sm">${age}세<br><span class="text-xs text-gray-400">${yearAtAge}</span></td>`;
+        row += `<td class="px-2 py-2 text-center text-brand-700 font-semibold sticky left-[60px] z-10 ${bgColor} min-w-[130px] border-r border-surface-200 tabular-nums">${formatCurrency(npsAnnual)}<br><span class="text-xs font-normal text-gray-500">월 ${formatCurrency(npsNetMonthly)}</span></td>`;
+
+        for (let i = 0; i < allProducts.length; i++) {
+          const annualBenefit = allProducts[i].monthlyBenefit * 12;
+          const tax = calculatePrivatePensionTax(annualBenefit, age);
+          const netAnnual = Math.round(annualBenefit - tax);
+          const netMonthly = Math.round(netAnnual / 12);
+          row += `<td class="px-2 py-2 text-center"><span class="text-gray-700">${formatCurrency(netAnnual)}</span><br><span class="text-xs text-gray-500">월 ${formatCurrency(netMonthly)}</span></td>`;
+        }
+        row += '</tr>';
+
+        // 접힌 구간 시작 직전에 토글 행 삽입
+        if (isFolded && !hasFolded) {
+          hasFolded = true;
+          let toggleRow = '<tr class="fold-toggle-row border-b border-surface-200 bg-surface-50 cursor-pointer hover:bg-surface-100 transition-colors" onclick="toggleFoldedRows()">';
+          toggleRow += `<td class="px-2 py-3 text-center text-gray-400 sticky left-0 z-10 bg-surface-50 min-w-[60px] border-r border-surface-200"><svg class="fold-icon inline w-4 h-4 transition-transform text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></td>`;
+          toggleRow += `<td class="px-2 py-3 text-center text-gray-400 text-xs font-medium sticky left-[60px] z-10 bg-surface-50 min-w-[130px] border-r border-surface-200"><span class="fold-label">${FOLD_START}~${FOLD_END}세 생략</span></td>`;
+          for (let i = 0; i < allProducts.length; i++) {
+            toggleRow += '<td class="px-2 py-3 text-center text-gray-300">⋮</td>';
+          }
+          toggleRow += '</tr>';
+          dataRows += toggleRow;
+        }
+
+        dataRows += row;
+      }
+
+      const productCount = allProducts.length;
+      table.innerHTML = `<thead>${headerRow}</thead><tbody>${totalRow}${dataRows}</tbody>`;
+
+      // 섹션 제목에 기간과 상품 수 표시
+      const summary = section.querySelector('summary span');
+      if (summary) {
+        summary.textContent = `연금상품별 연간 수령액 비교 (${pensionStartAge}~${expectedLifespan}세, ${productCount}개 상품)`;
+      }
+
+      section.classList.remove('hidden');
+    }
+
+    function toggleFoldedRows() {
+      const rows = document.querySelectorAll('.folded-row');
+      const toggle = document.querySelector('.fold-toggle-row');
+      const label = toggle?.querySelector('.fold-label');
+      const icon = toggle?.querySelector('.fold-icon');
+      const isHidden = rows[0]?.classList.contains('hidden');
+      rows.forEach(r => r.classList.toggle('hidden'));
+      if (label) {
+        label.textContent = isHidden
+          ? '클릭하여 접기'
+          : '70~85세 생략';
+      }
+      if (icon) {
+        icon.style.transform = isHidden ? 'rotate(180deg)' : '';
+      }
     }
 
     function renderPrivatePensionComparison(pensions, npsMonthly, npsTotal, breakevenRate) {
@@ -807,26 +1122,26 @@
       if (!container) return;
 
       const colorMap = {
-        emerald: { bg: 'bg-emerald-50', border: 'border-emerald-200', text: 'text-emerald-700', badge: 'bg-emerald-100 text-emerald-700', bar: 'bg-emerald-500' },
-        purple: { bg: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-700', badge: 'bg-purple-100 text-purple-700', bar: 'bg-purple-500' },
-        gray: { bg: 'bg-gray-50', border: 'border-gray-300', text: 'text-gray-700', badge: 'bg-gray-200 text-gray-700', bar: 'bg-gray-400' }
+        emerald: { bg: 'bg-brand-50', border: 'border-brand-200', text: 'text-brand-700', badge: 'bg-brand-100 text-brand-700', bar: 'bg-brand-600' },
+        purple: { bg: 'bg-indigo-50', border: 'border-indigo-200', text: 'text-indigo-700', badge: 'bg-indigo-100 text-indigo-700', bar: 'bg-indigo-500' },
+        gray: { bg: 'bg-surface-50', border: 'border-gray-200', text: 'text-gray-600', badge: 'bg-surface-100 text-gray-600', bar: 'bg-gray-400' }
       };
 
       // 개인연금 3종 카드 (세후 기준)
       const cardsHTML = pensions.map(p => {
         const c = colorMap[p.color] || colorMap.gray;
         const vsNps = p.totalReceiving > npsTotal ? '많음' : '적음';
-        const vsIcon = p.totalReceiving > npsTotal ? '↑' : '↓';
+        const vsIcon = p.totalReceiving > npsTotal ? '+' : '-';
         const diff = Math.abs(p.totalReceiving - npsTotal);
         return `
           <div class="${c.bg} ${c.border} border rounded-xl p-4 text-center">
             <span class="${c.badge} text-xs font-semibold px-2 py-0.5 rounded-full">${p.label}</span>
-            <div class="font-bold ${c.text} mt-2 text-sm">${p.productName}</div>
-            <div class="text-xs text-gray-500 mt-1">연 수익률 ${(p.returnRate * 100).toFixed(1)}%</div>
-            <div class="text-lg font-bold ${c.text} mt-3">${formatCurrency(p.totalReceiving)}</div>
-            <div class="text-xs text-gray-500 mt-1">월 ${formatCurrency(p.monthlyBenefitNet)} (세후, ${p.taxType} ${(p.effectiveTaxRate * 100).toFixed(1)}%)</div>
-            <div class="text-xs mt-2 ${p.totalReceiving >= npsTotal ? 'text-emerald-600' : 'text-red-500'}">
-              국민연금 대비 ${vsIcon}${formatCurrency(diff)} ${vsNps}
+            <div class="font-semibold ${c.text} mt-2 text-sm">${p.productName}</div>
+            <div class="text-xs text-gray-400 mt-1">연 ${(p.returnRate * 100).toFixed(1)}%</div>
+            <div class="text-lg font-extrabold ${c.text} mt-3 tabular-nums">${formatCurrency(p.totalReceiving)}</div>
+            <div class="text-xs text-gray-500 mt-1 tabular-nums">월 ${formatCurrency(p.monthlyBenefitNet)} (세후)</div>
+            <div class="text-xs mt-2 font-medium tabular-nums ${p.totalReceiving >= npsTotal ? 'text-emerald-600' : 'text-red-500'}">
+              ${vsIcon}${formatCurrency(diff)}
             </div>
           </div>`;
       }).join('');
@@ -843,45 +1158,43 @@
         const width = Math.min(100, (item.rate / maxRate) * 100);
         const isBreakeven = item.name === '손익분기점';
         return `
-          <div class="flex items-center gap-2 text-xs">
-            <span class="w-20 text-right text-gray-600 ${isBreakeven ? 'font-bold text-amber-700' : ''}">${item.name}</span>
-            <div class="flex-1 bg-gray-100 rounded-full h-4 overflow-hidden">
+          <div class="flex items-center gap-2.5 text-xs">
+            <span class="w-20 text-right text-gray-500 font-medium ${isBreakeven ? 'font-semibold text-amber-700' : ''}">${item.name}</span>
+            <div class="flex-1 bg-surface-100 rounded-full h-3.5 overflow-hidden">
               <div class="${item.color} h-full rounded-full transition-all ${isBreakeven ? 'opacity-80 bg-[repeating-linear-gradient(45deg,transparent,transparent_3px,rgba(255,255,255,0.3)_3px,rgba(255,255,255,0.3)_6px)]' : ''}" style="width:${width}%"></div>
             </div>
-            <span class="w-12 text-gray-700 ${isBreakeven ? 'font-bold text-amber-700' : ''}">${item.rate.toFixed(1)}%</span>
+            <span class="w-12 text-gray-600 tabular-nums ${isBreakeven ? 'font-semibold text-amber-700' : ''}">${item.rate.toFixed(1)}%</span>
           </div>`;
       }).join('');
 
       container.innerHTML = `
-        <div class="bg-white rounded-xl shadow-lg p-6">
-          <h3 class="text-lg font-bold text-gray-800 mb-2">📊 같은 돈을 개인연금에 넣었다면?</h3>
-          <p class="text-xs text-gray-500 mb-4">국민연금 "본인 부담분"과 동일 금액을 개인연금에 납입했을 때 비교</p>
+        <div class="card bg-white rounded-2xl shadow-sm p-6">
+          <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">개인연금 비교</h3>
+          <p class="text-sm text-gray-500 mb-5">국민연금 본인 부담분과 동일 금액을 개인연금에 납입했을 때</p>
 
-          <div class="grid grid-cols-3 gap-3 mb-4">
+          <div class="grid grid-cols-3 gap-3 mb-5">
             ${cardsHTML}
           </div>
 
-          <div class="flex items-start gap-1.5 text-xs text-gray-500">
-            <span class="mt-0.5">ℹ️</span>
-            <span>모든 금액은 세후 기준입니다. 국민연금(간이세율 5%)과 개인연금(연 1,500만원 이하 저율과세, 초과 시 종합·분리과세 중 유리한 쪽) 각각 세금 차감 후 비교하였습니다. 국민연금은 물가연동 반영, 개인연금은 고정 수령 기준입니다.</span>
-          </div>
+          <p class="text-xs text-gray-400 leading-relaxed">
+            모든 금액은 세후 기준입니다. 국민연금(간이세율 5%)과 개인연금(연 1,500만원 이하 저율과세, 초과 시 종합·분리과세 중 유리한 쪽) 각각 세금 차감 후 비교하였습니다.
+          </p>
         </div>
 
-        <div class="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-xl p-6">
-          <h3 class="text-lg font-bold text-gray-800 mb-1">🎯 손익분기점</h3>
-          <p class="text-sm text-gray-600 mb-4">
-            국민연금의 세후 총수령액과 같은 금액을 받으려면 개인연금 수익률이
-            <span class="text-2xl font-bold text-amber-700 mx-1">연 ${breakevenPct}%</span>
-            이상이어야 합니다.
+        <div class="card bg-white rounded-2xl shadow-sm p-6">
+          <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">손익분기점</h3>
+          <p class="text-sm text-gray-600 mb-5">
+            국민연금의 세후 총수령액과 같으려면 개인연금 수익률이
+            <span class="text-2xl font-extrabold text-brand-700 mx-1">연 ${breakevenPct}%</span>
+            이상 필요합니다.
           </p>
 
-          <div class="space-y-2 mb-4">
+          <div class="space-y-2.5 mb-5">
             ${barsHTML}
           </div>
 
-          <div class="flex items-start gap-1.5 text-xs text-amber-700 bg-amber-100 rounded-lg px-3 py-2">
-            <span class="mt-0.5">💡</span>
-            <span>국민연금은 매년 물가만큼 수령액이 오르지만, 개인연금은 적립금을 나눠 받아 물가에 뒤처집니다. 실질 구매력까지 맞추려면 더 높은 수익률이 필요합니다.</span>
+          <div class="text-xs text-gray-500 bg-surface-50 rounded-lg px-4 py-3 leading-relaxed">
+            국민연금은 매년 물가만큼 수령액이 오르지만, 개인연금은 적립금을 나눠 받아 물가에 뒤처집니다. 실질 구매력까지 맞추려면 더 높은 수익률이 필요합니다.
           </div>
         </div>`;
 
