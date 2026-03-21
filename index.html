@@ -510,7 +510,7 @@
             국민연금은 어디에 위치할까요
           </h3>
           <p class="text-sm text-[#5c5145] leading-relaxed mb-6">
-            같은 금액을 납입했을 때, 개인연금 상품들의 총수령액 분포와 국민연금의 위치를 비교합니다.
+            같은 금액을 납입했을 때, 실제 연금저축펀드 상품들의 총수령액 분포와 국민연금의 위치를 비교합니다.
           </p>
           <canvas id="distribution-canvas" class="w-full" style="height: 280px;"></canvas>
           <p id="distribution-caption" class="text-xs text-gray-400 mt-4 text-center"></p>
@@ -527,7 +527,8 @@
         </summary>
         <div class="px-6 pb-6">
           <p class="text-xs text-gray-400 mb-3">
-            * 국민연금: 물가연동 (매년 인상) | 개인연금: 고정 수령액 | 모든 금액은 세후 기준
+            * 국민연금: 물가연동 (매년 인상) | 개인연금: 고정 수령액 | 모든 금액은 세후 기준<br>
+            * 과거의 수익률이 미래의 수익률을 보장하지 않습니다.
           </p>
           <div class="overflow-x-auto">
             <table id="yearly-receiving-table" class="min-w-full text-sm">
@@ -1299,7 +1300,7 @@
       renderPrivatePensionComparison(privatePensions, npsNetMonthly, npsTotal, breakevenRate);
 
       // 총수령액 분포 그래프 렌더링
-      renderDistributionChart(privatePensions, npsTotal);
+      renderDistributionChart(privatePensions, npsTotal, fundResults);
 
       // 연간 수령액 표 렌더링
       renderYearlyReceivingTable({
@@ -1575,11 +1576,11 @@
       container.classList.remove('hidden');
     }
 
-    function renderDistributionChart(pensions, npsTotal) {
+    function renderDistributionChart(pensions, npsTotal, fundResults) {
       const section = document.getElementById('distribution-chart-section');
       const canvas = document.getElementById('distribution-canvas');
       const caption = document.getElementById('distribution-caption');
-      if (!section || !canvas) return;
+      if (!section || !canvas || !fundResults || fundResults.length === 0) return;
 
       // 먼저 보이게 해서 크기 측정 가능하게
       section.classList.remove('hidden');
@@ -1587,38 +1588,54 @@
       requestAnimationFrame(() => {
         const dpr = window.devicePixelRatio || 1;
         const W = canvas.clientWidth || 600;
-        const H = 300;
+        const H = 320;
         canvas.width = W * dpr;
         canvas.height = H * dpr;
         canvas.style.height = H + 'px';
         const ctx = canvas.getContext('2d');
         ctx.scale(dpr, dpr);
 
-        const values = pensions.map(p => p.totalReceiving);
-        const allValues = [...values, npsTotal];
-        const privateMean = values.reduce((a, b) => a + b, 0) / values.length;
-        const spread = Math.max(...allValues) - Math.min(...allValues);
-        const sigma = spread * 0.25 || privateMean * 0.1;
+        // 실제 펀드 상품들의 총수령액 (세후)
+        const fundTotals = fundResults.map(f => {
+          const annualBenefit = f.monthlyBenefit * 12;
+          const receivingYears = (APP_DATA?.receiving?.years ?? 20);
+          let total = 0;
+          for (let y = 0; y < receivingYears; y++) {
+            const age = (APP_DATA?.receiving?.start_age ?? 65) + y;
+            total += annualBenefit - calculatePrivatePensionTax(annualBenefit, age);
+          }
+          return total;
+        });
 
-        const pad = { top: 50, right: 50, bottom: 70, left: 50 };
+        // 통계 계산
+        const n = fundTotals.length;
+        const mean = fundTotals.reduce((a, b) => a + b, 0) / n;
+        const stdDev = Math.sqrt(fundTotals.reduce((s, v) => s + (v - mean) ** 2, 0) / n);
+        const sigma = stdDev || mean * 0.1;
+
+        const pad = { top: 55, right: 40, bottom: 65, left: 40 };
         const gW = W - pad.left - pad.right;
         const gH = H - pad.top - pad.bottom;
 
-        const xMin = Math.min(...allValues) - sigma * 1.8;
-        const xMax = Math.max(...allValues) + sigma * 1.8;
+        // X축 범위: 분포 전체 + 국민연금이 보이도록
+        const dataMin = Math.min(mean - 3 * sigma, npsTotal - sigma);
+        const dataMax = Math.max(mean + 3 * sigma, npsTotal + sigma);
+        const xMin = dataMin - (dataMax - dataMin) * 0.05;
+        const xMax = dataMax + (dataMax - dataMin) * 0.05;
         const toX = v => pad.left + ((v - xMin) / (xMax - xMin)) * gW;
 
-        // 정규분포 (개인연금 평균 중심)
-        const gauss = x => Math.exp(-0.5 * ((x - privateMean) / sigma) ** 2);
-        const toY = gVal => pad.top + gH * (1 - gVal);
+        // 정규분포 함수
+        const gauss = x => Math.exp(-0.5 * ((x - mean) / sigma) ** 2);
+        const toY = gVal => pad.top + gH * (1 - gVal * 0.92);
+
+        const steps = 300;
 
         // 곡선 아래 채우기
         const grad = ctx.createLinearGradient(0, pad.top, 0, pad.top + gH);
-        grad.addColorStop(0, 'rgba(109, 98, 84, 0.12)');
+        grad.addColorStop(0, 'rgba(109, 98, 84, 0.15)');
         grad.addColorStop(1, 'rgba(109, 98, 84, 0.01)');
         ctx.beginPath();
         ctx.moveTo(pad.left, pad.top + gH);
-        const steps = 200;
         for (let i = 0; i <= steps; i++) {
           const xVal = xMin + (i / steps) * (xMax - xMin);
           ctx.lineTo(toX(xVal), toY(gauss(xVal)));
@@ -1634,7 +1651,7 @@
           const xVal = xMin + (i / steps) * (xMax - xMin);
           i === 0 ? ctx.moveTo(toX(xVal), toY(gauss(xVal))) : ctx.lineTo(toX(xVal), toY(gauss(xVal)));
         }
-        ctx.strokeStyle = 'rgba(109, 98, 84, 0.4)';
+        ctx.strokeStyle = 'rgba(109, 98, 84, 0.5)';
         ctx.lineWidth = 2;
         ctx.stroke();
 
@@ -1642,16 +1659,32 @@
         ctx.beginPath();
         ctx.moveTo(pad.left, pad.top + gH);
         ctx.lineTo(pad.left + gW, pad.top + gH);
-        ctx.strokeStyle = 'rgba(61, 43, 22, 0.12)';
+        ctx.strokeStyle = 'rgba(61, 43, 22, 0.15)';
         ctx.lineWidth = 1;
         ctx.stroke();
 
-        // 개인연금 마커
+        // 평균선 (점선)
+        const meanX = toX(mean);
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.moveTo(meanX, pad.top + gH);
+        ctx.lineTo(meanX, toY(1));
+        ctx.strokeStyle = 'rgba(109, 98, 84, 0.35)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = '#6d6254';
+        ctx.font = '11px Pretendard, -apple-system, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('펀드 평균', meanX, pad.top + gH + 16);
+        ctx.font = '10px Pretendard, -apple-system, sans-serif';
+        ctx.fillText(formatCurrency(Math.round(mean)), meanX, pad.top + gH + 30);
+
+        // 대표 개인연금 3개 마커 (곡선 위)
         const dotColors = { emerald: '#7e5216', purple: '#6d6254', gray: '#aaa' };
-        pensions.forEach((p, i) => {
+        pensions.forEach(p => {
           const px = toX(p.totalReceiving);
           const py = toY(gauss(p.totalReceiving));
-          // 점선
           ctx.setLineDash([3, 3]);
           ctx.beginPath();
           ctx.moveTo(px, pad.top + gH);
@@ -1660,26 +1693,23 @@
           ctx.lineWidth = 1;
           ctx.stroke();
           ctx.setLineDash([]);
-          // 점
           ctx.beginPath();
-          ctx.arc(px, py, 5, 0, Math.PI * 2);
+          ctx.arc(px, py, 4, 0, Math.PI * 2);
           ctx.fillStyle = dotColors[p.color] || '#aaa';
           ctx.fill();
-          // 라벨
+          // 라벨 (곡선 위)
           ctx.fillStyle = '#6d6254';
-          ctx.font = '11px Pretendard, -apple-system, sans-serif';
-          ctx.textAlign = 'center';
-          ctx.fillText(p.productName, px, pad.top + gH + 18);
           ctx.font = '10px Pretendard, -apple-system, sans-serif';
-          ctx.fillText(formatCurrency(p.totalReceiving), px, pad.top + gH + 33);
+          ctx.textAlign = 'center';
+          ctx.fillText(p.productName, px, py - 10);
         });
 
         // 국민연금 강조
         const npsX = toX(npsTotal);
 
         // 세로 하이라이트 밴드
-        ctx.fillStyle = 'rgba(157, 107, 34, 0.07)';
-        ctx.fillRect(npsX - 24, pad.top - 10, 48, gH + 10);
+        ctx.fillStyle = 'rgba(157, 107, 34, 0.06)';
+        ctx.fillRect(npsX - 22, pad.top - 10, 44, gH + 10);
 
         // 세로선
         ctx.beginPath();
@@ -1689,40 +1719,42 @@
         ctx.lineWidth = 2.5;
         ctx.stroke();
 
-        // 상단 라벨 배경
+        // 상단 뱃지
         const labelText = '국민연금';
         ctx.font = 'bold 13px Pretendard, -apple-system, sans-serif';
-        const labelW = ctx.measureText(labelText).width + 16;
-        const labelH = 26;
-        const labelX = npsX - labelW / 2;
-        const labelY = pad.top - 38;
+        const badgeW = ctx.measureText(labelText).width + 16;
+        const badgeH = 26;
+        const badgeX = npsX - badgeW / 2;
+        const badgeY = pad.top - 42;
         ctx.fillStyle = '#9d6b22';
         ctx.beginPath();
-        ctx.roundRect(labelX, labelY, labelW, labelH, 6);
+        ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 6);
         ctx.fill();
         ctx.fillStyle = '#fff';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(labelText, npsX, labelY + labelH / 2);
+        ctx.fillText(labelText, npsX, badgeY + badgeH / 2);
         ctx.textBaseline = 'alphabetic';
 
-        // 하단 금액 (강조)
+        // 하단 금액
         ctx.fillStyle = '#9d6b22';
         ctx.font = 'bold 12px Pretendard, -apple-system, sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText(formatCurrency(npsTotal), npsX, pad.top + gH + 20);
+        ctx.fillText(formatCurrency(npsTotal), npsX, pad.top + gH + 18);
 
-        // 평균 대비 표시
-        if (npsTotal > privateMean) {
-          const pct = ((npsTotal - privateMean) / privateMean * 100).toFixed(0);
-          ctx.font = '11px Pretendard, -apple-system, sans-serif';
-          ctx.fillText(`개인연금 평균 대비 +${pct}%`, npsX, pad.top + gH + 36);
+        // 상위 몇 % 인지 표시
+        const betterCount = fundTotals.filter(v => v >= npsTotal).length;
+        const topPct = ((betterCount / n) * 100).toFixed(1);
+        ctx.font = '11px Pretendard, -apple-system, sans-serif';
+        if (betterCount === 0) {
+          ctx.fillText(`전체 ${n}개 펀드 중 1위`, npsX, pad.top + gH + 34);
+        } else {
+          ctx.fillText(`상위 ${topPct}%의 펀드만 도달`, npsX, pad.top + gH + 34);
         }
 
         // 캡션
-        const sorted = [...allValues].sort((a, b) => b - a);
-        const rank = sorted.indexOf(npsTotal) + 1;
-        caption.textContent = `개인연금 ${pensions.length}개 상품과 국민연금의 세후 총수령액 비교 — 국민연금은 ${allValues.length}개 중 ${rank}위`;
+        const rank = betterCount + 1;
+        caption.textContent = `금감원 공시 연금저축펀드 ${n}개 상품의 세후 총수령액 분포 — 국민연금은 ${n + 1}개 중 ${rank}위`;
       });
     }
 
