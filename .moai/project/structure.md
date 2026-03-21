@@ -8,7 +8,7 @@ author: @architect
 priority: medium
 ---
 
-# NotAnotherPension Structure Design
+# Your Future Structure Design
 
 ## HISTORY
 
@@ -35,7 +35,7 @@ priority: medium
 **정적 단일 페이지 (No Build SPA)** - Vanilla JS + HTML
 
 ```
-NotAnotherPension Architecture
+Your Future Architecture
 ├── Presentation Layer     # HTML + Tailwind CSS (CDN)
 ├── Application Layer      # Vanilla JavaScript (단일 파일 내)
 ├── Data Layer             # data.json (fetch로 로드)
@@ -52,7 +52,7 @@ NotAnotherPension Architecture
 ### 파일 구조
 
 ```
-NotAnotherPension/
+Your Future/
 ├── index.html              # 메인 페이지 (모든 로직 포함)
 │   ├── <style>             # Tailwind CSS (CDN) + 커스텀 스타일
 │   ├── <script>            # 모든 JavaScript 로직
@@ -179,7 +179,7 @@ const TAX_RATES = {
 
 - **배포 파일**: `index.html`, `data.json`
 - **배포 방법**: main 브랜치 푸시 → 자동 배포
-- **URL**: `https://{username}.github.io/NotAnotherPension/`
+- **URL**: `https://{username}.github.io/Your Future/`
 
 ## @DOC:TRACEABILITY-001 추적성 전략
 
