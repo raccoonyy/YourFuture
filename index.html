@@ -446,6 +446,7 @@
             <h2 class="max-w-2xl text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-black tracking-[-0.05em] text-brand-900 leading-[1.02] mb-5">
               내가 낸 돈보다<br>더 오래, 더 크게 돌아옵니다
             </h2>
+            <div id="contribution-warning" class="hidden rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 text-sm text-amber-800 mb-6"></div>
             <div id="hero-message" class="max-w-2xl text-base sm:text-lg text-[#5c5145] leading-relaxed mb-8">
               내가 낸 돈의 <span id="return-multiplier" class="text-4xl sm:text-5xl font-black text-brand-700 align-middle mx-1">-</span>배를 돌려받습니다.
               물가에 연동되어 매년 인상되고, 살아있는 한 계속 지급됩니다.
@@ -600,15 +601,16 @@
           <p>• 국민연금 수령액은 추정치이며, 미래 A값 변동 및 재평가율은 미반영</p>
           <p>• 가입기간 추정: 30세 이상은 30세부터, 20대는 현재 나이부터 59세까지의 소득을 현재 연봉 기반으로 추정</p>
           <p>• 평균 취업 연령: 30세 (<a href="https://news.incruit.com/news/newsview.asp?newsno=437372" target="_blank" rel="noopener noreferrer" class="text-brand-600 hover:underline">인크루트 2025 설문</a>)</p>
-          <p>• 개인 소득 증가율: 연령대별 중위소득 기반 연평균 2.68% 적용 (<a href="./data/aged_compensation.csv" download class="text-brand-600 hover:underline">원본 데이터</a>)</p>
+          <p>• 개인 소득 증가율: 연령대별 중위소득 증감률을 우선 적용, 데이터 없으면 평균 2.68% 사용 (<a href="./data/aged_compensation.csv" download class="text-brand-600 hover:underline">원본 데이터</a>)</p>
           <p>• 물가상승률: 최근 20년 평균 (<span id="inflation-display">2.5%</span>) 적용 (<a href="./data/consumer-price-inflation.csv" download class="text-brand-600 hover:underline">원본 데이터</a>)</p>
           <p>• 기대수명: 통계청 장래 기대수명 중위값 적용 (<a href="./data/age_expectations.csv" download class="text-brand-600 hover:underline">원본 데이터</a>)</p>
-          <p>• 국민연금 세금: 연금소득 간이세율 5% 적용 (연 350만원 공제 후), 총수령액에 반영</p>
+          <p>• 국민연금 세금: 연 350만원 공제 후 5%를 적용한 단순 추정, 총수령액에 반영</p>
           <p>• 개인연금 납입액: 국민연금 본인 부담분과 동일 금액을 같은 추정 가입기간 동안 납입한 것으로 가정</p>
           <p>• 연금저축 수익률: <a href="https://www.fss.or.kr/fss/lifeplan/goodsCmpr/list4.do?pageIndex=1&menuNo=201274&newYn=Y&orderByParam=&orderByColumn=&criteriaYear=2025&criteriaQuarter=3&paramClassCd=3&penPrinProtecYn=&penProductSellYn=1&penProductFinanceCd=&penReciveTerm=&penFeeStruct=&searchKeyword=" download class="text-brand-600 hover:underline">금융감독원 연금저축 비교공시</a></p>
-          <p>• 개인연금 수익률: S&P500 ETF 10%, TDF 2050 5%, 예금형 2.5% (과거 10년 평균이며, 손실 가능성도 있습니다.)</p>
-          <p>• 개인연금 수령기간: 국민연금과 동일 (65세~기대수명, 균등 분할)</p>
-          <p>• 개인연금 수수료: S&P500 0.03%, TDF 0.5%, 예금형 0%</p>
+          <p>• 대표 개인연금 3종 수익률: S&P500 ETF 10%, TDF 2050 5%, 예금형 2.5%를 비교용 가정으로 적용</p>
+          <p>• 실제 수익률은 상품과 기간에 따라 달라지며, 손실 가능성이 있습니다</p>
+          <p>• 개인연금 수령기간: 국민연금 개시연령(만 63~65세)부터 기대수명까지 균등 분할</p>
+          <p>• 대표 개인연금 3종 수수료: S&P500 0.03%, TDF 0.5%, 예금형 0%; 금감원 공시 펀드는 개별 수수료율 적용</p>
           <p>• 개인연금 세금: 연 1,500만원 이하 저율과세(3.3~5.5%), 초과 시 분리과세(16.5%)와 종합과세(누진세율) 중 유리한 쪽 적용</p>
           <p class="text-amber-600 font-medium pt-2">
             본 계산은 참고용이며, 실제 수령액은 경제 상황, 정책 변화 등에 따라 달라질 수 있습니다.
@@ -1114,9 +1116,10 @@
      * @param {Array} incomes - 연도별 소득 배열 [{age, year, income}]
      * @param {Object} product - 상품 정보
      * @param {number} receivingYears - 수령 기간 (년)
+     * @param {number} pensionStartAge - 연금 개시 나이
      * @returns {Object} { totalContribution, totalBalance, monthlyBenefit }
      */
-    function calculateSimplePrivatePension(incomes, product, receivingYears) {
+    function calculateSimplePrivatePension(incomes, product, receivingYears, pensionStartAge) {
       const annualReturn = product.return - product.fee;
       let totalContribution = 0;
       let balance = 0;
@@ -1132,7 +1135,7 @@
       const monthlyBenefit = Math.round(balance / (receivingYears * 12));
 
       // 세후 계산: 연 1,500만원 이하 저율과세, 초과 시 min(분리과세, 종합과세)
-      const pensionStartAge = APP_DATA?.receiving?.start_age ?? 65;
+      pensionStartAge = pensionStartAge ?? (APP_DATA?.receiving?.start_age ?? 65);
       const annualBenefit = monthlyBenefit * 12;
       const startTax = calculatePrivatePensionTax(annualBenefit, pensionStartAge);
       const monthlyBenefitNet = Math.round((annualBenefit - startTax) / 12);
@@ -1203,8 +1206,8 @@
      * @param {number} receivingYears - 수령 기간 (년)
      * @returns {number} 손익분기 연 수익률 (예: 0.065 = 6.5%)
      */
-    function calculateBreakevenRate(npsTotal, incomes, receivingYears) {
-      const pensionStartAge = APP_DATA?.receiving?.start_age ?? 65;
+    function calculateBreakevenRate(npsTotal, incomes, receivingYears, pensionStartAge) {
+      pensionStartAge = pensionStartAge ?? (APP_DATA?.receiving?.start_age ?? 65);
       let low = 0, high = 0.30;
       for (let i = 0; i < 50; i++) {
         const mid = (low + high) / 2;
@@ -1290,11 +1293,11 @@
 
         // 개인연금 3종 계산
         const privatePensions = PRIVATE_PENSION_PRODUCTS.map(product =>
-          calculateSimplePrivatePension(incomes, product, receivingYears)
+          calculateSimplePrivatePension(incomes, product, receivingYears, pensionStartAge)
         );
 
         // 손익분기점 계산
-        const breakevenRate = calculateBreakevenRate(npsTotal, incomes, receivingYears);
+        const breakevenRate = calculateBreakevenRate(npsTotal, incomes, receivingYears, pensionStartAge);
 
         // 실제 연금저축펀드 계산 (수익률 상위 정렬)
         const fundResults = FUND_PRODUCTS
@@ -1337,6 +1340,19 @@
       const returnMultiplier = (npsTotal / nps.selfContribution).toFixed(1);
       const monthlyContribution = Math.round(nps.selfContribution / contributionYears / 12);
 
+      // 가입기간 미달 경고
+      const warningEl = document.getElementById('contribution-warning');
+      const remainingYears = 60 - currentAge;
+      if (remainingYears < 10 && contributionYears < 10) {
+        warningEl.textContent = `현재 나이(${currentAge}세) 기준 60세까지 가입 기간이 ${remainingYears}년으로, 노령연금 수급 요건(10년 이상)에 미달합니다. 아래 계산은 참고용 추정치입니다.`;
+        warningEl.classList.remove('hidden');
+      } else if (remainingYears < 10) {
+        warningEl.textContent = `현재 나이(${currentAge}세) 기준 앞으로 ${remainingYears}년 납부 가능하며, 과거 가입 이력은 30세부터로 추정합니다.`;
+        warningEl.classList.remove('hidden');
+      } else {
+        warningEl.classList.add('hidden');
+      }
+
       // 85세 시점 월수령액 계산 (물가 연동 적용)
       const yearsTo85 = 85 - pensionStartAge;
       const monthlyAt85Gross = Math.round(nps.monthlyBenefit * Math.pow(1 + INFLATION_RATE, yearsTo85));
@@ -1368,7 +1384,7 @@
       renderPrivatePensionComparison(privatePensions, npsNetMonthly, npsTotal, breakevenRate);
 
       // 총수령액 분포 그래프 렌더링
-      renderDistributionChart(privatePensions, npsTotal, fundResults);
+      renderDistributionChart(privatePensions, npsTotal, fundResults, receivingYears, pensionStartAge);
 
       // 연간 수령액 표 렌더링
       renderYearlyReceivingTable({
@@ -1644,7 +1660,7 @@
       container.classList.remove('hidden');
     }
 
-    function renderDistributionChart(pensions, npsTotal, fundResults) {
+    function renderDistributionChart(pensions, npsTotal, fundResults, receivingYears, pensionStartAge) {
       const section = document.getElementById('distribution-chart-section');
       const canvas = document.getElementById('distribution-canvas');
       const caption = document.getElementById('distribution-caption');
@@ -1664,12 +1680,13 @@
         ctx.scale(dpr, dpr);
 
         // 실제 펀드 상품들의 총수령액 (세후)
+        const chartReceivingYears = receivingYears ?? (APP_DATA?.receiving?.years ?? 20);
+        const chartStartAge = pensionStartAge ?? (APP_DATA?.receiving?.start_age ?? 65);
         const fundTotals = fundResults.map(f => {
           const annualBenefit = f.monthlyBenefit * 12;
-          const receivingYears = (APP_DATA?.receiving?.years ?? 20);
           let total = 0;
-          for (let y = 0; y < receivingYears; y++) {
-            const age = (APP_DATA?.receiving?.start_age ?? 65) + y;
+          for (let y = 0; y < chartReceivingYears; y++) {
+            const age = chartStartAge + y;
             total += annualBenefit - calculatePrivatePensionTax(annualBenefit, age);
           }
           return total;
