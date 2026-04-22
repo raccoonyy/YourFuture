@@ -33,10 +33,10 @@ def get_nps_data() -> dict:
         dict: 국민연금 데이터
     """
     return {
-        "a_value": 2989352,           # 전년도 전체 가입자 평균소득 (원/년)
-        "replacement_rate": 0.43,      # 소득대체율 (43%, 2026년 개정)
-        "max_monthly_income": 5900000, # 기준소득월액 상한 (원/월)
-        "min_monthly_income": 370000   # 기준소득월액 하한 (원/월)
+        "a_value": 3193511,              # 2025.12~2026.11 A값: 전체 가입자 평균소득월액 (원/월)
+        "proportional_constant": 1.29,   # 2026년 이후 수급권 취득자 비례상수
+        "max_monthly_income": 6370000,   # 기준소득월액 상한 (2025.7~2026.6)
+        "min_monthly_income": 400000     # 기준소득월액 하한 (2025.7~2026.6)
     }
 
 
