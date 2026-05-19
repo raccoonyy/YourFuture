@@ -329,6 +329,70 @@
         transform: none !important;
       }
     }
+
+    /* 도움말 아이콘 (?) + 툴팁 */
+    .help-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: rgba(61, 43, 22, 0.08);
+      color: #6d6254;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1;
+      cursor: pointer;
+      margin-left: 4px;
+      padding: 0;
+      vertical-align: middle;
+      transition: background 0.15s ease, color 0.15s ease;
+      position: relative;
+      border: none;
+      font-family: inherit;
+    }
+    .help-icon:hover,
+    .help-icon:focus-visible {
+      background: rgba(157, 107, 34, 0.2);
+      color: #9d6b22;
+      outline: none;
+    }
+    .help-icon[data-tooltip]:hover::after,
+    .help-icon[data-tooltip]:focus-visible::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #3d2b16;
+      color: #fffaf3;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 400;
+      line-height: 1.55;
+      letter-spacing: -0.01em;
+      white-space: pre-line;
+      width: max-content;
+      max-width: 240px;
+      text-align: left;
+      z-index: 50;
+      pointer-events: none;
+      box-shadow: 0 10px 28px rgba(43, 28, 12, 0.18);
+    }
+    .help-icon[data-tooltip]:hover::before,
+    .help-icon[data-tooltip]:focus-visible::before {
+      content: '';
+      position: absolute;
+      bottom: calc(100% + 2px);
+      left: 50%;
+      transform: translateX(-50%);
+      border: 6px solid transparent;
+      border-top-color: #3d2b16;
+      pointer-events: none;
+      z-index: 50;
+    }
   </style>
 </head>
 <body class="min-h-screen text-gray-800 antialiased">
@@ -480,19 +544,39 @@
               <div class="text-[11px] font-semibold uppercase text-gray-500 section-label mb-3">세부 전제</div>
               <div class="space-y-3 text-sm">
                 <div class="flex items-start justify-between gap-4">
-                  <span class="text-gray-500">추정 월 평균 납입액</span>
+                  <span class="text-gray-500 inline-flex items-center">
+                    추정 월 평균 납입액
+                    <button type="button" class="help-icon" aria-label="추정 월 평균 납입액 도움말"
+                      data-tooltip="국민연금 본인 부담분(보험료율의 절반) 기준.&#10;추정 가입기간 동안 납입한 총액의 월 평균.&#10;클릭하면 전체 계산 가정으로 이동합니다."
+                      onclick="scrollToAssumptions(event)">?</button>
+                  </span>
                   <span id="monthly-contribution" class="font-semibold text-brand-900 tabular-nums">-</span>
                 </div>
                 <div class="flex items-start justify-between gap-4">
-                  <span class="text-gray-500">연금 개시</span>
+                  <span class="text-gray-500 inline-flex items-center">
+                    연금 개시
+                    <button type="button" class="help-icon" aria-label="연금 개시 도움말"
+                      data-tooltip="출생연도별 노령연금 수급 개시 연령 (1969년 이후 출생자: 65세).&#10;출처: 국민연금공단.&#10;클릭하면 전체 계산 가정으로 이동합니다."
+                      onclick="scrollToAssumptions(event)">?</button>
+                  </span>
                   <span id="pension-start-age" class="font-semibold text-brand-900">-</span>
                 </div>
                 <div class="flex items-start justify-between gap-4">
-                  <span class="text-gray-500">예상 수령 기간</span>
+                  <span class="text-gray-500 inline-flex items-center">
+                    예상 수령 기간
+                    <button type="button" class="help-icon" aria-label="예상 수령 기간 도움말"
+                      data-tooltip="연금 개시부터 기대수명까지의 연수.&#10;매년 물가에 연동되어 인상되는 것으로 가정합니다.&#10;클릭하면 전체 계산 가정으로 이동합니다."
+                      onclick="scrollToAssumptions(event)">?</button>
+                  </span>
                   <span id="receiving-years" class="font-semibold text-brand-900">-</span>
                 </div>
                 <div class="flex items-start justify-between gap-4">
-                  <span class="text-gray-500">기대수명</span>
+                  <span class="text-gray-500 inline-flex items-center">
+                    기대수명
+                    <button type="button" class="help-icon" aria-label="기대수명 도움말"
+                      data-tooltip="통계청 장래 기대수명 중위값.&#10;은퇴 연도 기준 데이터를 사용합니다.&#10;클릭하면 전체 계산 가정으로 이동합니다."
+                      onclick="scrollToAssumptions(event)">?</button>
+                  </span>
                   <span id="life-expectancy" class="font-semibold text-brand-900">-</span>
                 </div>
               </div>
@@ -606,7 +690,7 @@
       </div>
 
       <!-- 접기/펼치기: 계산 가정 -->
-      <details class="reveal bg-white/80 rounded-[1.3rem] border border-[rgba(61,43,22,0.1)] shadow-[0_18px_50px_rgba(43,28,12,0.06)]">
+      <details id="assumptions-section" class="reveal bg-white/80 rounded-[1.3rem] border border-[rgba(61,43,22,0.1)] shadow-[0_18px_50px_rgba(43,28,12,0.06)]">
         <summary class="px-6 py-4 cursor-pointer text-gray-500 hover:text-gray-700 text-sm font-medium flex items-center justify-between">
           <span>계산 가정 및 면책 조항</span>
           <svg class="w-4 h-4 text-gray-400 transition-transform details-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
@@ -2141,6 +2225,15 @@
           ? parts.join(' · ') + `. 기대수명(${lifeAge}세)까지 살 경우 누적 수령액 최대 시점을 확인해 보세요.`
           : `기대수명 ${lifeAge}세까지의 누적 수령액 곡선. 곡선이 교차하는 시점이 손익분기 나이입니다.`;
       });
+    }
+
+    // 계산 가정 섹션으로 스크롤 (도움말 아이콘 클릭 시)
+    function scrollToAssumptions(event) {
+      if (event) event.stopPropagation();
+      const el = document.getElementById('assumptions-section');
+      if (!el) return;
+      if (el.tagName === 'DETAILS') el.open = true;
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     let revealObserver = null;
