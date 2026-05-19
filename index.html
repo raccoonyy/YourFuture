@@ -512,7 +512,7 @@
             수령 개시 시점을 앞당기면 1년당 6%씩 감액(조기노령연금), 늦추면 1년당 7.2%씩 증액(연기연금)됩니다.
             예상 수명까지의 누적 수령액을 비교하면 본인에게 유리한 시점을 가늠할 수 있습니다.
           </p>
-          <canvas id="claim-age-canvas" class="w-full" style="height: 320px;"></canvas>
+          <canvas id="claim-age-canvas" class="w-full" style="height: 360px;"></canvas>
           <p id="claim-age-caption" class="text-xs text-gray-400 mt-4 text-center"></p>
         </div>
       </section>
@@ -1912,8 +1912,8 @@
 
     /**
      * 수령 시기 비교 차트
-     * 법정 개시 나이 ±5세 범위로 calculateNPS를 반복 호출하여
-     * 누적 총 수령액(세후) 곡선을 그립니다.
+     * 5개 개시 나이별로 시간축에 따른 누적 수령액(세후, 물가연동) 곡선을 그립니다.
+     * 곡선들이 교차하는 지점이 손익분기 나이입니다.
      */
     function renderClaimAgeChart(data) {
       const { incomes, currentAge, legalAge } = data;
@@ -1927,170 +1927,219 @@
       requestAnimationFrame(() => {
         const dpr = window.devicePixelRatio || 1;
         const W = canvas.clientWidth || 600;
-        const H = 320;
+        const H = 360;
         canvas.width = W * dpr;
         canvas.height = H * dpr;
         canvas.style.height = H + 'px';
         const ctx = canvas.getContext('2d');
         ctx.scale(dpr, dpr);
 
-        const minAge = legalAge - 5;
-        const maxAge = legalAge + 5;
-        const points = [];
-        for (let age = minAge; age <= maxAge; age++) {
-          const np = calculateNPS(incomes, age, currentAge);
-          const lifespan = getExpectedLifespan(currentAge, age);
-          const total = calculateNPSTotal(np.monthlyBenefit, INFLATION_RATE, lifespan, age);
-          points.push({ age, total, monthly: np.monthlyBenefit, lifespan });
-        }
+        // 5개 개시 나이 (offsets: -5, -3, 0, +2, +5)
+        const offsets = [-5, -3, 0, 2, 5];
+        const scenarios = offsets.map(off => {
+          const startAge = legalAge + off;
+          const np = calculateNPS(incomes, startAge, currentAge);
+          return {
+            startAge,
+            offset: off,
+            monthlyBenefit: np.monthlyBenefit,
+            isLegal: off === 0,
+            label: off === 0 ? `법정 ${startAge}세` :
+                   off < 0 ? `조기 ${startAge}세 (${off * 12}%)` :
+                             `연기 ${startAge}세 (+${(off * 7.2).toFixed(1)}%)`
+          };
+        });
 
-        const yMin = Math.min(...points.map(p => p.total));
-        const yMax = Math.max(...points.map(p => p.total));
-        const yPad = (yMax - yMin) * 0.15 || yMax * 0.1;
-        const yLo = Math.max(0, yMin - yPad);
-        const yHi = yMax + yPad;
+        // 차트 X축 끝점: 법정 개시 기대수명 (모든 시나리오 공통)
+        const chartEndAge = Math.max(getExpectedLifespan(currentAge, legalAge), legalAge + 5 + 15);
+        const xMin = scenarios[0].startAge; // = legalAge - 5
+        const xMax = chartEndAge;
 
-        const pad = { top: 50, right: 30, bottom: 60, left: 30 };
+        // 각 시나리오의 연도별 누적 계산
+        scenarios.forEach(s => {
+          s.cumulative = []; // {age, total}
+          let total = 0;
+          for (let age = s.startAge; age <= chartEndAge; age++) {
+            const yearsFromStart = age - s.startAge;
+            const grossAnnual = s.monthlyBenefit * 12 * Math.pow(1 + INFLATION_RATE, yearsFromStart);
+            const taxable = Math.max(0, grossAnnual - NPS_TAX_CONSTANTS.ANNUAL_EXEMPTION);
+            const netAnnual = grossAnnual - taxable * NPS_TAX_CONSTANTS.TAX_RATE;
+            total += netAnnual;
+            s.cumulative.push({ age, total });
+          }
+          s.finalTotal = total;
+        });
+
+        // Y축 범위
+        const yMax = Math.max(...scenarios.map(s => s.finalTotal));
+        const yHi = yMax * 1.05;
+
+        const pad = { top: 60, right: 30, bottom: 70, left: 30 };
         const gW = W - pad.left - pad.right;
         const gH = H - pad.top - pad.bottom;
 
-        const toX = age => pad.left + ((age - minAge) / (maxAge - minAge)) * gW;
-        const toY = v => pad.top + gH * (1 - (v - yLo) / (yHi - yLo));
+        const toX = age => pad.left + ((age - xMin) / (xMax - xMin)) * gW;
+        const toY = v => pad.top + gH * (1 - v / yHi);
 
-        // 좌측 영역(조기 수령) 음영 — 붉은 톤
-        ctx.fillStyle = 'rgba(192, 73, 60, 0.05)';
-        ctx.fillRect(pad.left, pad.top, toX(legalAge) - pad.left, gH);
-
-        // 우측 영역(연기 수령) 음영 — 녹색 톤
-        ctx.fillStyle = 'rgba(67, 130, 91, 0.05)';
-        ctx.fillRect(toX(legalAge), pad.top, pad.left + gW - toX(legalAge), gH);
-
-        // 곡선 아래 채우기
-        const grad = ctx.createLinearGradient(0, pad.top, 0, pad.top + gH);
-        grad.addColorStop(0, 'rgba(157, 107, 34, 0.18)');
-        grad.addColorStop(1, 'rgba(157, 107, 34, 0.02)');
-        ctx.beginPath();
-        ctx.moveTo(toX(points[0].age), pad.top + gH);
-        points.forEach(p => ctx.lineTo(toX(p.age), toY(p.total)));
-        ctx.lineTo(toX(points[points.length - 1].age), pad.top + gH);
-        ctx.closePath();
-        ctx.fillStyle = grad;
-        ctx.fill();
-
-        // X축
-        ctx.beginPath();
-        ctx.moveTo(pad.left, pad.top + gH);
-        ctx.lineTo(pad.left + gW, pad.top + gH);
-        ctx.strokeStyle = 'rgba(61, 43, 22, 0.15)';
+        // 배경 그리드 (가로선 4개)
+        ctx.strokeStyle = 'rgba(61, 43, 22, 0.06)';
         ctx.lineWidth = 1;
-        ctx.stroke();
-
-        // 곡선
-        ctx.beginPath();
-        points.forEach((p, i) => {
-          const px = toX(p.age);
-          const py = toY(p.total);
-          i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
-        });
-        ctx.strokeStyle = '#9d6b22';
-        ctx.lineWidth = 2.5;
-        ctx.lineJoin = 'round';
-        ctx.stroke();
-
-        // 모든 점 마커
-        points.forEach(p => {
-          const px = toX(p.age);
-          const py = toY(p.total);
+        for (let i = 1; i <= 4; i++) {
+          const y = pad.top + (gH / 4) * i;
           ctx.beginPath();
-          ctx.arc(px, py, 3.5, 0, Math.PI * 2);
-          ctx.fillStyle = '#fffaf3';
+          ctx.moveTo(pad.left, y);
+          ctx.lineTo(pad.left + gW, y);
+          ctx.stroke();
+        }
+
+        // 색상 팔레트 (조기 = 붉은 톤, 법정 = 브랜드, 연기 = 초록 톤)
+        const colors = {
+          '-5': '#c0493c', // 조기 최대 (-30%)
+          '-3': '#d97a5a', // 조기 (-18%)
+          '0':  '#9d6b22', // 법정 (브랜드)
+          '2':  '#5e8a5e', // 연기 (+14.4%)
+          '5':  '#2f6e4a'  // 연기 최대 (+36%)
+        };
+
+        // 기대수명 세로 점선
+        const lifeAge = getExpectedLifespan(currentAge, legalAge);
+        if (lifeAge >= xMin && lifeAge <= xMax) {
+          const lifeX = toX(lifeAge);
+          ctx.setLineDash([3, 4]);
+          ctx.beginPath();
+          ctx.moveTo(lifeX, pad.top);
+          ctx.lineTo(lifeX, pad.top + gH);
+          ctx.strokeStyle = 'rgba(61, 43, 22, 0.3)';
+          ctx.lineWidth = 1;
+          ctx.stroke();
+          ctx.setLineDash([]);
+
+          ctx.fillStyle = '#6d6254';
+          ctx.font = '10px Pretendard, -apple-system, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(`기대수명 ${lifeAge}세`, lifeX, pad.top - 8);
+        }
+
+        // 각 시나리오 곡선
+        scenarios.forEach(s => {
+          const color = colors[String(s.offset)];
+          ctx.beginPath();
+          ctx.moveTo(toX(s.startAge), toY(0));
+          s.cumulative.forEach(pt => {
+            ctx.lineTo(toX(pt.age), toY(pt.total));
+          });
+          ctx.strokeStyle = color;
+          ctx.lineWidth = s.isLegal ? 3 : 2;
+          ctx.lineJoin = 'round';
+          ctx.lineCap = 'round';
+          ctx.stroke();
+
+          // 시작점 작은 마커
+          ctx.beginPath();
+          ctx.arc(toX(s.startAge), toY(0), 3, 0, Math.PI * 2);
+          ctx.fillStyle = color;
           ctx.fill();
-          ctx.strokeStyle = '#9d6b22';
+
+          // 끝점 마커 + 금액 라벨
+          const lastPt = s.cumulative[s.cumulative.length - 1];
+          const ex = toX(lastPt.age);
+          const ey = toY(lastPt.total);
+          ctx.beginPath();
+          ctx.arc(ex, ey, s.isLegal ? 5 : 4, 0, Math.PI * 2);
+          ctx.fillStyle = color;
+          ctx.fill();
+          ctx.strokeStyle = '#fffaf3';
           ctx.lineWidth = 1.5;
           ctx.stroke();
         });
 
-        // X축 라벨 (양 끝과 법정 나이)
+        // X축 라인
+        ctx.beginPath();
+        ctx.moveTo(pad.left, pad.top + gH);
+        ctx.lineTo(pad.left + gW, pad.top + gH);
+        ctx.strokeStyle = 'rgba(61, 43, 22, 0.25)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+
+        // X축 라벨 (5세 간격)
         ctx.fillStyle = '#6d6254';
         ctx.font = '11px Pretendard, -apple-system, sans-serif';
         ctx.textAlign = 'center';
-        points.forEach(p => {
-          const px = toX(p.age);
-          const isKey = p.age === legalAge || p.age === minAge || p.age === maxAge;
-          ctx.font = isKey ? 'bold 11px Pretendard, -apple-system, sans-serif' : '11px Pretendard, -apple-system, sans-serif';
-          ctx.fillStyle = isKey ? '#3d2b16' : '#a8a094';
-          ctx.fillText(`${p.age}`, px, pad.top + gH + 18);
+        const labelAges = [];
+        for (let a = xMin; a <= xMax; a += 5) labelAges.push(a);
+        if (labelAges[labelAges.length - 1] !== xMax) labelAges.push(xMax);
+        labelAges.forEach(a => {
+          ctx.fillText(`${a}세`, toX(a), pad.top + gH + 18);
         });
 
-        // 영역 라벨
-        ctx.font = '10px Pretendard, -apple-system, sans-serif';
-        ctx.fillStyle = 'rgba(192, 73, 60, 0.7)';
-        ctx.textAlign = 'left';
-        ctx.fillText('← 조기수령 (감액)', pad.left + 4, pad.top + 14);
-        ctx.textAlign = 'right';
-        ctx.fillStyle = 'rgba(67, 130, 91, 0.75)';
-        ctx.fillText('연기수령 (증액) →', pad.left + gW - 4, pad.top + 14);
-
-        // 법정 개시 나이 강조 (세로선 + 뱃지)
-        const legalPoint = points.find(p => p.age === legalAge);
-        const lx = toX(legalAge);
-        const ly = toY(legalPoint.total);
-
-        ctx.setLineDash([4, 4]);
-        ctx.beginPath();
-        ctx.moveTo(lx, pad.top + gH);
-        ctx.lineTo(lx, pad.top - 5);
-        ctx.strokeStyle = 'rgba(61, 43, 22, 0.35)';
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-        ctx.setLineDash([]);
-
-        // 법정 개시 나이 마커
-        ctx.beginPath();
-        ctx.arc(lx, ly, 6, 0, Math.PI * 2);
-        ctx.fillStyle = '#9d6b22';
-        ctx.fill();
-        ctx.strokeStyle = '#fffaf3';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        // 상단 뱃지
-        const labelText = `법정 개시 ${legalAge}세`;
-        ctx.font = 'bold 12px Pretendard, -apple-system, sans-serif';
-        const badgeW = ctx.measureText(labelText).width + 14;
-        const badgeH = 24;
-        const badgeX = Math.max(pad.left, Math.min(pad.left + gW - badgeW, lx - badgeW / 2));
-        const badgeY = pad.top - 38;
-        ctx.fillStyle = '#9d6b22';
-        ctx.beginPath();
-        if (ctx.roundRect) {
-          ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 12);
-        } else {
-          ctx.rect(badgeX, badgeY, badgeW, badgeH);
-        }
-        ctx.fill();
-        ctx.fillStyle = '#fffaf3';
-        ctx.textAlign = 'center';
-        ctx.fillText(labelText, badgeX + badgeW / 2, badgeY + 16);
-
-        // 법정 나이 총수령액 표시
+        // 범례 (상단)
+        const legendY = 18;
         ctx.font = '11px Pretendard, -apple-system, sans-serif';
-        ctx.fillStyle = '#9d6b22';
-        ctx.fillText(formatCurrency(legalPoint.total), lx, ly - 14);
+        ctx.textBaseline = 'middle';
+        const legendItems = scenarios.map(s => ({
+          label: s.isLegal ? `법정 ${s.startAge}세` :
+                 s.offset < 0 ? `조기 ${s.startAge}세` : `연기 ${s.startAge}세`,
+          color: colors[String(s.offset)],
+          bold: s.isLegal
+        }));
+        // 라벨 너비 측정
+        const widths = legendItems.map(item => {
+          ctx.font = item.bold ? 'bold 11px Pretendard, -apple-system, sans-serif' : '11px Pretendard, -apple-system, sans-serif';
+          return ctx.measureText(item.label).width + 22;
+        });
+        const totalLegendW = widths.reduce((a, b) => a + b, 0);
+        let legX = (W - totalLegendW) / 2;
+        legendItems.forEach((item, i) => {
+          // 색상 점
+          ctx.beginPath();
+          ctx.arc(legX + 6, legendY, 4, 0, Math.PI * 2);
+          ctx.fillStyle = item.color;
+          ctx.fill();
+          // 라벨
+          ctx.fillStyle = item.bold ? '#3d2b16' : '#6d6254';
+          ctx.font = item.bold ? 'bold 11px Pretendard, -apple-system, sans-serif' : '11px Pretendard, -apple-system, sans-serif';
+          ctx.textAlign = 'left';
+          ctx.fillText(item.label, legX + 14, legendY);
+          legX += widths[i];
+        });
+        ctx.textBaseline = 'alphabetic';
 
-        // 최적 시점 찾기 (총 수령액 최대)
-        const best = points.reduce((a, b) => b.total > a.total ? b : a);
-        const diff = best.total - legalPoint.total;
+        // 손익분기 분석 (법정 vs 연기최대)
+        const legalCurve = scenarios.find(s => s.isLegal);
+        const maxDelayCurve = scenarios.find(s => s.offset === 5);
+        const maxEarlyCurve = scenarios.find(s => s.offset === -5);
 
-        let captionText;
-        if (best.age === legalAge) {
-          captionText = `${legalAge}세 개시 시 누적 수령액 ${formatCurrency(legalPoint.total)} (기대수명 ${legalPoint.lifespan}세까지). 조기/연기 시 손익을 비교해 보세요.`;
-        } else if (best.age > legalAge) {
-          captionText = `기대수명 기준 누적으로는 ${best.age}세 개시가 ${formatCurrency(diff)} 더 많습니다. 다만 매월 받기 시작하는 시점은 더 늦어집니다.`;
-        } else {
-          captionText = `기대수명 기준 누적으로는 ${best.age}세 개시가 ${formatCurrency(diff)} 더 많습니다. 다만 조기수령은 가입 10년 이상 + 소득 요건 등 조건이 있습니다.`;
+        // 연기 vs 법정 교차점 찾기
+        let crossoverDelayLegal = null;
+        for (let i = 0; i < maxDelayCurve.cumulative.length; i++) {
+          const age = maxDelayCurve.cumulative[i].age;
+          const delayTotal = maxDelayCurve.cumulative[i].total;
+          const legalPt = legalCurve.cumulative.find(c => c.age === age);
+          if (legalPt && delayTotal >= legalPt.total) {
+            crossoverDelayLegal = age;
+            break;
+          }
         }
-        caption.textContent = captionText;
+
+        // 법정 vs 조기 교차점 찾기
+        let crossoverLegalEarly = null;
+        for (let i = 0; i < legalCurve.cumulative.length; i++) {
+          const age = legalCurve.cumulative[i].age;
+          const legalTotal = legalCurve.cumulative[i].total;
+          const earlyPt = maxEarlyCurve.cumulative.find(c => c.age === age);
+          if (earlyPt && legalTotal >= earlyPt.total) {
+            crossoverLegalEarly = age;
+            break;
+          }
+        }
+
+        // 캡션
+        const parts = [];
+        if (crossoverLegalEarly) parts.push(`조기 ${maxEarlyCurve.startAge}세 vs 법정 ${legalAge}세 손익분기: ${crossoverLegalEarly}세`);
+        if (crossoverDelayLegal) parts.push(`법정 ${legalAge}세 vs 연기 ${maxDelayCurve.startAge}세 손익분기: ${crossoverDelayLegal}세`);
+        caption.textContent = parts.length > 0
+          ? parts.join(' · ') + `. 기대수명(${lifeAge}세)까지 살 경우 누적 수령액 최대 시점을 확인해 보세요.`
+          : `기대수명 ${lifeAge}세까지의 누적 수령액 곡선. 곡선이 교차하는 시점이 손익분기 나이입니다.`;
       });
     }
 
