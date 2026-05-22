@@ -403,6 +403,15 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-gutter mt-4">
             <div class="flex items-start justify-between gap-4 border-t border-divider-subtle py-3 text-sm">
               <span class="text-text-muted inline-flex items-center">
+                추정 가입 기간
+                <button type="button" class="help-icon" aria-label="추정 가입 기간 도움말"
+                  data-tooltip="평균 취업 연령 30세(인크루트 2025 설문)부터 60세까지 가입한 것으로 가정합니다.&#10;클릭하면 전체 계산 가정으로 이동합니다."
+                  onclick="scrollToAssumptions(event)">?</button>
+              </span>
+              <span id="contribution-period-assumption" class="font-semibold text-on-surface tabular-nums">-</span>
+            </div>
+            <div class="flex items-start justify-between gap-4 border-t border-divider-subtle py-3 text-sm">
+              <span class="text-text-muted inline-flex items-center">
                 추정 월 평균 납입액
                 <button type="button" class="help-icon" aria-label="추정 월 평균 납입액 도움말"
                   data-tooltip="국민연금 본인 부담분(보험료율의 절반) 기준.&#10;추정 가입기간 동안 납입한 총액의 월 평균.&#10;클릭하면 전체 계산 가정으로 이동합니다."
@@ -1329,6 +1338,7 @@
       document.getElementById('contribution-period-detail').textContent = `(${contributionStartAge}~${contributionEndAge}세 추정)`;
 
       // 추가 정보
+      document.getElementById('contribution-period-assumption').textContent = `${contributionStartAge}~${contributionEndAge}세 (${contributionYears}년)`;
       document.getElementById('monthly-contribution').textContent = formatCurrency(monthlyContribution);
       document.getElementById('pension-start-age').textContent = `${pensionStartAge}세`;
       document.getElementById('receiving-years').textContent = `${receivingYears}년`;
