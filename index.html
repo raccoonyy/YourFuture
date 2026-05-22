@@ -256,7 +256,7 @@
       <nav class="hidden md:flex gap-8 items-center">
         <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="./index.html">계산기</a>
         <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="./guide.html">연금 가이드</a>
-        <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="./assumptions.html">계산 가정</a>
+        <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="./assumptions.html">계산 근거</a>
       </nav>
       <a href="./guide.html" class="md:hidden font-label-caps text-label-caps text-primary">연금 가이드</a>
     </div>
@@ -410,7 +410,7 @@
               <span class="text-text-muted inline-flex items-center">
                 추정 가입 기간
                 <button type="button" class="help-icon" aria-label="추정 가입 기간 도움말"
-                  data-tooltip="평균 취업 연령 30세(인크루트 2025 설문)부터 60세까지 가입한 것으로 가정합니다.&#10;클릭하면 전체 계산 가정으로 이동합니다."
+                  data-tooltip="평균 취업 연령 30세(인크루트 2025 설문)부터 60세까지 가입한 것으로 가정합니다.&#10;클릭하면 전체 계산 근거로 이동합니다."
                   onclick="scrollToAssumptions(event)">?</button>
               </span>
               <span id="contribution-period-assumption" class="font-semibold text-on-surface tabular-nums">-</span>
@@ -419,7 +419,7 @@
               <span class="text-text-muted inline-flex items-center">
                 추정 월 평균 납입액
                 <button type="button" class="help-icon" aria-label="추정 월 평균 납입액 도움말"
-                  data-tooltip="국민연금 본인 부담분(보험료율의 절반) 기준.&#10;추정 가입기간 동안 납입한 총액의 월 평균.&#10;클릭하면 전체 계산 가정으로 이동합니다."
+                  data-tooltip="국민연금 본인 부담분(보험료율의 절반) 기준.&#10;추정 가입기간 동안 납입한 총액의 월 평균.&#10;클릭하면 전체 계산 근거로 이동합니다."
                   onclick="scrollToAssumptions(event)">?</button>
               </span>
               <span id="monthly-contribution" class="font-semibold text-on-surface tabular-nums">-</span>
@@ -428,7 +428,7 @@
               <span class="text-text-muted inline-flex items-center">
                 연금 개시
                 <button type="button" class="help-icon" aria-label="연금 개시 도움말"
-                  data-tooltip="출생연도별 노령연금 수급 개시 연령 (1969년 이후 출생자: 65세).&#10;출처: 국민연금공단.&#10;클릭하면 전체 계산 가정으로 이동합니다."
+                  data-tooltip="출생연도별 노령연금 수급 개시 연령 (1969년 이후 출생자: 65세).&#10;출처: 국민연금공단.&#10;클릭하면 전체 계산 근거로 이동합니다."
                   onclick="scrollToAssumptions(event)">?</button>
               </span>
               <span id="pension-start-age" class="font-semibold text-on-surface">-</span>
@@ -437,7 +437,7 @@
               <span class="text-text-muted inline-flex items-center">
                 예상 수령 기간
                 <button type="button" class="help-icon" aria-label="예상 수령 기간 도움말"
-                  data-tooltip="연금 개시부터 기대수명까지의 연수.&#10;매년 물가에 연동되어 인상되는 것으로 가정합니다.&#10;클릭하면 전체 계산 가정으로 이동합니다."
+                  data-tooltip="연금 개시부터 기대수명까지의 연수.&#10;매년 물가에 연동되어 인상되는 것으로 가정합니다.&#10;클릭하면 전체 계산 근거로 이동합니다."
                   onclick="scrollToAssumptions(event)">?</button>
               </span>
               <span id="receiving-years" class="font-semibold text-on-surface">-</span>
@@ -446,7 +446,7 @@
               <span class="text-text-muted inline-flex items-center">
                 기대수명
                 <button type="button" class="help-icon" aria-label="기대수명 도움말"
-                  data-tooltip="통계청 장래 기대수명 중위값.&#10;은퇴 연도 기준 데이터를 사용합니다.&#10;클릭하면 전체 계산 가정으로 이동합니다."
+                  data-tooltip="통계청 장래 기대수명 중위값.&#10;은퇴 연도 기준 데이터를 사용합니다.&#10;클릭하면 전체 계산 근거로 이동합니다."
                   onclick="scrollToAssumptions(event)">?</button>
               </span>
               <span id="life-expectancy" class="font-semibold text-on-surface">-</span>
@@ -557,7 +557,7 @@
         </div>
       </section>
 
-      <!-- 접기/펼치기: 계산 가정 -->
+      <!-- 접기/펼치기: 계산 근거 -->
       <div class="max-w-7xl mx-auto px-5 md:px-margin-desktop py-12 md:py-section-gap">
         <details id="assumptions-section" class="reveal border border-divider-subtle bg-surface-container-low">
           <summary class="px-6 py-4 cursor-pointer text-text-muted hover:text-on-surface text-sm font-medium flex items-center justify-between">
@@ -2183,7 +2183,7 @@
       });
     }
 
-    // 계산 가정 섹션으로 스크롤 (도움말 아이콘 클릭 시)
+    // 계산 근거 섹션으로 스크롤 (도움말 아이콘 클릭 시)
     function scrollToAssumptions(event) {
       if (event) event.stopPropagation();
       const el = document.getElementById('assumptions-section');
