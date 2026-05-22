@@ -1445,9 +1445,9 @@
       }
       totalRow += '</tr>';
 
-      // 데이터 행 (70~85세 구간은 접기)
+      // 데이터 행 (70세부터 기대수명 직전까지 접기)
       const FOLD_START = 70;
-      const FOLD_END = 85;
+      const FOLD_END = expectedLifespan - 1;
       let dataRows = '';
       let foldedRows = '';
       let hasFolded = false;
@@ -1483,7 +1483,7 @@
           hasFolded = true;
           let toggleRow = '<tr class="fold-toggle-row border-b border-divider-subtle bg-surface-container cursor-pointer hover:bg-surface-container-high transition-colors" onclick="toggleFoldedRows()">';
           toggleRow += `<td class="px-2 py-3 text-center text-text-muted sticky left-0 z-10 bg-surface-container min-w-[60px] border-r border-divider-subtle"><svg class="fold-icon inline w-4 h-4 transition-transform text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></td>`;
-          toggleRow += `<td class="px-2 py-3 text-center text-text-muted text-xs font-medium sticky left-[60px] z-10 bg-surface-container min-w-[130px] border-r border-divider-subtle"><span class="fold-label">${FOLD_START}~${FOLD_END}세 펼쳐 보기</span></td>`;
+          toggleRow += `<td class="px-2 py-3 text-center text-text-muted text-xs font-medium sticky left-[60px] z-10 bg-surface-container min-w-[130px] border-r border-divider-subtle"><span class="fold-label" data-collapsed-label="${FOLD_START}~${FOLD_END}세 펼쳐 보기">${FOLD_START}~${FOLD_END}세 펼쳐 보기</span></td>`;
           for (let i = 0; i < allProducts.length; i++) {
             toggleRow += '<td class="px-2 py-3 text-center text-text-muted">⋮</td>';
           }
@@ -1515,7 +1515,7 @@
       if (label) {
         label.textContent = isHidden
           ? '접기'
-          : '70~85세 펼쳐 보기';
+          : (label.dataset.collapsedLabel || '펼쳐 보기');
       }
       if (icon) {
         icon.style.transform = isHidden ? 'rotate(180deg)' : '';
