@@ -455,21 +455,6 @@
         </div>
       </section>
 
-      <!-- 수령 시기 비교 -->
-      <section id="claim-age-section" class="hidden reveal max-w-7xl mx-auto px-5 md:px-margin-desktop py-12 md:py-section-gap">
-        <div class="divider-h mb-12 md:mb-16"></div>
-        <span class="font-label-caps text-label-caps text-muted-gold">수령 시기 비교</span>
-        <h3 class="font-headline-md text-headline-md text-on-surface mt-2 mb-3">언제부터 받는 게 가장 좋을까요</h3>
-        <p class="font-body-md text-text-muted max-w-2xl mb-8">
-          수령 개시 시점을 앞당기면 1년당 6%씩 감액(조기노령연금), 늦추면 1년당 7.2%씩 증액(연기연금)됩니다.
-          각 시점별 세후 월 수령액이 시간에 따라 어떻게 변하는지 비교해 보세요.
-        </p>
-        <div class="bg-surface-container-low border border-divider-subtle p-4 sm:p-6">
-          <canvas id="claim-age-canvas" class="w-full" style="height: 360px;"></canvas>
-        </div>
-        <p id="claim-age-caption" class="text-caption text-text-muted mt-4 text-center"></p>
-      </section>
-
       <!-- 개인연금 비교 (동적 렌더링) -->
       <div id="private-pension-section" class="hidden reveal max-w-7xl mx-auto px-5 md:px-margin-desktop py-12 md:py-section-gap"></div>
 
@@ -485,6 +470,21 @@
           <canvas id="distribution-canvas" class="w-full" style="height: 280px;"></canvas>
         </div>
         <p id="distribution-caption" class="text-caption text-text-muted mt-4 text-center"></p>
+      </section>
+
+      <!-- 수령 시기 비교 -->
+      <section id="claim-age-section" class="hidden reveal max-w-7xl mx-auto px-5 md:px-margin-desktop py-12 md:py-section-gap">
+        <div class="divider-h mb-12 md:mb-16"></div>
+        <span class="font-label-caps text-label-caps text-muted-gold">수령 시기 비교</span>
+        <h3 class="font-headline-md text-headline-md text-on-surface mt-2 mb-3">언제부터 받는 게 가장 좋을까요</h3>
+        <p class="font-body-md text-text-muted max-w-2xl mb-8">
+          수령 개시 시점을 앞당기면 1년당 6%씩 감액(조기노령연금), 늦추면 1년당 7.2%씩 증액(연기연금)됩니다.
+          각 시점별 세후 월 수령액이 시간에 따라 어떻게 변하는지 비교해 보세요.
+        </p>
+        <div class="bg-surface-container-low border border-divider-subtle p-4 sm:p-6">
+          <canvas id="claim-age-canvas" class="w-full" style="height: 360px;"></canvas>
+        </div>
+        <p id="claim-age-caption" class="text-caption text-text-muted mt-4 text-center"></p>
       </section>
 
       <!-- 연금상품별 연간 수령액 표 (접기/펼치기) -->
