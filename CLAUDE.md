@@ -725,3 +725,4 @@ Alfred가 모든 코드에 적용하는 품질 기준:
 - **버전**: 0.1.0
 - **모드**: personal
 - **개발 도구**: 프로젝트 언어에 최적화된 도구 체인 자동 선택
+- **디자인 시스템**: "Modern Sovereign" 다크 테마 — 디자인 토큰 및 명세는 @docs/DESIGN.md 참조 (index.html·guide.html이 이 문서 기준으로 리디자인됨)
