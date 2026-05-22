@@ -373,7 +373,7 @@
           </div>
           <div class="flex items-end">
             <p id="hero-message" class="font-body-lg text-body-lg text-text-muted">
-              본인 납부액 대비 예상 수령액은 <span id="return-multiplier" class="font-data-lg text-data-lg text-primary align-middle mx-1">-</span>배예요.
+              본인 납부액 대비 예상 수령액은 <span id="return-multiplier" class="font-data-lg text-data-lg text-primary align-bottom mx-1">-</span>배예요.
               물가연동과 종신지급을 함께 반영했어요.
             </p>
           </div>
@@ -382,6 +382,11 @@
         <div id="contribution-warning" class="hidden border border-error/40 bg-surface-container px-4 py-3 text-sm text-error mb-10"></div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter border-y border-divider-subtle py-10">
+          <div class="space-y-2">
+            <span class="font-label-caps text-label-caps text-text-muted">추정 가입 기간</span>
+            <div id="contribution-years" class="font-data-lg text-data-lg text-on-surface tabular-nums">-</div>
+            <p id="contribution-period-detail" class="text-caption text-text-muted">-</p>
+          </div>
           <div class="space-y-2">
             <span class="font-label-caps text-label-caps text-text-muted">본인 총납부액</span>
             <div id="total-contribution" class="font-data-lg text-data-lg text-on-surface tabular-nums">-</div>
@@ -395,11 +400,6 @@
           <div class="space-y-2">
             <span class="font-label-caps text-label-caps text-text-muted">세후 월수령액</span>
             <div id="nps-monthly-range" class="text-xl font-semibold text-on-surface leading-snug tabular-nums">-</div>
-          </div>
-          <div class="space-y-2">
-            <span class="font-label-caps text-label-caps text-text-muted">추정 가입 기간</span>
-            <div id="contribution-years" class="font-data-lg text-data-lg text-on-surface tabular-nums">-</div>
-            <p id="contribution-period-detail" class="text-caption text-text-muted">-</p>
           </div>
         </div>
 
@@ -1324,11 +1324,11 @@
         warningEl.classList.add('hidden');
       }
 
-      // 85세 시점 월수령액 계산 (물가 연동 적용)
-      const yearsTo85 = 85 - pensionStartAge;
-      const monthlyAt85Gross = Math.round(nps.monthlyBenefit * Math.pow(1 + INFLATION_RATE, yearsTo85));
-      const taxAt85 = calculateNPSTax(monthlyAt85Gross);
-      const monthlyAt85Net = monthlyAt85Gross - taxAt85;
+      // 기대수명 시점 월수령액 계산 (물가 연동 적용)
+      const yearsToLifespan = expectedLifespan - pensionStartAge;
+      const monthlyAtLifespanGross = Math.round(nps.monthlyBenefit * Math.pow(1 + INFLATION_RATE, yearsToLifespan));
+      const taxAtLifespan = calculateNPSTax(monthlyAtLifespanGross);
+      const monthlyAtLifespanNet = monthlyAtLifespanGross - taxAtLifespan;
 
       // 히어로 섹션
       document.getElementById('total-contribution').textContent = formatCurrency(nps.selfContribution);
@@ -1338,7 +1338,7 @@
 
       // 상세 카드
       document.getElementById('nps-monthly-range').innerHTML =
-        `${formatCurrency(npsNetMonthly)}<span class="text-xs text-text-muted">(${pensionStartAge}세)</span> ~ ${formatCurrency(monthlyAt85Net)}<span class="text-xs text-text-muted">(85세)</span>`;
+        `${formatCurrency(npsNetMonthly)}<span class="text-xs text-text-muted">(${pensionStartAge}세)</span> ~ ${formatCurrency(monthlyAtLifespanNet)}<span class="text-xs text-text-muted">(${expectedLifespan}세)</span>`;
       document.getElementById('contribution-years').textContent = `${contributionYears}년`;
       document.getElementById('contribution-period-detail').textContent = `(${contributionStartAge}~${contributionEndAge}세 추정)`;
 
