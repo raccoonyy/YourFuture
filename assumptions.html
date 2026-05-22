@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html class="dark" lang="ko">
+<head>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-M2CCW8LC');</script>
+  <!-- End Google Tag Manager -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>계산 가정 - Your Future</title>
+  <meta name="description" content="Your Future 국민연금 계산기가 예상 수령액을 추정할 때 사용하는 산식, 기준, 데이터 출처를 한곳에 정리했어요.">
+  <link rel="canonical" href="https://yourfuture.raccoony.dev/assumptions.html">
+  <meta property="og:site_name" content="Your Future">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="계산 가정 - Your Future">
+  <meta property="og:description" content="Your Future 국민연금 계산기가 예상 수령액을 추정할 때 사용하는 산식, 기준, 데이터 출처를 한곳에 정리했어요.">
+  <meta property="og:image" content="https://yourfuture.raccoony.dev/docs/preview.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:url" content="https://yourfuture.raccoony.dev/assumptions.html">
+  <meta property="og:locale" content="ko_KR">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="계산 가정 - Your Future">
+  <meta name="twitter:description" content="Your Future 국민연금 계산기가 예상 수령액을 추정할 때 사용하는 산식, 기준, 데이터 출처를 한곳에 정리했어요.">
+  <meta name="twitter:image" content="https://yourfuture.raccoony.dev/docs/preview.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            'background': '#121414',
+            'canvas': '#141414',
+            'surface': '#121414',
+            'surface-dim': '#121414',
+            'surface-bright': '#37393a',
+            'surface-container-lowest': '#0c0f0f',
+            'surface-container-low': '#1a1c1c',
+            'surface-container': '#1e2020',
+            'surface-container-high': '#282a2b',
+            'surface-container-highest': '#333535',
+            'surface-variant': '#333535',
+            'on-surface': '#e2e2e2',
+            'on-surface-variant': '#d1c5b4',
+            'on-background': '#e2e2e2',
+            'primary': '#e9c176',
+            'primary-container': '#c5a059',
+            'muted-gold': '#c5a059',
+            'on-primary': '#412d00',
+            'secondary': '#c8c6c5',
+            'outline': '#9a8f80',
+            'outline-variant': '#4e4639',
+            'divider-subtle': '#404040',
+            'text-muted': '#888888',
+            'error': '#ffb4ab',
+            'on-error': '#690005'
+          },
+          borderRadius: {
+            'DEFAULT': '0',
+            'none': '0',
+            'sm': '0',
+            'lg': '0',
+            'xl': '0',
+            'full': '9999px'
+          },
+          spacing: {
+            'unit': '4px',
+            'gutter': '32px',
+            'section-gap': '80px',
+            'margin-mobile': '20px',
+            'margin-desktop': '64px'
+          },
+          fontFamily: {
+            'sans': ['Hanken Grotesk', 'Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+            'display-lg': ['Libre Caslon Text', 'serif'],
+            'display-lg-mobile': ['Libre Caslon Text', 'serif'],
+            'headline-md': ['Libre Caslon Text', 'serif'],
+            'headline-sm': ['Libre Caslon Text', 'serif'],
+            'body-lg': ['Hanken Grotesk', 'Pretendard', 'sans-serif'],
+            'body-md': ['Hanken Grotesk', 'Pretendard', 'sans-serif'],
+            'data-lg': ['Hanken Grotesk', 'Pretendard', 'sans-serif'],
+            'label-caps': ['Hanken Grotesk', 'Pretendard', 'sans-serif'],
+            'caption': ['Hanken Grotesk', 'Pretendard', 'sans-serif']
+          },
+          fontSize: {
+            'display-lg': ['48px', { lineHeight: '1.2', fontWeight: '700' }],
+            'display-lg-mobile': ['32px', { lineHeight: '1.2', fontWeight: '700' }],
+            'headline-md': ['28px', { lineHeight: '1.3', fontWeight: '600' }],
+            'headline-sm': ['20px', { lineHeight: '1.4', fontWeight: '600' }],
+            'body-lg': ['18px', { lineHeight: '1.6', fontWeight: '400' }],
+            'body-md': ['16px', { lineHeight: '1.6', fontWeight: '400' }],
+            'data-lg': ['32px', { lineHeight: '1.1', fontWeight: '500' }],
+            'label-caps': ['12px', { lineHeight: '1.0', letterSpacing: '0.1em', fontWeight: '600' }],
+            'caption': ['13px', { lineHeight: '1.5', fontWeight: '400' }]
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Hanken+Grotesk:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+  <style>
+    body {
+      font-feature-settings: 'tnum';
+      background-color: #121414;
+      color: #e2e2e2;
+      word-break: keep-all;
+    }
+
+    /* 1px 하어라인 디바이더 */
+    .divider-h { height: 1px; width: 100%; background-color: #404040; }
+    .divider-v { width: 1px; background-color: #404040; }
+
+    /* 스크롤 등장 애니메이션 */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="font-sans text-body-md text-on-surface overflow-x-hidden">
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M2CCW8LC" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <!-- 상단 네비게이션 -->
+  <header class="fixed top-0 w-full z-50 bg-background/95 backdrop-blur border-b border-divider-subtle">
+    <div class="flex justify-between items-center w-full px-5 md:px-margin-desktop py-4 max-w-7xl mx-auto">
+      <a href="./index.html" class="font-headline-md text-headline-md text-primary tracking-tight">Your Future</a>
+      <nav class="hidden md:flex gap-8 items-center">
+        <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="./index.html">계산기</a>
+        <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="./guide.html">연금 가이드</a>
+        <a class="font-label-caps text-label-caps text-primary transition-colors" href="./assumptions.html">계산 가정</a>
+      </nav>
+      <a href="./index.html" class="md:hidden font-label-caps text-label-caps text-primary">계산기</a>
+    </div>
+  </header>
+
+  <main class="pt-24">
+    <!-- 페이지 헤더 -->
+    <section class="max-w-7xl mx-auto px-5 md:px-margin-desktop pt-12 md:pt-section-gap">
+      <a href="./index.html" class="inline-flex items-center gap-2 font-label-caps text-label-caps uppercase text-on-surface-variant hover:text-primary transition-colors mb-8">
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        계산기로 돌아가기
+      </a>
+      <span class="font-label-caps text-label-caps text-muted-gold">참고 자료</span>
+      <h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface leading-tight mt-4">
+        계산 가정
+      </h1>
+      <p class="font-body-lg text-body-lg text-text-muted max-w-xl mt-4">
+        이 계산기가 예상 수령액을 추정할 때 사용하는 산식, 기준, 데이터 출처를 한곳에 모았어요.
+      </p>
+    </section>
+
+    <!-- 가정 목록 -->
+    <section class="max-w-7xl mx-auto px-5 md:px-margin-desktop py-12 md:py-section-gap">
+
+      <!-- 국민연금 산정 기준 -->
+      <div class="reveal grid grid-cols-1 lg:grid-cols-12 gap-gutter py-10 border-t border-divider-subtle">
+        <div class="lg:col-span-4">
+          <h2 class="font-headline-sm text-headline-sm text-on-surface">국민연금 산정 기준</h2>
+        </div>
+        <div class="lg:col-span-8 space-y-4 leading-relaxed">
+          <div class="flex gap-3">
+            <span class="text-muted-gold flex-shrink-0">—</span>
+            <p class="text-text-muted">2026년 국민연금 개정 기준 적용 (보험료율 9%→13% 단계적 인상, 비례상수 1.29)</p>
+          </div>
+          <div class="flex gap-3">
+            <span class="text-muted-gold flex-shrink-0">—</span>
+            <p class="text-text-muted">국민연금 산식: 기본연금액 = 1.29×(A+B)×(1+0.05n/12), A값 3,193,511원 (2025.12~2026.11 기준)</p>
+          </div>
+          <div class="flex gap-3">
+            <span class="text-muted-gold flex-shrink-0">—</span>
+            <p class="text-text-muted">국민연금 수령액은 추정치이며, 미래 A값 변동 및 재평가율은 미반영</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 가입기간·소득 추정 -->
+      <div class="reveal grid grid-cols-1 lg:grid-cols-12 gap-gutter py-10 border-t border-divider-subtle">
+        <div class="lg:col-span-4">
+          <h2 class="font-headline-sm text-headline-sm text-on-surface">가입기간·소득 추정</h2>
+        </div>
+        <div class="lg:col-span-8 space-y-4 leading-relaxed">
+          <div class="flex gap-3">
+            <span class="text-muted-gold flex-shrink-0">—</span>
+            <p class="text-text-muted">가입기간 추정: 30세 이상은 30세부터, 20대는 현재 나이부터 59세까지의 소득을 현재 연봉 기반으로 추정</p>
+          </div>
+          <div class="flex gap-3">
+            <span class="text-muted-gold flex-shrink-0">—</span>
+            <p class="text-text-muted">평균 취업 연령: 30세 (<a href="https://news.incruit.com/news/newsview.asp?newsno=437372" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">인크루트 2025 설문</a>)</p>
+          </div>
+          <div class="flex gap-3">
+            <span class="text-muted-gold flex-shrink-0">—</span>
+            <p class="text-text-muted">개인 소득 증가율: 연령대별 중위소득 증감률을 우선 적용, 데이터 없으면 평균 2.68% 사용 (<a href="./data/aged_compensation.csv" download class="text-primary hover:underline">원본 데이터</a>)</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 경제 지표 -->
+      <div class="reveal grid grid-cols-1 lg:grid-cols-12 gap-gutter py-10 border-t border-divider-subtle">
+        <div class="lg:col-span-4">
+          <h2 class="font-headline-sm text-headline-sm text-on-surface">경제 지표</h2>
+        </div>
+        <div class="lg:col-span-8 space-y-4 leading-relaxed">
+          <div class="flex gap-3">
+            <span class="text-muted-gold flex-shrink-0">—</span>
+            <p class="text-text-muted">물가상승률: 최근 20년 평균 (2.5%) 적용 (<a href="./data/consumer-price-inflation.csv" download class="text-primary hover:underline">원본 데이터</a>)</p>
+          </div>
+          <div class="flex gap-3">
+            <span class="text-muted-gold flex-shrink-0">—</span>
+            <p class="text-text-muted">기대수명: 통계청 장래 기대수명 중위값 적용 (<a href="./data/age_expectations.csv" download class="text-primary hover:underline">원본 데이터</a>)</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 세금 -->
+      <div class="reveal grid grid-cols-1 lg:grid-cols-12 gap-gutter py-10 border-t border-divider-subtle">
+        <div class="lg:col-span-4">
+          <h2 class="font-headline-sm text-headline-sm text-on-surface">세금</h2>
+        </div>
+        <div class="lg:col-span-8 space-y-4 leading-relaxed">
+          <div class="flex gap-3">
+            <span class="text-muted-gold flex-shrink-0">—</span>
+            <p class="text-text-muted">국민연금 세금: 연 350만원 공제 후 5%를 적용한 단순 추정, 총수령액에 반영</p>
+          </div>
+          <div class="flex gap-3">
+            <span class="text-muted-gold flex-shrink-0">—</span>
+            <p class="text-text-muted">개인연금 세금: 연 1,500만원 이하 저율과세(3.3~5.5%), 초과 시 분리과세(16.5%)와 종합과세(누진세율) 중 유리한 쪽 적용</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 개인연금 비교 기준 -->
+      <div class="reveal grid grid-cols-1 lg:grid-cols-12 gap-gutter py-10 border-t border-b border-divider-subtle">
+        <div class="lg:col-span-4">
+          <h2 class="font-headline-sm text-headline-sm text-on-surface">개인연금 비교 기준</h2>
+        </div>
+        <div class="lg:col-span-8 space-y-4 leading-relaxed">
+          <div class="flex gap-3">
+            <span class="text-muted-gold flex-shrink-0">—</span>
+            <p class="text-text-muted">개인연금 납입액: 국민연금 본인 부담분과 동일 금액을 같은 추정 가입기간 동안 납입한 것으로 가정</p>
+          </div>
+          <div class="flex gap-3">
+            <span class="text-muted-gold flex-shrink-0">—</span>
+            <p class="text-text-muted">연금저축 수익률: <a href="https://www.fss.or.kr/fss/lifeplan/goodsCmpr/list4.do?pageIndex=1&menuNo=201274&newYn=Y&orderByParam=&orderByColumn=&criteriaYear=2025&criteriaQuarter=3&paramClassCd=3&penPrinProtecYn=&penProductSellYn=1&penProductFinanceCd=&penReciveTerm=&penFeeStruct=&searchKeyword=" download class="text-primary hover:underline">금융감독원 연금저축 비교공시</a></p>
+          </div>
+          <div class="flex gap-3">
+            <span class="text-muted-gold flex-shrink-0">—</span>
+            <p class="text-text-muted">대표 개인연금 3종 수익률: S&amp;P500 ETF 10%, TDF 2050 5%, 예금형 2.5%를 비교용 가정으로 적용</p>
+          </div>
+          <div class="flex gap-3">
+            <span class="text-muted-gold flex-shrink-0">—</span>
+            <p class="text-text-muted">대표 개인연금 3종 수수료: S&amp;P500 0.03%, TDF 0.5%, 예금형 0%; 금감원 공시 펀드는 개별 수수료율 적용</p>
+          </div>
+          <div class="flex gap-3">
+            <span class="text-muted-gold flex-shrink-0">—</span>
+            <p class="text-text-muted">개인연금 수령기간: 국민연금 개시연령부터 기대수명까지 균등 분할</p>
+          </div>
+          <div class="flex gap-3">
+            <span class="text-muted-gold flex-shrink-0">—</span>
+            <p class="text-text-muted">실제 수익률은 상품과 기간에 따라 달라지며, 손실 가능성이 있습니다</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 면책 -->
+      <div class="reveal mt-10 border border-divider-subtle bg-surface-container-low px-6 py-5">
+        <p class="text-body-md text-error font-medium leading-relaxed">
+          이 계산은 참고용 추정치예요. 실제 수령액은 경제 상황, 정책 변화, 개인 가입 이력에 따라 달라질 수 있어요.
+        </p>
+      </div>
+
+      <!-- 계산기 CTA -->
+      <div class="reveal mt-12 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5">
+        <p class="font-headline-sm text-headline-sm text-on-surface">이제 내 연금을 계산해 볼까요?</p>
+        <a href="./index.html" class="inline-block text-center bg-primary-container text-on-primary px-8 py-3.5 font-label-caps text-label-caps uppercase tracking-widest hover:opacity-90 transition-opacity">
+          국민연금 계산하기
+        </a>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- 푸터 -->
+  <footer class="border-t border-divider-subtle">
+    <div class="max-w-7xl mx-auto px-5 md:px-margin-desktop py-12 text-center">
+      <div class="text-caption text-text-muted">
+        <a href="./guide.html" class="text-primary hover:underline font-medium">연금 설계 가이드</a>
+        <span class="mx-2">·</span>
+        <span>Your Future</span>
+      </div>
+      <div class="text-caption text-text-muted mt-2">
+        Made by <a href="https://raccoony.dev" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">raccoony</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    let revealObserver = null;
+
+    function initializeRevealAnimations() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const elements = document.querySelectorAll('.reveal');
+      if (!elements.length) return;
+
+      if (!revealObserver) {
+        revealObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.18, rootMargin: '0px 0px -8% 0px' });
+      }
+
+      elements.forEach((element) => {
+        if (!element.classList.contains('is-visible')) {
+          revealObserver.observe(element);
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initializeRevealAnimations();
+    });
+  </script>
+</body>
+</html>
