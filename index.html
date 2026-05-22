@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html class="dark" lang="ko">
 <head>
   <!-- Google Tag Manager -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -29,301 +29,151 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
-          fontFamily: { sans: ['Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'] },
           colors: {
-            brand: { 50: '#f3efe6', 100: '#e6d7b8', 200: '#d8bf84', 500: '#b98535', 600: '#9d6b22', 700: '#7e5216', 800: '#32261a', 900: '#17120d' },
-            surface: { 50: '#f7f3ec', 100: '#ede6da', 200: '#ddd1bf' }
+            'background': '#121414',
+            'canvas': '#141414',
+            'surface': '#121414',
+            'surface-dim': '#121414',
+            'surface-bright': '#37393a',
+            'surface-container-lowest': '#0c0f0f',
+            'surface-container-low': '#1a1c1c',
+            'surface-container': '#1e2020',
+            'surface-container-high': '#282a2b',
+            'surface-container-highest': '#333535',
+            'surface-variant': '#333535',
+            'on-surface': '#e2e2e2',
+            'on-surface-variant': '#d1c5b4',
+            'on-background': '#e2e2e2',
+            'primary': '#e9c176',
+            'primary-container': '#c5a059',
+            'muted-gold': '#c5a059',
+            'on-primary': '#412d00',
+            'secondary': '#c8c6c5',
+            'outline': '#9a8f80',
+            'outline-variant': '#4e4639',
+            'divider-subtle': '#404040',
+            'text-muted': '#888888',
+            'error': '#ffb4ab',
+            'on-error': '#690005'
+          },
+          borderRadius: {
+            'DEFAULT': '0',
+            'none': '0',
+            'sm': '0',
+            'lg': '0',
+            'xl': '0',
+            'full': '9999px'
+          },
+          spacing: {
+            'unit': '4px',
+            'gutter': '32px',
+            'section-gap': '80px',
+            'margin-mobile': '20px',
+            'margin-desktop': '64px'
+          },
+          fontFamily: {
+            'sans': ['Hanken Grotesk', 'Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+            'display-lg': ['Libre Caslon Text', 'serif'],
+            'display-lg-mobile': ['Libre Caslon Text', 'serif'],
+            'headline-md': ['Libre Caslon Text', 'serif'],
+            'headline-sm': ['Libre Caslon Text', 'serif'],
+            'body-lg': ['Hanken Grotesk', 'Pretendard', 'sans-serif'],
+            'body-md': ['Hanken Grotesk', 'Pretendard', 'sans-serif'],
+            'data-lg': ['Hanken Grotesk', 'Pretendard', 'sans-serif'],
+            'label-caps': ['Hanken Grotesk', 'Pretendard', 'sans-serif'],
+            'caption': ['Hanken Grotesk', 'Pretendard', 'sans-serif']
+          },
+          fontSize: {
+            'display-lg': ['48px', { lineHeight: '1.2', fontWeight: '700' }],
+            'display-lg-mobile': ['32px', { lineHeight: '1.2', fontWeight: '700' }],
+            'headline-md': ['28px', { lineHeight: '1.3', fontWeight: '600' }],
+            'headline-sm': ['20px', { lineHeight: '1.4', fontWeight: '600' }],
+            'body-lg': ['18px', { lineHeight: '1.6', fontWeight: '400' }],
+            'body-md': ['16px', { lineHeight: '1.6', fontWeight: '400' }],
+            'data-lg': ['32px', { lineHeight: '1.1', fontWeight: '500' }],
+            'label-caps': ['12px', { lineHeight: '1.0', letterSpacing: '0.1em', fontWeight: '600' }],
+            'caption': ['13px', { lineHeight: '1.5', fontWeight: '400' }]
           }
         }
       }
     }
   </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Hanken+Grotesk:wght@300;400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap">
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
   <style>
-    :root {
-      --paper: #f7f3ec;
-      --paper-deep: #e8ddcb;
-      --ink: #17120d;
-      --muted: #6d6254;
-      --line: rgba(61, 43, 22, 0.12);
-      --accent: #9d6b22;
-      --accent-soft: rgba(157, 107, 34, 0.1);
-      --panel: rgba(255, 252, 247, 0.82);
-      --shadow: 0 24px 80px rgba(43, 28, 12, 0.08);
-    }
-
-    html {
-      background:
-        radial-gradient(circle at top left, rgba(216, 191, 132, 0.34), transparent 28%),
-        radial-gradient(circle at 85% 12%, rgba(123, 153, 117, 0.18), transparent 22%),
-        linear-gradient(180deg, #fbf8f2 0%, #f4eee4 55%, #efe6d8 100%);
-    }
-
     body {
-      font-feature-settings: 'ss01', 'tnum';
-      background: transparent;
+      font-feature-settings: 'tnum';
+      background-color: #121414;
+      color: #e2e2e2;
       word-break: keep-all;
     }
 
-    .page-shell {
-      position: relative;
-      isolation: isolate;
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
     }
 
-    .page-shell::before,
-    .page-shell::after {
-      content: '';
-      position: fixed;
-      inset: auto;
-      pointer-events: none;
-      z-index: -1;
-      filter: blur(12px);
-      opacity: 0.75;
+    /* 1px 하어라인 디바이더 */
+    .divider-h { height: 1px; width: 100%; background-color: #404040; }
+    .divider-v { width: 1px; background-color: #404040; }
+
+    /* 하단 보더만 있는 입력 필드 */
+    .input-underline {
+      border: none;
+      border-bottom: 1px solid #404040;
+      background: transparent;
+      padding: 12px 0;
+      width: 100%;
+      transition: border-color 0.3s ease;
     }
+    .input-underline:focus { outline: none; border-bottom-color: #c5a059; }
+    .input-underline::placeholder { color: #555; }
+    /* number 스피너 제거 */
+    .input-underline::-webkit-outer-spin-button,
+    .input-underline::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .input-underline { -moz-appearance: textfield; }
 
-    .page-shell::before {
-      top: 96px;
-      right: min(8vw, 72px);
-      width: 260px;
-      height: 260px;
-      border-radius: 999px;
-      background: rgba(157, 107, 34, 0.12);
+    /* 골드 버튼 */
+    .gold-button {
+      background-color: #c5a059;
+      color: #121414;
+      padding: 16px;
+      width: 100%;
+      text-align: center;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.2s ease;
     }
+    .gold-button:hover { opacity: 0.9; }
+    .gold-button:disabled { opacity: 0.6; cursor: default; }
 
-    .page-shell::after {
-      left: min(6vw, 56px);
-      bottom: 80px;
-      width: 220px;
-      height: 220px;
-      border-radius: 999px;
-      background: rgba(121, 138, 98, 0.12);
-    }
+    /* 수익률 비교 막대 */
+    .rate-bar-track { background: #282a2b; }
+    .rate-bar-fill { background: #c5a059; }
+    .rate-bar-fill-muted { background: #9a8f80; }
+    .rate-bar-fill-soft { background: #4e4639; }
 
-    .eyebrow {
-      letter-spacing: 0.18em;
-    }
-
-    .hero-title {
-      line-height: 0.95;
-    }
-
-    .hero-title .outline {
-      color: transparent;
-      -webkit-text-stroke: 1px rgba(23, 18, 13, 0.28);
-    }
-
-    .glass-card {
-      background: var(--panel);
-      border: 1px solid rgba(255, 255, 255, 0.65);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(18px);
-    }
-
-    .card {
-      border: 1px solid var(--line);
-      box-shadow: 0 20px 60px rgba(43, 28, 12, 0.05);
-    }
-
-    .input-field {
-      transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s, background-color 0.2s;
-    }
-
-    .input-field:focus {
-      border-color: var(--accent);
-      background: #fffdfa;
-      box-shadow: 0 0 0 4px rgba(157, 107, 34, 0.11);
-      transform: translateY(-1px);
-    }
-
-    .btn-primary {
-      transition: all 0.24s ease;
-      background-image: linear-gradient(135deg, #b98535 0%, #8d5b1c 100%);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 14px 30px -12px rgba(141, 91, 28, 0.65);
-    }
-
-    .btn-primary:active { transform: translateY(0); }
-
-    .metric-card {
-      background: linear-gradient(180deg, rgba(255, 253, 249, 0.95), rgba(245, 237, 223, 0.88));
-    }
-
-    .metric-card-strong {
-      background: linear-gradient(180deg, rgba(157, 107, 34, 0.14), rgba(157, 107, 34, 0.06));
-    }
-
-    .section-label {
-      letter-spacing: 0.16em;
-    }
-
-    .fine-grid {
-      background-image:
-        linear-gradient(rgba(61, 43, 22, 0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(61, 43, 22, 0.035) 1px, transparent 1px);
-      background-size: 24px 24px;
-      background-position: center;
-    }
-
-    .hero-stage {
-      position: relative;
-      min-height: min(920px, calc(100svh - 32px));
-      overflow: hidden;
-      border-radius: 2rem;
-      border: 1px solid rgba(255, 255, 255, 0.68);
-      background:
-        radial-gradient(circle at 18% 18%, rgba(216, 191, 132, 0.45), transparent 30%),
-        radial-gradient(circle at 84% 14%, rgba(255, 255, 255, 0.82), transparent 20%),
-        linear-gradient(135deg, rgba(255, 251, 245, 0.92) 0%, rgba(245, 237, 223, 0.84) 42%, rgba(232, 221, 203, 0.92) 100%);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(18px);
-    }
-
-    .hero-stage::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(90deg, rgba(255, 252, 247, 0.7), transparent 48%),
-        linear-gradient(180deg, transparent 62%, rgba(23, 18, 13, 0.04) 100%);
-      pointer-events: none;
-    }
-
-    .hero-stage::after {
-      content: '';
-      position: absolute;
-      right: -10%;
-      top: 10%;
-      width: 44%;
-      aspect-ratio: 1 / 1.2;
-      border-radius: 46% 54% 58% 42%;
-      background: linear-gradient(180deg, rgba(157, 107, 34, 0.22), rgba(255, 255, 255, 0.08));
-      filter: blur(10px);
-      opacity: 0.55;
-      pointer-events: none;
-    }
-
-    .hero-orb {
-      position: absolute;
-      border-radius: 999px;
-      filter: blur(18px);
-      pointer-events: none;
-      opacity: 0.7;
-    }
-
-    .hero-copy {
-      animation: rise-in 0.8s ease-out both;
-    }
-
-    .hero-panel {
-      position: relative;
-      z-index: 1;
-      background: rgba(255, 252, 247, 0.72);
-      border: 1px solid rgba(255, 255, 255, 0.78);
-      box-shadow: 0 24px 80px rgba(43, 28, 12, 0.12);
-      backdrop-filter: blur(20px);
-      animation: rise-in 0.95s ease-out both;
-      animation-delay: 0.12s;
-    }
-
-    .stat-line {
-      border-top: 1px solid rgba(61, 43, 22, 0.09);
-    }
-
-    .ambient-word {
-      color: rgba(23, 18, 13, 0.08);
-      -webkit-text-stroke: 1px rgba(23, 18, 13, 0.08);
-    }
-
-    .section-frame {
-      position: relative;
-      border-top: 1px solid rgba(61, 43, 22, 0.1);
-      padding-top: 2.75rem;
-    }
-
-    .data-rail {
-      border: 1px solid rgba(61, 43, 22, 0.1);
-      background: rgba(255, 252, 247, 0.64);
-      backdrop-filter: blur(16px);
-    }
-
-    .data-rail-item + .data-rail-item {
-      border-top: 1px solid rgba(61, 43, 22, 0.08);
-    }
-
-    .editorial-panel {
-      border: 1px solid rgba(61, 43, 22, 0.1);
-      background:
-        linear-gradient(180deg, rgba(255, 252, 247, 0.92), rgba(245, 237, 223, 0.78));
-      box-shadow: 0 22px 70px rgba(43, 28, 12, 0.08);
-    }
-
-    .comparison-band {
-      border: 1px solid rgba(61, 43, 22, 0.1);
-      background: rgba(255, 252, 247, 0.78);
-      box-shadow: 0 18px 50px rgba(43, 28, 12, 0.06);
-    }
-
-    .comparison-item + .comparison-item {
-      border-top: 1px solid rgba(61, 43, 22, 0.08);
-    }
-
-    .rate-bar-track {
-      background: rgba(61, 43, 22, 0.08);
-    }
-
-    .rate-bar-fill {
-      background: linear-gradient(90deg, #b98535 0%, #8d5b1c 100%);
-    }
-
-    .rate-bar-fill-muted {
-      background: linear-gradient(90deg, #d8bf84 0%, #b79a6b 100%);
-    }
-
-    .rate-bar-fill-soft {
-      background: linear-gradient(90deg, #ebe1d2 0%, #c6b49a 100%);
-    }
-
-    .advantage-list article + article {
-      border-top: 1px solid rgba(61, 43, 22, 0.08);
-    }
-
-    .summary-shell {
-      border: 1px solid rgba(61, 43, 22, 0.1);
-      background: rgba(255, 252, 247, 0.78);
-    }
-
+    /* 스크롤 등장 애니메이션 */
     .reveal {
       opacity: 0;
       transform: translateY(22px);
       transition: opacity 0.7s ease, transform 0.7s ease;
     }
-
     .reveal.is-visible {
       opacity: 1;
       transform: translateY(0);
     }
 
-    @keyframes rise-in {
-      from {
-        opacity: 0;
-        transform: translateY(24px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+    details[open] .details-arrow { transform: rotate(180deg); }
 
     @media (prefers-reduced-motion: reduce) {
-      .hero-copy,
-      .hero-panel,
       .reveal {
-        animation: none !important;
         transition: none !important;
         opacity: 1 !important;
         transform: none !important;
@@ -338,8 +188,8 @@
       width: 15px;
       height: 15px;
       border-radius: 50%;
-      background: rgba(61, 43, 22, 0.08);
-      color: #6d6254;
+      background: #282a2b;
+      color: #888888;
       font-size: 10px;
       font-weight: 700;
       line-height: 1;
@@ -354,8 +204,8 @@
     }
     .help-icon:hover,
     .help-icon:focus-visible {
-      background: rgba(157, 107, 34, 0.2);
-      color: #9d6b22;
+      background: rgba(197, 160, 89, 0.2);
+      color: #e9c176;
       outline: none;
     }
     .help-icon[data-tooltip]:hover::after,
@@ -365,10 +215,10 @@
       bottom: calc(100% + 8px);
       left: 50%;
       transform: translateX(-50%);
-      background: #3d2b16;
-      color: #fffaf3;
+      background: #1e2020;
+      color: #e2e2e2;
+      border: 1px solid #c5a059;
       padding: 8px 12px;
-      border-radius: 8px;
       font-size: 11px;
       font-weight: 400;
       line-height: 1.55;
@@ -379,360 +229,366 @@
       text-align: left;
       z-index: 50;
       pointer-events: none;
-      box-shadow: 0 10px 28px rgba(43, 28, 12, 0.18);
     }
     .help-icon[data-tooltip]:hover::before,
     .help-icon[data-tooltip]:focus-visible::before {
       content: '';
       position: absolute;
-      bottom: calc(100% + 2px);
+      bottom: calc(100% + 3px);
       left: 50%;
       transform: translateX(-50%);
       border: 6px solid transparent;
-      border-top-color: #3d2b16;
+      border-top-color: #c5a059;
       pointer-events: none;
       z-index: 50;
     }
   </style>
 </head>
-<body class="min-h-screen text-gray-800 antialiased">
+<body class="font-sans text-body-md text-on-surface overflow-x-hidden">
   <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-M2CCW8LC" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
-  <div class="page-shell">
-  <div class="px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
-    <section class="hero-stage mb-12">
-      <div class="absolute inset-0 fine-grid opacity-35"></div>
-      <div class="hero-orb top-16 left-10 h-36 w-36 bg-brand-100/70"></div>
-      <div class="hero-orb bottom-10 right-20 h-40 w-40 bg-[#c2d2b2]/40"></div>
-      <div class="relative grid min-h-[inherit] gap-10 px-6 py-7 sm:px-10 sm:py-10 lg:grid-cols-[minmax(0,1.2fr)_420px] lg:px-14 lg:py-14">
-        <div class="hero-copy flex flex-col justify-between">
-          <div>
-            <div class="inline-flex items-center gap-2 rounded-full border border-brand-200/70 bg-white/65 px-3 py-1.5 text-[11px] font-semibold uppercase text-brand-700 eyebrow mb-6">2026년 개정 기준 반영</div>
-            <p class="text-xs font-semibold uppercase text-brand-600 eyebrow mb-5">Your Future</p>
-            <div class="max-w-4xl">
-              <p class="ambient-word text-[3.2rem] sm:text-[4.7rem] lg:text-[7rem] font-black tracking-[-0.06em] leading-[0.85]">Pension</p>
-              <h1 class="hero-title max-w-3xl text-[2.9rem] sm:text-[4.4rem] lg:text-[6.1rem] font-black text-brand-900 tracking-[-0.065em] mt-2 mb-5">
-                국민연금이<br><span class="outline">얼마나 강한지</span><br>한 번에 봅니다
-              </h1>
-            </div>
-            <p class="max-w-xl text-sm sm:text-base lg:text-lg text-[#5c5145] leading-relaxed">
-              나이와 연봉만 넣으면 내가 낼 돈, 실제로 받게 될 돈, 그리고 같은 금액을 개인연금에 넣었을 때 필요한 수익률까지 한 장면에서 비교합니다.
-            </p>
-          </div>
 
-          <div class="grid gap-3 pt-8 sm:max-w-2xl sm:grid-cols-3">
-            <div class="rounded-[1.1rem] border border-white/70 bg-white/60 px-4 py-4">
-              <div class="text-[11px] font-semibold uppercase text-brand-600 section-label mb-2">세후 기준</div>
-              <p class="text-sm font-semibold text-brand-900">총 납부액과 총 수령액을 바로 비교</p>
+  <!-- 상단 네비게이션 -->
+  <header class="fixed top-0 w-full z-50 bg-background/95 backdrop-blur border-b border-divider-subtle">
+    <div class="flex justify-between items-center w-full px-5 md:px-margin-desktop py-4 max-w-7xl mx-auto">
+      <a href="./index.html" class="font-headline-md text-headline-md text-primary tracking-tight">Your Future</a>
+      <nav class="hidden md:flex gap-8 items-center">
+        <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="./index.html">계산기</a>
+        <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="./guide.html">연금 가이드</a>
+        <a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#assumptions-section">계산 가정</a>
+      </nav>
+      <a href="./guide.html" class="md:hidden font-label-caps text-label-caps text-primary">연금 가이드</a>
+    </div>
+  </header>
+
+  <main class="pt-24">
+    <!-- 히어로 + 입력 -->
+    <section class="max-w-7xl mx-auto px-5 md:px-margin-desktop py-12 md:py-section-gap grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+      <div class="lg:col-span-7 space-y-10">
+        <div class="space-y-4">
+          <span class="font-label-caps text-label-caps text-muted-gold">2026년 개정 기준 반영</span>
+          <h1 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface leading-tight">
+            국민연금이 얼마나 강한지<br>한 번에 봅니다
+          </h1>
+          <p class="font-body-lg text-body-lg text-text-muted max-w-lg">
+            나이와 연봉만 넣으면 내가 낼 돈, 실제로 받게 될 돈, 그리고 같은 금액을 개인연금에 넣었을 때 필요한 수익률까지 한 장면에서 비교합니다.
+          </p>
+        </div>
+        <div class="space-y-8">
+          <div class="flex gap-5">
+            <span class="material-symbols-outlined text-muted-gold mt-1">currency_exchange</span>
+            <div>
+              <h3 class="font-headline-sm text-headline-sm text-on-surface">세후 기준</h3>
+              <p class="text-text-muted">총 납부액과 총 수령액을 세후 기준으로 바로 비교합니다.</p>
             </div>
-            <div class="rounded-[1.1rem] border border-white/70 bg-white/60 px-4 py-4">
-              <div class="text-[11px] font-semibold uppercase text-brand-600 section-label mb-2">물가연동</div>
-              <p class="text-sm font-semibold text-brand-900">고정형 상품과 실질 구매력 차이 반영</p>
+          </div>
+          <div class="flex gap-5">
+            <span class="material-symbols-outlined text-muted-gold mt-1">trending_up</span>
+            <div>
+              <h3 class="font-headline-sm text-headline-sm text-on-surface">물가연동</h3>
+              <p class="text-text-muted">고정형 상품과의 실질 구매력 차이를 반영합니다.</p>
             </div>
-            <div class="rounded-[1.1rem] border border-white/70 bg-white/60 px-4 py-4">
-              <div class="text-[11px] font-semibold uppercase text-brand-600 section-label mb-2">손익분기점</div>
-              <p class="text-sm font-semibold text-brand-900">개인연금이 따라잡으려면 필요한 수익률 계산</p>
+          </div>
+          <div class="flex gap-5">
+            <span class="material-symbols-outlined text-muted-gold mt-1">show_chart</span>
+            <div>
+              <h3 class="font-headline-sm text-headline-sm text-on-surface">손익분기점</h3>
+              <p class="text-text-muted">개인연금이 따라잡으려면 필요한 수익률을 계산합니다.</p>
             </div>
           </div>
         </div>
-
-        <aside id="input-section" class="hero-panel self-end rounded-[1.5rem] p-6 sm:p-7 lg:p-8">
-          <div class="flex items-start justify-between gap-4 mb-6">
-            <div>
-              <div class="text-[11px] font-semibold uppercase text-brand-600 section-label mb-2">내 조건 입력</div>
-              <h2 class="text-[1.9rem] font-black tracking-tight text-brand-900">지금 바로 계산</h2>
-            </div>
-            <div class="hidden sm:block text-right text-xs text-[#6b6156] leading-relaxed">
-              결과는 세후 기준입니다.<br>물가연동도 함께 반영합니다.
-            </div>
-          </div>
-
-          <div class="space-y-5">
-            <div>
-              <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">현재 나이</label>
-              <div class="flex items-center gap-3">
-                <input type="number" id="currentAge" value="30" min="20" max="59"
-                       class="input-field flex-1 px-4 py-4 text-lg bg-white/80 border border-[#d9c9b3] rounded-[0.95rem] outline-none font-semibold text-brand-900">
-                <span class="text-gray-400 text-base font-medium">세</span>
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">연봉 (세전)</label>
-              <div class="flex items-center gap-3">
-                <input type="number" id="annualSalary" value="5000" min="1"
-                       class="input-field flex-1 px-4 py-4 text-lg bg-white/80 border border-[#d9c9b3] rounded-[0.95rem] outline-none font-semibold text-brand-900">
-                <span class="text-gray-400 text-base font-medium">만원</span>
-              </div>
-            </div>
-
-            <button id="calculate-btn" onclick="handleCalculate()"
-                    class="btn-primary w-full px-6 py-4 text-white text-base font-semibold rounded-[1rem] shadow-md">
-              <span id="btn-text">내 국민연금 미리보기</span>
-              <span id="btn-loading" class="hidden">
-                <svg class="animate-spin inline w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24">
-                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-                </svg>
-                계산 중...
-              </span>
-            </button>
-          </div>
-
-          <div class="grid gap-3 pt-6 text-sm text-[#5c5145]">
-            <div class="stat-line pt-3 flex items-start justify-between gap-4">
-              <span>비교 기준</span>
-              <span class="font-semibold text-brand-900">국민연금 vs 개인연금</span>
-            </div>
-            <div class="stat-line pt-3 flex items-start justify-between gap-4">
-              <span>출력 항목</span>
-              <span class="font-semibold text-brand-900">총액, 월수령, 손익분기점</span>
-            </div>
-            <div class="stat-line pt-3 flex items-start justify-between gap-4">
-              <span>전제 조건</span>
-              <span class="font-semibold text-brand-900">세후 금액, 기대수명 반영</span>
-            </div>
-          </div>
-        </aside>
       </div>
+
+      <!-- 입력 패널 -->
+      <aside id="input-section" class="lg:col-span-5 bg-surface-container-low p-8 sm:p-10 border border-divider-subtle">
+        <div class="space-y-10">
+          <div>
+            <span class="font-label-caps text-label-caps text-text-muted">내 조건 입력</span>
+            <h2 class="font-headline-md text-headline-md text-primary mt-2">지금 바로 계산</h2>
+          </div>
+          <div class="space-y-8">
+            <div class="space-y-2">
+              <label class="block font-label-caps text-label-caps text-text-muted">현재 나이</label>
+              <div class="flex items-end gap-2">
+                <input type="number" id="currentAge" value="30" min="20" max="59"
+                       class="input-underline font-data-lg text-data-lg text-on-surface">
+                <span class="pb-3 text-text-muted">세</span>
+              </div>
+            </div>
+            <div class="space-y-2">
+              <label class="block font-label-caps text-label-caps text-text-muted">연봉 (세전)</label>
+              <div class="flex items-end gap-2">
+                <input type="number" id="annualSalary" value="5000" min="1"
+                       class="input-underline font-data-lg text-data-lg text-on-surface">
+                <span class="pb-3 text-text-muted">만원</span>
+              </div>
+            </div>
+          </div>
+          <button id="calculate-btn" onclick="handleCalculate()" class="gold-button font-label-caps text-label-caps">
+            <span id="btn-text">내 국민연금 미리보기</span>
+            <span id="btn-loading" class="hidden">
+              <svg class="animate-spin inline w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+              </svg>
+              계산 중...
+            </span>
+          </button>
+          <div class="space-y-3 pt-6 border-t border-divider-subtle">
+            <p class="text-caption text-text-muted flex justify-between gap-4">
+              <span>비교 기준</span>
+              <span class="text-on-surface">국민연금 vs 개인연금</span>
+            </p>
+            <p class="text-caption text-text-muted flex justify-between gap-4">
+              <span>출력 항목</span>
+              <span class="text-on-surface">총액, 월수령, 손익분기점</span>
+            </p>
+            <p class="text-caption text-text-muted flex justify-between gap-4">
+              <span>전제 조건</span>
+              <span class="text-on-surface">세후 금액, 기대수명 반영</span>
+            </p>
+          </div>
+        </div>
+      </aside>
     </section>
 
-  <div class="mx-auto max-w-6xl">
-
     <!-- 결과 영역 (초기에는 숨김) -->
-    <div id="result-section" class="hidden space-y-12 pb-8">
+    <div id="result-section" class="hidden">
 
-      <section class="section-frame reveal">
-        <div class="grid gap-8 lg:grid-cols-[minmax(0,1.1fr)_360px] lg:items-start">
-          <div class="editorial-panel rounded-[1.8rem] p-6 sm:p-8 lg:p-10">
-            <div class="text-[11px] font-semibold uppercase text-brand-600 section-label mb-3">결과 요약</div>
-            <h2 class="max-w-2xl text-[2rem] sm:text-[2.6rem] lg:text-[3.2rem] font-black tracking-[-0.05em] text-brand-900 leading-[1.02] mb-5">
+      <!-- 결과 요약 -->
+      <section class="max-w-7xl mx-auto px-5 md:px-margin-desktop py-12 md:py-section-gap reveal">
+        <div class="divider-h mb-12 md:mb-16"></div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter mb-12">
+          <div>
+            <span class="font-label-caps text-label-caps text-muted-gold">결과 요약</span>
+            <h2 class="font-display-lg text-display-lg-mobile md:text-display-lg text-on-surface leading-tight mt-3">
               내가 낸 돈보다<br>더 오래, 더 크게 돌아옵니다
             </h2>
-            <div id="contribution-warning" class="hidden rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 text-sm text-amber-800 mb-6"></div>
-            <div id="hero-message" class="max-w-2xl text-base sm:text-lg text-[#5c5145] leading-relaxed mb-8">
-              내가 낸 돈의 <span id="return-multiplier" class="text-4xl sm:text-5xl font-black text-brand-700 align-middle mx-1">-</span>배를 돌려받습니다.
+          </div>
+          <div class="flex items-end">
+            <p id="hero-message" class="font-body-lg text-body-lg text-text-muted">
+              내가 낸 돈의 <span id="return-multiplier" class="font-data-lg text-data-lg text-primary align-middle mx-1">-</span>배를 돌려받습니다.
               물가에 연동되어 매년 인상되고, 살아있는 한 계속 지급됩니다.
-            </div>
+            </p>
+          </div>
+        </div>
 
-            <div class="grid gap-4 sm:grid-cols-2">
-              <div class="summary-shell rounded-[1.2rem] p-5">
-                <div class="text-[11px] font-semibold uppercase text-gray-500 section-label mb-2">본인 총납부액</div>
-                <div id="total-contribution" class="text-3xl font-black tracking-tight text-brand-900 tabular-nums">-</div>
-                <p class="text-xs text-gray-500 mt-2">회사 부담분을 제외한 본인 기준</p>
-              </div>
-              <div class="summary-shell rounded-[1.2rem] p-5 bg-[linear-gradient(180deg,rgba(157,107,34,0.12),rgba(255,252,247,0.9))]">
-                <div class="text-[11px] font-semibold uppercase text-brand-600 section-label mb-2">예상 총수령액</div>
-                <div id="total-receiving" class="text-3xl font-black tracking-tight text-brand-700 tabular-nums">-</div>
-                <p id="receiving-period" class="text-xs text-gray-500 mt-2">-</p>
-              </div>
+        <div id="contribution-warning" class="hidden border border-error/40 bg-surface-container px-4 py-3 text-sm text-error mb-10"></div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter border-y border-divider-subtle py-10">
+          <div class="space-y-2">
+            <span class="font-label-caps text-label-caps text-text-muted">본인 총납부액</span>
+            <div id="total-contribution" class="font-data-lg text-data-lg text-on-surface tabular-nums">-</div>
+            <p class="text-caption text-text-muted">회사 부담분을 제외한 본인 기준</p>
+          </div>
+          <div class="space-y-2">
+            <span class="font-label-caps text-label-caps text-text-muted">예상 총수령액</span>
+            <div id="total-receiving" class="font-data-lg text-data-lg text-muted-gold tabular-nums">-</div>
+            <p id="receiving-period" class="text-caption text-text-muted">-</p>
+          </div>
+          <div class="space-y-2">
+            <span class="font-label-caps text-label-caps text-text-muted">세후 월수령액</span>
+            <div id="nps-monthly-range" class="text-xl font-semibold text-on-surface leading-snug tabular-nums">-</div>
+          </div>
+          <div class="space-y-2">
+            <span class="font-label-caps text-label-caps text-text-muted">추정 가입 기간</span>
+            <div id="contribution-years" class="font-data-lg text-data-lg text-on-surface tabular-nums">-</div>
+            <p id="contribution-period-detail" class="text-caption text-text-muted">-</p>
+          </div>
+        </div>
+
+        <div class="mt-10">
+          <span class="font-label-caps text-label-caps text-text-muted">세부 전제</span>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-gutter mt-4">
+            <div class="flex items-start justify-between gap-4 border-t border-divider-subtle py-3 text-sm">
+              <span class="text-text-muted inline-flex items-center">
+                추정 월 평균 납입액
+                <button type="button" class="help-icon" aria-label="추정 월 평균 납입액 도움말"
+                  data-tooltip="국민연금 본인 부담분(보험료율의 절반) 기준.&#10;추정 가입기간 동안 납입한 총액의 월 평균.&#10;클릭하면 전체 계산 가정으로 이동합니다."
+                  onclick="scrollToAssumptions(event)">?</button>
+              </span>
+              <span id="monthly-contribution" class="font-semibold text-on-surface tabular-nums">-</span>
+            </div>
+            <div class="flex items-start justify-between gap-4 border-t border-divider-subtle py-3 text-sm">
+              <span class="text-text-muted inline-flex items-center">
+                연금 개시
+                <button type="button" class="help-icon" aria-label="연금 개시 도움말"
+                  data-tooltip="출생연도별 노령연금 수급 개시 연령 (1969년 이후 출생자: 65세).&#10;출처: 국민연금공단.&#10;클릭하면 전체 계산 가정으로 이동합니다."
+                  onclick="scrollToAssumptions(event)">?</button>
+              </span>
+              <span id="pension-start-age" class="font-semibold text-on-surface">-</span>
+            </div>
+            <div class="flex items-start justify-between gap-4 border-t border-divider-subtle py-3 text-sm">
+              <span class="text-text-muted inline-flex items-center">
+                예상 수령 기간
+                <button type="button" class="help-icon" aria-label="예상 수령 기간 도움말"
+                  data-tooltip="연금 개시부터 기대수명까지의 연수.&#10;매년 물가에 연동되어 인상되는 것으로 가정합니다.&#10;클릭하면 전체 계산 가정으로 이동합니다."
+                  onclick="scrollToAssumptions(event)">?</button>
+              </span>
+              <span id="receiving-years" class="font-semibold text-on-surface">-</span>
+            </div>
+            <div class="flex items-start justify-between gap-4 border-t border-divider-subtle py-3 text-sm">
+              <span class="text-text-muted inline-flex items-center">
+                기대수명
+                <button type="button" class="help-icon" aria-label="기대수명 도움말"
+                  data-tooltip="통계청 장래 기대수명 중위값.&#10;은퇴 연도 기준 데이터를 사용합니다.&#10;클릭하면 전체 계산 가정으로 이동합니다."
+                  onclick="scrollToAssumptions(event)">?</button>
+              </span>
+              <span id="life-expectancy" class="font-semibold text-on-surface">-</span>
             </div>
           </div>
-
-          <aside class="data-rail rounded-[1.5rem] p-2">
-            <div class="data-rail-item rounded-[1.1rem] px-5 py-5">
-              <div class="text-[11px] font-semibold uppercase text-gray-500 section-label mb-2">세후 월수령액</div>
-              <div id="nps-monthly-range" class="text-base font-bold text-brand-800 leading-relaxed">-</div>
-            </div>
-            <div class="data-rail-item rounded-[1.1rem] px-5 py-5">
-              <div class="text-[11px] font-semibold uppercase text-gray-500 section-label mb-2">추정 가입 기간</div>
-              <div id="contribution-years" class="text-3xl font-black text-brand-900 tabular-nums">-</div>
-              <p id="contribution-period-detail" class="text-xs text-gray-400 mt-1">-</p>
-            </div>
-            <div class="data-rail-item rounded-[1.1rem] px-5 py-5">
-              <div class="text-[11px] font-semibold uppercase text-gray-500 section-label mb-3">세부 전제</div>
-              <div class="space-y-3 text-sm">
-                <div class="flex items-start justify-between gap-4">
-                  <span class="text-gray-500 inline-flex items-center">
-                    추정 월 평균 납입액
-                    <button type="button" class="help-icon" aria-label="추정 월 평균 납입액 도움말"
-                      data-tooltip="국민연금 본인 부담분(보험료율의 절반) 기준.&#10;추정 가입기간 동안 납입한 총액의 월 평균.&#10;클릭하면 전체 계산 가정으로 이동합니다."
-                      onclick="scrollToAssumptions(event)">?</button>
-                  </span>
-                  <span id="monthly-contribution" class="font-semibold text-brand-900 tabular-nums">-</span>
-                </div>
-                <div class="flex items-start justify-between gap-4">
-                  <span class="text-gray-500 inline-flex items-center">
-                    연금 개시
-                    <button type="button" class="help-icon" aria-label="연금 개시 도움말"
-                      data-tooltip="출생연도별 노령연금 수급 개시 연령 (1969년 이후 출생자: 65세).&#10;출처: 국민연금공단.&#10;클릭하면 전체 계산 가정으로 이동합니다."
-                      onclick="scrollToAssumptions(event)">?</button>
-                  </span>
-                  <span id="pension-start-age" class="font-semibold text-brand-900">-</span>
-                </div>
-                <div class="flex items-start justify-between gap-4">
-                  <span class="text-gray-500 inline-flex items-center">
-                    예상 수령 기간
-                    <button type="button" class="help-icon" aria-label="예상 수령 기간 도움말"
-                      data-tooltip="연금 개시부터 기대수명까지의 연수.&#10;매년 물가에 연동되어 인상되는 것으로 가정합니다.&#10;클릭하면 전체 계산 가정으로 이동합니다."
-                      onclick="scrollToAssumptions(event)">?</button>
-                  </span>
-                  <span id="receiving-years" class="font-semibold text-brand-900">-</span>
-                </div>
-                <div class="flex items-start justify-between gap-4">
-                  <span class="text-gray-500 inline-flex items-center">
-                    기대수명
-                    <button type="button" class="help-icon" aria-label="기대수명 도움말"
-                      data-tooltip="통계청 장래 기대수명 중위값.&#10;은퇴 연도 기준 데이터를 사용합니다.&#10;클릭하면 전체 계산 가정으로 이동합니다."
-                      onclick="scrollToAssumptions(event)">?</button>
-                  </span>
-                  <span id="life-expectancy" class="font-semibold text-brand-900">-</span>
-                </div>
-              </div>
-            </div>
-          </aside>
         </div>
       </section>
 
       <!-- 수령 시기 비교 -->
-      <section id="claim-age-section" class="hidden reveal section-frame">
-        <div class="editorial-panel rounded-[1.8rem] p-6 sm:p-8 lg:p-10">
-          <div class="text-[11px] font-semibold uppercase text-brand-600 section-label mb-3">수령 시기 비교</div>
-          <h3 class="text-[1.9rem] sm:text-[2.4rem] font-black tracking-[-0.04em] text-brand-900 leading-tight mb-2">
-            언제부터 받는 게 가장 좋을까요
-          </h3>
-          <p class="text-sm text-[#5c5145] leading-relaxed mb-6">
-            수령 개시 시점을 앞당기면 1년당 6%씩 감액(조기노령연금), 늦추면 1년당 7.2%씩 증액(연기연금)됩니다.
-            각 시점별 세후 월 수령액이 시간에 따라 어떻게 변하는지 비교해 보세요.
-          </p>
+      <section id="claim-age-section" class="hidden reveal max-w-7xl mx-auto px-5 md:px-margin-desktop py-12 md:py-section-gap">
+        <div class="divider-h mb-12 md:mb-16"></div>
+        <span class="font-label-caps text-label-caps text-muted-gold">수령 시기 비교</span>
+        <h3 class="font-headline-md text-headline-md text-on-surface mt-2 mb-3">언제부터 받는 게 가장 좋을까요</h3>
+        <p class="font-body-md text-text-muted max-w-2xl mb-8">
+          수령 개시 시점을 앞당기면 1년당 6%씩 감액(조기노령연금), 늦추면 1년당 7.2%씩 증액(연기연금)됩니다.
+          각 시점별 세후 월 수령액이 시간에 따라 어떻게 변하는지 비교해 보세요.
+        </p>
+        <div class="bg-surface-container-low border border-divider-subtle p-4 sm:p-6">
           <canvas id="claim-age-canvas" class="w-full" style="height: 360px;"></canvas>
-          <p id="claim-age-caption" class="text-xs text-gray-400 mt-4 text-center"></p>
         </div>
+        <p id="claim-age-caption" class="text-caption text-text-muted mt-4 text-center"></p>
       </section>
 
       <!-- 개인연금 비교 (동적 렌더링) -->
-      <div id="private-pension-section" class="hidden reveal"></div>
+      <div id="private-pension-section" class="hidden reveal max-w-7xl mx-auto px-5 md:px-margin-desktop py-12 md:py-section-gap"></div>
 
       <!-- 총수령액 분포 그래프 -->
-      <section id="distribution-chart-section" class="hidden reveal section-frame">
-        <div class="editorial-panel rounded-[1.8rem] p-6 sm:p-8 lg:p-10">
-          <div class="text-[11px] font-semibold uppercase text-brand-600 section-label mb-3">총수령액 분포</div>
-          <h3 class="text-[1.9rem] sm:text-[2.4rem] font-black tracking-[-0.04em] text-brand-900 leading-tight mb-2">
-            국민연금은 어디에 위치할까요
-          </h3>
-          <p class="text-sm text-[#5c5145] leading-relaxed mb-6">
-            같은 금액을 납입했을 때, 실제 연금저축펀드 상품들의 총수령액 분포와 국민연금의 위치를 비교합니다.
-          </p>
+      <section id="distribution-chart-section" class="hidden reveal max-w-7xl mx-auto px-5 md:px-margin-desktop py-12 md:py-section-gap">
+        <div class="divider-h mb-12 md:mb-16"></div>
+        <span class="font-label-caps text-label-caps text-muted-gold">총수령액 분포</span>
+        <h3 class="font-headline-md text-headline-md text-on-surface mt-2 mb-3">국민연금은 어디에 위치할까요</h3>
+        <p class="font-body-md text-text-muted max-w-2xl mb-8">
+          같은 금액을 납입했을 때, 실제 연금저축펀드 상품들의 총수령액 분포와 국민연금의 위치를 비교합니다.
+        </p>
+        <div class="bg-surface-container-low border border-divider-subtle p-4 sm:p-6">
           <canvas id="distribution-canvas" class="w-full" style="height: 280px;"></canvas>
-          <p id="distribution-caption" class="text-xs text-gray-400 mt-4 text-center"></p>
         </div>
+        <p id="distribution-caption" class="text-caption text-text-muted mt-4 text-center"></p>
       </section>
 
       <!-- 연금상품별 연간 수령액 표 (접기/펼치기) -->
-      <details id="yearly-table-section" class="hidden reveal bg-white/80 rounded-[1.3rem] border border-[rgba(61,43,22,0.1)] shadow-[0_18px_50px_rgba(43,28,12,0.06)]">
-        <summary class="px-6 py-4 cursor-pointer text-brand-900 font-semibold hover:text-brand-700 flex items-center justify-between text-sm">
-          <span>연금상품별 연간 수령액 비교</span>
-          <svg class="w-4 h-4 text-gray-400 transition-transform details-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-          </svg>
-        </summary>
-        <div class="px-6 pb-6">
-          <p class="text-xs text-gray-400 mb-3">
-            * 국민연금: 물가연동 (매년 인상) | 개인연금: 고정 수령액 | 모든 금액은 세후 기준<br>
-            * 과거의 수익률이 미래의 수익률을 보장하지 않습니다.
-          </p>
-          <div class="overflow-x-auto">
-            <table id="yearly-receiving-table" class="min-w-full text-sm">
-              <!-- JavaScript로 동적 생성 -->
-            </table>
+      <div class="max-w-7xl mx-auto px-5 md:px-margin-desktop">
+        <details id="yearly-table-section" class="hidden reveal border border-divider-subtle bg-surface-container-low">
+          <summary class="px-6 py-4 cursor-pointer text-on-surface font-semibold hover:text-primary flex items-center justify-between text-sm">
+            <span>연금상품별 연간 수령액 비교</span>
+            <svg class="w-4 h-4 text-text-muted transition-transform details-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </summary>
+          <div class="px-6 pb-6">
+            <p class="text-caption text-text-muted mb-3">
+              * 국민연금: 물가연동 (매년 인상) | 개인연금: 고정 수령액 | 모든 금액은 세후 기준<br>
+              * 과거의 수익률이 미래의 수익률을 보장하지 않습니다.
+            </p>
+            <div class="overflow-x-auto">
+              <table id="yearly-receiving-table" class="min-w-full text-sm">
+                <!-- JavaScript로 동적 생성 -->
+              </table>
+            </div>
           </div>
-        </div>
-      </details>
-      <style>
-        details[open] .details-arrow { transform: rotate(180deg); }
-      </style>
+        </details>
+      </div>
 
       <!-- 국민연금 장점 -->
-      <section class="section-frame reveal">
-        <div class="grid gap-8 lg:grid-cols-[0.6fr_minmax(0,1fr)] lg:items-start">
-          <div>
-            <div class="text-[11px] font-semibold uppercase text-brand-600 section-label mb-3">왜 국민연금이 강한가</div>
-            <h3 class="text-[1.9rem] sm:text-[2.4rem] font-black tracking-[-0.04em] text-brand-900 leading-tight mb-4">
-              수익률 하나로는<br>설명되지 않는 구조입니다
-            </h3>
-            <p class="text-sm sm:text-base text-[#5c5145] leading-relaxed">
-              국민연금은 단순 적립식 상품이 아니라 물가연동, 종신지급, 유족 보장, 국가 지급보장을 함께 갖는 공적연금입니다.
-            </p>
+      <section class="max-w-7xl mx-auto px-5 md:px-margin-desktop py-12 md:py-section-gap reveal">
+        <div class="divider-h mb-12 md:mb-16"></div>
+        <div class="max-w-3xl">
+          <span class="font-label-caps text-label-caps text-muted-gold">왜 국민연금이 강한가</span>
+          <h3 class="font-headline-md text-headline-md text-on-surface mt-2 mb-3">수익률 하나로는 설명되지 않는 구조입니다</h3>
+          <p class="font-body-md text-text-muted">
+            국민연금은 단순 적립식 상품이 아니라 물가연동, 종신지급, 유족 보장, 국가 지급보장을 함께 갖는 공적연금입니다.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter mt-12">
+          <div class="p-8 border border-divider-subtle hover:border-muted-gold transition-colors space-y-4">
+            <span class="material-symbols-outlined text-4xl text-muted-gold">payments</span>
+            <h4 class="font-headline-sm text-headline-sm text-on-surface">물가연동</h4>
+            <p class="text-body-md text-text-muted">연금을 받는 동안에도 물가상승률만큼 인상되어 실질 구매력을 방어합니다.</p>
           </div>
-
-          <div class="advantage-list rounded-[1.4rem] border border-[rgba(61,43,22,0.1)] bg-white/70 px-6 py-4 shadow-[0_18px_50px_rgba(43,28,12,0.06)]">
-            <article class="grid gap-2 py-4 sm:grid-cols-[140px_minmax(0,1fr)]">
-              <div class="text-sm font-semibold text-brand-900">물가연동</div>
-              <p class="text-sm text-gray-600">연금을 받는 동안에도 물가상승률만큼 인상되어 실질 구매력을 방어합니다.</p>
-            </article>
-            <article class="grid gap-2 py-4 sm:grid-cols-[140px_minmax(0,1fr)]">
-              <div class="text-sm font-semibold text-brand-900">종신지급</div>
-              <p class="text-sm text-gray-600">기대수명을 넘겨도 지급이 끝나지 않아 장수 리스크를 개인이 떠안지 않습니다.</p>
-            </article>
-            <article class="grid gap-2 py-4 sm:grid-cols-[140px_minmax(0,1fr)]">
-              <div class="text-sm font-semibold text-brand-900">유족연금</div>
-              <p class="text-sm text-gray-600">가입자 사망 후에도 배우자에게 일정 비율이 이어져 보장 구조가 남습니다.</p>
-            </article>
-            <article class="grid gap-2 py-4 sm:grid-cols-[140px_minmax(0,1fr)]">
-              <div class="text-sm font-semibold text-brand-900">국가 보장</div>
-              <p class="text-sm text-gray-600">민간 상품과 달리 지급 주체가 국가이기 때문에 제도적 안정성이 훨씬 높습니다.</p>
-            </article>
+          <div class="p-8 border border-divider-subtle hover:border-muted-gold transition-colors space-y-4">
+            <span class="material-symbols-outlined text-4xl text-muted-gold">all_inclusive</span>
+            <h4 class="font-headline-sm text-headline-sm text-on-surface">종신지급</h4>
+            <p class="text-body-md text-text-muted">기대수명을 넘겨도 지급이 끝나지 않아 장수 리스크를 개인이 떠안지 않습니다.</p>
+          </div>
+          <div class="p-8 border border-divider-subtle hover:border-muted-gold transition-colors space-y-4">
+            <span class="material-symbols-outlined text-4xl text-muted-gold">family_restroom</span>
+            <h4 class="font-headline-sm text-headline-sm text-on-surface">유족연금</h4>
+            <p class="text-body-md text-text-muted">가입자 사망 후에도 배우자에게 일정 비율이 이어져 보장 구조가 남습니다.</p>
+          </div>
+          <div class="p-8 border border-divider-subtle hover:border-muted-gold transition-colors space-y-4">
+            <span class="material-symbols-outlined text-4xl text-muted-gold">assured_workload</span>
+            <h4 class="font-headline-sm text-headline-sm text-on-surface">국가 보장</h4>
+            <p class="text-body-md text-text-muted">민간 상품과 달리 지급 주체가 국가이기 때문에 제도적 안정성이 훨씬 높습니다.</p>
           </div>
         </div>
       </section>
 
       <!-- 행동 유도 -->
-      <div class="reveal rounded-[1.6rem] p-6 sm:p-8 text-center text-white bg-[radial-gradient(circle_at_top,#c79a53_0%,#7e5216_48%,#22170d_100%)] shadow-[0_26px_80px_rgba(43,28,12,0.22)]">
-        <div class="text-[11px] font-semibold uppercase text-white/60 section-label mb-2">Next Read</div>
-        <h3 class="text-xl font-black mb-1">더 자세히 알아보기</h3>
-        <p class="text-[#f6e6cf] mb-4 text-sm">
-          안정적인 노후를 위한 연금 설계 전략
-        </p>
-        <a href="./guide.html" class="inline-block px-6 py-3 bg-white text-brand-900 text-sm font-semibold rounded-[0.9rem] hover:bg-brand-50 transition-colors">
-          연금 설계 가이드 →
-        </a>
-      </div>
+      <section class="bg-surface-container border-y border-divider-subtle py-16 reveal">
+        <div class="max-w-7xl mx-auto px-5 md:px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-8">
+          <div class="text-center md:text-left">
+            <span class="font-label-caps text-label-caps text-text-muted">Next Read</span>
+            <h3 class="font-headline-md text-headline-md text-on-surface mt-2">안정적인 노후를 위한 연금 설계 전략</h3>
+          </div>
+          <a href="./guide.html" class="inline-flex items-center gap-3 text-primary font-headline-sm text-headline-sm hover:gap-5 transition-all">
+            연금 설계 가이드 →
+          </a>
+        </div>
+      </section>
 
       <!-- 접기/펼치기: 계산 가정 -->
-      <details id="assumptions-section" class="reveal bg-white/80 rounded-[1.3rem] border border-[rgba(61,43,22,0.1)] shadow-[0_18px_50px_rgba(43,28,12,0.06)]">
-        <summary class="px-6 py-4 cursor-pointer text-gray-500 hover:text-gray-700 text-sm font-medium flex items-center justify-between">
-          <span>계산 가정 및 면책 조항</span>
-          <svg class="w-4 h-4 text-gray-400 transition-transform details-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-        </summary>
-        <div class="px-6 pb-6 text-xs text-gray-500 space-y-1.5 leading-relaxed">
-          <p>• 2026년 국민연금 개정 기준 적용 (보험료율 9%→13% 단계적 인상, 비례상수 1.29)</p>
-          <p>• 국민연금 산식: 기본연금액 = 1.29×(A+B)×(1+0.05n/12), A값 3,193,511원 (2025.12~2026.11 기준)</p>
-          <p>• 국민연금 수령액은 추정치이며, 미래 A값 변동 및 재평가율은 미반영</p>
-          <p>• 가입기간 추정: 30세 이상은 30세부터, 20대는 현재 나이부터 59세까지의 소득을 현재 연봉 기반으로 추정</p>
-          <p>• 평균 취업 연령: 30세 (<a href="https://news.incruit.com/news/newsview.asp?newsno=437372" target="_blank" rel="noopener noreferrer" class="text-brand-600 hover:underline">인크루트 2025 설문</a>)</p>
-          <p>• 개인 소득 증가율: 연령대별 중위소득 증감률을 우선 적용, 데이터 없으면 평균 2.68% 사용 (<a href="./data/aged_compensation.csv" download class="text-brand-600 hover:underline">원본 데이터</a>)</p>
-          <p>• 물가상승률: 최근 20년 평균 (<span id="inflation-display">2.5%</span>) 적용 (<a href="./data/consumer-price-inflation.csv" download class="text-brand-600 hover:underline">원본 데이터</a>)</p>
-          <p>• 기대수명: 통계청 장래 기대수명 중위값 적용 (<a href="./data/age_expectations.csv" download class="text-brand-600 hover:underline">원본 데이터</a>)</p>
-          <p>• 국민연금 세금: 연 350만원 공제 후 5%를 적용한 단순 추정, 총수령액에 반영</p>
-          <p>• 개인연금 납입액: 국민연금 본인 부담분과 동일 금액을 같은 추정 가입기간 동안 납입한 것으로 가정</p>
-          <p>• 연금저축 수익률: <a href="https://www.fss.or.kr/fss/lifeplan/goodsCmpr/list4.do?pageIndex=1&menuNo=201274&newYn=Y&orderByParam=&orderByColumn=&criteriaYear=2025&criteriaQuarter=3&paramClassCd=3&penPrinProtecYn=&penProductSellYn=1&penProductFinanceCd=&penReciveTerm=&penFeeStruct=&searchKeyword=" download class="text-brand-600 hover:underline">금융감독원 연금저축 비교공시</a></p>
-          <p>• 대표 개인연금 3종 수익률: S&P500 ETF 10%, TDF 2050 5%, 예금형 2.5%를 비교용 가정으로 적용</p>
-          <p>• 실제 수익률은 상품과 기간에 따라 달라지며, 손실 가능성이 있습니다</p>
-          <p>• 개인연금 수령기간: 국민연금 개시연령부터 기대수명까지 균등 분할</p>
-          <p>• 대표 개인연금 3종 수수료: S&P500 0.03%, TDF 0.5%, 예금형 0%; 금감원 공시 펀드는 개별 수수료율 적용</p>
-          <p>• 개인연금 세금: 연 1,500만원 이하 저율과세(3.3~5.5%), 초과 시 분리과세(16.5%)와 종합과세(누진세율) 중 유리한 쪽 적용</p>
-          <p class="text-amber-600 font-medium pt-2">
-            본 계산은 참고용이며, 실제 수령액은 경제 상황, 정책 변화 등에 따라 달라질 수 있습니다.
-          </p>
-        </div>
-      </details>
+      <div class="max-w-7xl mx-auto px-5 md:px-margin-desktop py-12 md:py-section-gap">
+        <details id="assumptions-section" class="reveal border border-divider-subtle bg-surface-container-low">
+          <summary class="px-6 py-4 cursor-pointer text-text-muted hover:text-on-surface text-sm font-medium flex items-center justify-between">
+            <span>계산 가정 및 면책 조항</span>
+            <svg class="w-4 h-4 text-text-muted transition-transform details-arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </summary>
+          <div class="px-6 pb-6 text-caption text-text-muted space-y-1.5 leading-relaxed">
+            <p>• 2026년 국민연금 개정 기준 적용 (보험료율 9%→13% 단계적 인상, 비례상수 1.29)</p>
+            <p>• 국민연금 산식: 기본연금액 = 1.29×(A+B)×(1+0.05n/12), A값 3,193,511원 (2025.12~2026.11 기준)</p>
+            <p>• 국민연금 수령액은 추정치이며, 미래 A값 변동 및 재평가율은 미반영</p>
+            <p>• 가입기간 추정: 30세 이상은 30세부터, 20대는 현재 나이부터 59세까지의 소득을 현재 연봉 기반으로 추정</p>
+            <p>• 평균 취업 연령: 30세 (<a href="https://news.incruit.com/news/newsview.asp?newsno=437372" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">인크루트 2025 설문</a>)</p>
+            <p>• 개인 소득 증가율: 연령대별 중위소득 증감률을 우선 적용, 데이터 없으면 평균 2.68% 사용 (<a href="./data/aged_compensation.csv" download class="text-primary hover:underline">원본 데이터</a>)</p>
+            <p>• 물가상승률: 최근 20년 평균 (<span id="inflation-display">2.5%</span>) 적용 (<a href="./data/consumer-price-inflation.csv" download class="text-primary hover:underline">원본 데이터</a>)</p>
+            <p>• 기대수명: 통계청 장래 기대수명 중위값 적용 (<a href="./data/age_expectations.csv" download class="text-primary hover:underline">원본 데이터</a>)</p>
+            <p>• 국민연금 세금: 연 350만원 공제 후 5%를 적용한 단순 추정, 총수령액에 반영</p>
+            <p>• 개인연금 납입액: 국민연금 본인 부담분과 동일 금액을 같은 추정 가입기간 동안 납입한 것으로 가정</p>
+            <p>• 연금저축 수익률: <a href="https://www.fss.or.kr/fss/lifeplan/goodsCmpr/list4.do?pageIndex=1&menuNo=201274&newYn=Y&orderByParam=&orderByColumn=&criteriaYear=2025&criteriaQuarter=3&paramClassCd=3&penPrinProtecYn=&penProductSellYn=1&penProductFinanceCd=&penReciveTerm=&penFeeStruct=&searchKeyword=" download class="text-primary hover:underline">금융감독원 연금저축 비교공시</a></p>
+            <p>• 대표 개인연금 3종 수익률: S&P500 ETF 10%, TDF 2050 5%, 예금형 2.5%를 비교용 가정으로 적용</p>
+            <p>• 실제 수익률은 상품과 기간에 따라 달라지며, 손실 가능성이 있습니다</p>
+            <p>• 개인연금 수령기간: 국민연금 개시연령부터 기대수명까지 균등 분할</p>
+            <p>• 대표 개인연금 3종 수수료: S&P500 0.03%, TDF 0.5%, 예금형 0%; 금감원 공시 펀드는 개별 수수료율 적용</p>
+            <p>• 개인연금 세금: 연 1,500만원 이하 저율과세(3.3~5.5%), 초과 시 분리과세(16.5%)와 종합과세(누진세율) 중 유리한 쪽 적용</p>
+            <p class="text-error font-medium pt-2">
+              본 계산은 참고용이며, 실제 수령액은 경제 상황, 정책 변화 등에 따라 달라질 수 있습니다.
+            </p>
+          </div>
+        </details>
+      </div>
     </div>
 
-      <!-- 푸터 -->
-      <footer class="text-center mt-10 pb-6">
-        <div class="text-xs text-gray-500">
-          <a href="./guide.html" class="text-brand-600 hover:text-brand-700 font-medium">연금 설계 가이드</a>
+    <!-- 푸터 -->
+    <footer class="border-t border-divider-subtle">
+      <div class="max-w-7xl mx-auto px-5 md:px-margin-desktop py-12 text-center">
+        <div class="text-caption text-text-muted">
+          <a href="./guide.html" class="text-primary hover:underline font-medium">연금 설계 가이드</a>
           <span class="mx-2">·</span>
           <span>Your Future</span>
         </div>
-        <div class="text-xs text-gray-400 mt-2">
-          Made by <a href="https://raccoony.dev" target="_blank" rel="noopener noreferrer" class="text-brand-600 hover:underline">raccoony</a>
+        <div class="text-caption text-text-muted mt-2">
+          Made by <a href="https://raccoony.dev" target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">raccoony</a>
         </div>
-      </footer>
-    </div>
-  </div>
-  </div>
+      </div>
+    </footer>
+  </main>
 
   <script>
     // ============================================================
@@ -1468,7 +1324,7 @@
 
       // 상세 카드
       document.getElementById('nps-monthly-range').innerHTML =
-        `${formatCurrency(npsNetMonthly)}<span class="text-xs text-gray-500">(${pensionStartAge}세)</span> ~ ${formatCurrency(monthlyAt85Net)}<span class="text-xs text-gray-500">(85세)</span>`;
+        `${formatCurrency(npsNetMonthly)}<span class="text-xs text-text-muted">(${pensionStartAge}세)</span> ~ ${formatCurrency(monthlyAt85Net)}<span class="text-xs text-text-muted">(85세)</span>`;
       document.getElementById('contribution-years').textContent = `${contributionYears}년`;
       document.getElementById('contribution-period-detail').textContent = `(${contributionStartAge}~${contributionEndAge}세 추정)`;
 
@@ -1552,25 +1408,25 @@
       }
 
       // 헤더
-      let headerRow = '<tr class="bg-surface-100">';
-      headerRow += '<th class="px-2 py-2.5 text-center text-xs font-semibold text-gray-500 uppercase tracking-wider sticky left-0 z-20 bg-surface-100 min-w-[60px] border-r border-surface-200">연령</th>';
-      headerRow += '<th class="px-2 py-2.5 text-center text-xs font-semibold text-brand-700 uppercase tracking-wider sticky left-[60px] z-20 bg-surface-100 min-w-[130px] border-r border-surface-200">국민연금<br><span class="font-normal normal-case tracking-normal">(물가연동)</span></th>';
+      let headerRow = '<tr class="bg-surface-container-high">';
+      headerRow += '<th class="px-2 py-2.5 text-center text-xs font-semibold text-text-muted uppercase tracking-wider sticky left-0 z-20 bg-surface-container-high min-w-[60px] border-r border-divider-subtle">연령</th>';
+      headerRow += '<th class="px-2 py-2.5 text-center text-xs font-semibold text-primary uppercase tracking-wider sticky left-[60px] z-20 bg-surface-container-high min-w-[130px] border-r border-divider-subtle">국민연금<br><span class="font-normal normal-case tracking-normal">(물가연동)</span></th>';
       for (const pp of allProducts) {
         const displayName = pp.name.length > 14 ? pp.name.substring(0, 14) + '...' : pp.name;
         const netRate = ((pp.returnRate - (pp.fee || 0)) * 100).toFixed(1);
-        headerRow += `<th class="px-2 py-2.5 text-center text-xs font-semibold text-gray-500 min-w-[130px]" title="${pp.name}${pp.bank ? ' (' + pp.bank + ')' : ''}\n수익률 ${(pp.returnRate * 100).toFixed(1)}% − 수수료 ${((pp.fee || 0) * 100).toFixed(2)}%">${displayName}<br><span class="font-normal text-gray-400">(연 ${netRate}%)</span></th>`;
+        headerRow += `<th class="px-2 py-2.5 text-center text-xs font-semibold text-text-muted min-w-[130px]" title="${pp.name}${pp.bank ? ' (' + pp.bank + ')' : ''}\n수익률 ${(pp.returnRate * 100).toFixed(1)}% − 수수료 ${((pp.fee || 0) * 100).toFixed(2)}%">${displayName}<br><span class="font-normal text-text-muted">(연 ${netRate}%)</span></th>`;
       }
       headerRow += '</tr>';
 
       // 총합 행 (제목행 바로 아래)
-      let totalRow = '<tr class="bg-brand-50 font-bold border-b-2 border-brand-200">';
-      totalRow += `<td class="px-2 py-2.5 text-center text-brand-900 sticky left-0 z-10 bg-brand-50 min-w-[60px] border-r border-brand-100">${years}년<br><span class="text-xs font-semibold">총합</span></td>`;
-      totalRow += `<td class="px-2 py-2.5 text-center text-brand-800 sticky left-[60px] z-10 bg-brand-50 min-w-[130px] border-r border-brand-100 tabular-nums">${formatCurrency(totalNPS)}</td>`;
+      let totalRow = '<tr class="bg-surface-container-high font-bold border-b-2 border-divider-subtle">';
+      totalRow += `<td class="px-2 py-2.5 text-center text-on-surface sticky left-0 z-10 bg-surface-container-high min-w-[60px] border-r border-divider-subtle">${years}년<br><span class="text-xs font-semibold">총합</span></td>`;
+      totalRow += `<td class="px-2 py-2.5 text-center text-primary sticky left-[60px] z-10 bg-surface-container-high min-w-[130px] border-r border-divider-subtle tabular-nums">${formatCurrency(totalNPS)}</td>`;
       for (let i = 0; i < allProducts.length; i++) {
         const diff = totalPP[i] - totalNPS;
-        const diffColor = diff >= 0 ? 'text-emerald-600' : 'text-red-500';
+        const diffColor = diff >= 0 ? 'text-[#7fc08a]' : 'text-[#e08a7f]';
         const diffSign = diff >= 0 ? '+' : '';
-        totalRow += `<td class="px-2 py-2.5 text-center text-brand-900 tabular-nums">${formatCurrency(totalPP[i])}<br><span class="text-xs font-normal ${diffColor}">(${diffSign}${formatCurrency(diff)})</span></td>`;
+        totalRow += `<td class="px-2 py-2.5 text-center text-on-surface tabular-nums">${formatCurrency(totalPP[i])}<br><span class="text-xs font-normal ${diffColor}">(${diffSign}${formatCurrency(diff)})</span></td>`;
       }
       totalRow += '</tr>';
 
@@ -1592,29 +1448,29 @@
 
         const isFolded = age >= FOLD_START && age <= FOLD_END;
         const isHighlight = age === pensionStartAge || age === expectedLifespan;
-        const bgColor = isHighlight ? 'bg-brand-50' : (age % 5 === 0 ? 'bg-surface-50' : 'bg-white');
+        const bgColor = isHighlight ? 'bg-surface-container-high' : (age % 5 === 0 ? 'bg-surface-container' : 'bg-surface-container-low');
 
-        let row = `<tr class="border-b border-surface-200 ${bgColor}${isFolded ? ' folded-row hidden' : ''}">`;
-        row += `<td class="px-2 py-2 text-center font-medium text-gray-600 sticky left-0 z-10 ${bgColor} min-w-[60px] border-r border-surface-200 text-sm">${age}세<br><span class="text-xs text-gray-400">${yearAtAge}</span></td>`;
-        row += `<td class="px-2 py-2 text-center text-brand-700 font-semibold sticky left-[60px] z-10 ${bgColor} min-w-[130px] border-r border-surface-200 tabular-nums">${formatCurrency(npsAnnual)}<br><span class="text-xs font-normal text-gray-500">월 ${formatCurrency(npsNetMonthly)}</span></td>`;
+        let row = `<tr class="border-b border-divider-subtle ${bgColor}${isFolded ? ' folded-row hidden' : ''}">`;
+        row += `<td class="px-2 py-2 text-center font-medium text-on-surface-variant sticky left-0 z-10 ${bgColor} min-w-[60px] border-r border-divider-subtle text-sm">${age}세<br><span class="text-xs text-text-muted">${yearAtAge}</span></td>`;
+        row += `<td class="px-2 py-2 text-center text-primary font-semibold sticky left-[60px] z-10 ${bgColor} min-w-[130px] border-r border-divider-subtle tabular-nums">${formatCurrency(npsAnnual)}<br><span class="text-xs font-normal text-text-muted">월 ${formatCurrency(npsNetMonthly)}</span></td>`;
 
         for (let i = 0; i < allProducts.length; i++) {
           const annualBenefit = allProducts[i].monthlyBenefit * 12;
           const tax = calculatePrivatePensionTax(annualBenefit, age);
           const netAnnual = Math.round(annualBenefit - tax);
           const netMonthly = Math.round(netAnnual / 12);
-          row += `<td class="px-2 py-2 text-center"><span class="text-gray-700">${formatCurrency(netAnnual)}</span><br><span class="text-xs text-gray-500">월 ${formatCurrency(netMonthly)}</span></td>`;
+          row += `<td class="px-2 py-2 text-center"><span class="text-on-surface">${formatCurrency(netAnnual)}</span><br><span class="text-xs text-text-muted">월 ${formatCurrency(netMonthly)}</span></td>`;
         }
         row += '</tr>';
 
         // 접힌 구간 시작 직전에 토글 행 삽입
         if (isFolded && !hasFolded) {
           hasFolded = true;
-          let toggleRow = '<tr class="fold-toggle-row border-b border-surface-200 bg-surface-50 cursor-pointer hover:bg-surface-100 transition-colors" onclick="toggleFoldedRows()">';
-          toggleRow += `<td class="px-2 py-3 text-center text-gray-400 sticky left-0 z-10 bg-surface-50 min-w-[60px] border-r border-surface-200"><svg class="fold-icon inline w-4 h-4 transition-transform text-brand-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></td>`;
-          toggleRow += `<td class="px-2 py-3 text-center text-gray-400 text-xs font-medium sticky left-[60px] z-10 bg-surface-50 min-w-[130px] border-r border-surface-200"><span class="fold-label">${FOLD_START}~${FOLD_END}세 생략</span></td>`;
+          let toggleRow = '<tr class="fold-toggle-row border-b border-divider-subtle bg-surface-container cursor-pointer hover:bg-surface-container-high transition-colors" onclick="toggleFoldedRows()">';
+          toggleRow += `<td class="px-2 py-3 text-center text-text-muted sticky left-0 z-10 bg-surface-container min-w-[60px] border-r border-divider-subtle"><svg class="fold-icon inline w-4 h-4 transition-transform text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></td>`;
+          toggleRow += `<td class="px-2 py-3 text-center text-text-muted text-xs font-medium sticky left-[60px] z-10 bg-surface-container min-w-[130px] border-r border-divider-subtle"><span class="fold-label">${FOLD_START}~${FOLD_END}세 생략</span></td>`;
           for (let i = 0; i < allProducts.length; i++) {
-            toggleRow += '<td class="px-2 py-3 text-center text-gray-300">⋮</td>';
+            toggleRow += '<td class="px-2 py-3 text-center text-text-muted">⋮</td>';
           }
           toggleRow += '</tr>';
           dataRows += toggleRow;
@@ -1657,9 +1513,9 @@
       if (!container) return;
 
       const colorMap = {
-        emerald: { accent: 'text-brand-700', badge: 'bg-brand-100 text-brand-700', bar: 'rate-bar-fill' },
-        purple: { accent: 'text-stone-700', badge: 'bg-[#e7dccb] text-stone-700', bar: 'rate-bar-fill-muted' },
-        gray: { accent: 'text-gray-700', badge: 'bg-surface-100 text-gray-600', bar: 'rate-bar-fill-soft' }
+        emerald: { accent: 'text-primary', badge: 'border border-primary text-primary', bar: 'rate-bar-fill' },
+        purple: { accent: 'text-on-surface-variant', badge: 'border border-outline text-on-surface-variant', bar: 'rate-bar-fill-muted' },
+        gray: { accent: 'text-text-muted', badge: 'border border-divider-subtle text-text-muted', bar: 'rate-bar-fill-soft' }
       };
 
       const comparisonRows = pensions.map(p => {
@@ -1667,24 +1523,24 @@
         const diff = p.totalReceiving - npsTotal;
         const diffLabel = diff >= 0 ? `국민연금보다 ${formatCurrency(diff)} 많음` : `국민연금보다 ${formatCurrency(Math.abs(diff))} 적음`;
         return `
-          <article class="comparison-item grid gap-3 px-5 py-5 sm:grid-cols-[minmax(0,1fr)_110px_140px_170px] sm:items-center">
+          <article class="grid gap-3 px-5 py-5 sm:grid-cols-[minmax(0,1fr)_110px_140px_170px] sm:items-center">
             <div>
-              <span class="${c.badge} inline-flex rounded-full px-2.5 py-1 text-[11px] font-semibold">${p.label}</span>
-              <div class="mt-3 text-lg font-semibold text-brand-900">${p.productName}</div>
-              <p class="text-sm text-gray-500 mt-1">동일 추정 납입 이력 기준 세후 총수령액</p>
+              <span class="${c.badge} inline-flex px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider">${p.label}</span>
+              <div class="mt-3 text-lg font-semibold text-on-surface">${p.productName}</div>
+              <p class="text-sm text-text-muted mt-1">동일 추정 납입 이력 기준 세후 총수령액</p>
             </div>
             <div class="text-left sm:text-center">
-              <div class="text-[11px] font-semibold uppercase text-gray-400 section-label mb-1">연 수익률</div>
+              <div class="text-[11px] font-semibold uppercase text-text-muted tracking-wider mb-1">연 수익률</div>
               <div class="text-sm font-semibold ${c.accent}">${(p.returnRate * 100).toFixed(1)}%</div>
             </div>
             <div class="text-left sm:text-center">
-              <div class="text-[11px] font-semibold uppercase text-gray-400 section-label mb-1">세후 월수령</div>
-              <div class="text-sm font-semibold text-brand-900 tabular-nums">월 ${formatCurrency(p.monthlyBenefitNet)}</div>
+              <div class="text-[11px] font-semibold uppercase text-text-muted tracking-wider mb-1">세후 월수령</div>
+              <div class="text-sm font-semibold text-on-surface tabular-nums">월 ${formatCurrency(p.monthlyBenefitNet)}</div>
             </div>
             <div class="text-left sm:text-right">
-              <div class="text-[11px] font-semibold uppercase text-gray-400 section-label mb-1">세후 총수령액</div>
-              <div class="text-lg font-black ${c.accent} tabular-nums">${formatCurrency(p.totalReceiving)}</div>
-              <p class="text-xs text-gray-500 mt-1">${diffLabel}</p>
+              <div class="text-[11px] font-semibold uppercase text-text-muted tracking-wider mb-1">세후 총수령액</div>
+              <div class="text-lg font-bold ${c.accent} tabular-nums">${formatCurrency(p.totalReceiving)}</div>
+              <p class="text-xs text-text-muted mt-1">${diffLabel}</p>
             </div>
           </article>`;
       }).join('');
@@ -1706,60 +1562,57 @@
         const isBreakeven = item.name === '손익분기점';
         return `
           <div class="grid gap-2 sm:grid-cols-[96px_minmax(0,1fr)_56px] sm:items-center">
-            <span class="text-xs font-medium ${isBreakeven ? 'text-brand-700' : 'text-gray-500'}">${item.name}</span>
-            <div class="rate-bar-track h-3 overflow-hidden rounded-full">
-              <div class="${item.barClass} h-full rounded-full ${isBreakeven ? 'opacity-100' : 'opacity-85'}" style="width:${width}%"></div>
+            <span class="text-xs font-medium ${isBreakeven ? 'text-primary' : 'text-text-muted'}">${item.name}</span>
+            <div class="rate-bar-track h-3 overflow-hidden">
+              <div class="${item.barClass} h-full ${isBreakeven ? 'opacity-100' : 'opacity-85'}" style="width:${width}%"></div>
             </div>
-            <span class="text-right text-xs font-semibold ${isBreakeven ? 'text-brand-700' : 'text-gray-600'} tabular-nums">${item.rate.toFixed(1)}%</span>
+            <span class="text-right text-xs font-semibold ${isBreakeven ? 'text-primary' : 'text-on-surface-variant'} tabular-nums">${item.rate.toFixed(1)}%</span>
           </div>`;
       }).join('');
 
       container.innerHTML = `
-        <section class="section-frame">
-          <div class="grid gap-8 lg:grid-cols-[0.72fr_minmax(0,1fr)] lg:items-start">
-            <div>
-              <div class="text-[11px] font-semibold uppercase text-brand-600 section-label mb-3">같은 돈을 다른 방식으로 넣으면</div>
-              <h3 class="text-[1.9rem] sm:text-[2.4rem] font-black tracking-[-0.04em] text-brand-900 leading-tight mb-4">
-                개인연금은 어느 정도 수익률이 나와야<br>국민연금을 따라잡을까요
-              </h3>
-              <p class="text-sm sm:text-base text-[#5c5145] leading-relaxed mb-5">
-                국민연금 본인 부담분과 같은 금액을 같은 추정 가입기간 동안 개인연금에 납입했다고 가정한 비교입니다.
-                모든 금액은 세후 기준이며, 국민연금은 물가연동을 반영했습니다.
-              </p>
-              <div class="rounded-[1.2rem] border border-[rgba(61,43,22,0.1)] bg-[linear-gradient(180deg,rgba(157,107,34,0.08),rgba(255,252,247,0.88))] px-5 py-4 text-sm leading-relaxed text-[#5c5145]">
-                장기적으로 높은 수익률을 자랑하는 상품인 <span class="font-semibold text-brand-900">${strongestProduct.productName}</span>이지만,
-                국민연금과의 차이는 <span class="font-semibold text-brand-900">${leadGap >= 0 ? `+${formatCurrency(leadGap)}` : `-${formatCurrency(Math.abs(leadGap))}`}</span> 수준입니다.
-                (종신지급과 물가연동의 가치까지 모두 고려한 결과는 아닙니다.)
-              </div>
-            </div>
-
-            <div class="comparison-band rounded-[1.5rem] overflow-hidden">
-              ${comparisonRows}
+        <div class="divider-h mb-12 md:mb-16"></div>
+        <div class="grid gap-gutter lg:grid-cols-[0.72fr_minmax(0,1fr)] lg:items-start mb-16">
+          <div>
+            <div class="font-label-caps text-label-caps uppercase text-muted-gold mb-4">같은 돈을 다른 방식으로 넣으면</div>
+            <h3 class="font-headline-md text-2xl sm:text-headline-md text-on-surface leading-tight mb-4">
+              개인연금은 어느 정도 수익률이 나와야<br>국민연금을 따라잡을까요
+            </h3>
+            <p class="text-body-md text-on-surface-variant leading-relaxed mb-5">
+              국민연금 본인 부담분과 같은 금액을 같은 추정 가입기간 동안 개인연금에 납입했다고 가정한 비교입니다.
+              모든 금액은 세후 기준이며, 국민연금은 물가연동을 반영했습니다.
+            </p>
+            <div class="border border-divider-subtle bg-surface-container px-5 py-4 text-sm leading-relaxed text-on-surface-variant">
+              장기적으로 높은 수익률을 자랑하는 상품인 <span class="font-semibold text-on-surface">${strongestProduct.productName}</span>이지만,
+              국민연금과의 차이는 <span class="font-semibold text-primary">${leadGap >= 0 ? `+${formatCurrency(leadGap)}` : `-${formatCurrency(Math.abs(leadGap))}`}</span> 수준입니다.
+              (종신지급과 물가연동의 가치까지 모두 고려한 결과는 아닙니다.)
             </div>
           </div>
-        </section>
 
-        <section class="section-frame">
-          <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
-            <div class="comparison-band rounded-[1.5rem] p-6 sm:p-7">
-              <div class="text-[11px] font-semibold uppercase text-brand-600 section-label mb-3">손익분기점</div>
-              <p class="text-base sm:text-lg text-[#5c5145] leading-relaxed mb-5">
-                국민연금의 세후 총수령액과 같아지려면 개인연금 수익률이
-                <span class="mx-1 text-[2rem] font-black tracking-tight text-brand-700">연 ${breakevenPct}%</span>
-                이상 필요합니다.
-              </p>
-              <div class="space-y-3">
-                ${barsHTML}
-              </div>
-            </div>
+          <div class="border border-divider-subtle bg-surface-container-low divide-y divide-divider-subtle">
+            ${comparisonRows}
+          </div>
+        </div>
 
-            <div class="rounded-[1.4rem] border border-[rgba(61,43,22,0.1)] bg-white/70 px-5 py-5 text-sm text-[#5c5145] leading-relaxed shadow-[0_18px_50px_rgba(43,28,12,0.06)]">
-              <div class="text-[11px] font-semibold uppercase text-brand-600 section-label mb-3">해석</div>
-              국민연금은 매년 수령액이 오르고, 오래 살수록 유리해지는 구조입니다.
-              개인연금은 적립금이 커 보여도 고정 수령이라 시간이 지날수록 실질 구매력이 약해집니다.
+        <div class="grid gap-gutter lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
+          <div class="border border-divider-subtle bg-surface-container-low p-6 sm:p-7">
+            <div class="font-label-caps text-label-caps uppercase text-muted-gold mb-3">손익분기점</div>
+            <p class="text-body-md sm:text-body-lg text-on-surface-variant leading-relaxed mb-5">
+              국민연금의 세후 총수령액과 같아지려면 개인연금 수익률이
+              <span class="mx-1 text-3xl font-bold tracking-tight text-primary">연 ${breakevenPct}%</span>
+              이상 필요합니다.
+            </p>
+            <div class="space-y-3">
+              ${barsHTML}
             </div>
           </div>
-        </section>`;
+
+          <div class="border border-divider-subtle bg-surface-container-low px-5 py-5 text-sm text-on-surface-variant leading-relaxed">
+            <div class="font-label-caps text-label-caps uppercase text-muted-gold mb-3">해석</div>
+            국민연금은 매년 수령액이 오르고, 오래 살수록 유리해지는 구조입니다.
+            개인연금은 적립금이 커 보여도 고정 수령이라 시간이 지날수록 실질 구매력이 약해집니다.
+          </div>
+        </div>`;
 
       container.classList.remove('hidden');
     }
@@ -1853,8 +1706,8 @@
 
         // 곡선 아래 전체 채우기
         const grad = ctx.createLinearGradient(0, pad.top, 0, pad.top + gH);
-        grad.addColorStop(0, 'rgba(109, 98, 84, 0.14)');
-        grad.addColorStop(1, 'rgba(109, 98, 84, 0.01)');
+        grad.addColorStop(0, 'rgba(197, 160, 89, 0.18)');
+        grad.addColorStop(1, 'rgba(197, 160, 89, 0.02)');
         ctx.beginPath();
         ctx.moveTo(toX(xMin), pad.top + gH);
         for (let i = 0; i <= steps; i++) {
@@ -1877,7 +1730,7 @@
         }
         ctx.lineTo(toX(xMax), pad.top + gH);
         ctx.closePath();
-        ctx.fillStyle = 'rgba(157, 107, 34, 0.2)';
+        ctx.fillStyle = 'rgba(233, 193, 118, 0.18)';
         ctx.fill();
 
         // KDE 곡선
@@ -1888,7 +1741,7 @@
           const py = toY(densities[i]);
           i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
         }
-        ctx.strokeStyle = 'rgba(109, 98, 84, 0.55)';
+        ctx.strokeStyle = 'rgba(209, 197, 180, 0.7)';
         ctx.lineWidth = 2;
         ctx.stroke();
 
@@ -1896,7 +1749,7 @@
         ctx.beginPath();
         ctx.moveTo(pad.left, pad.top + gH);
         ctx.lineTo(pad.left + gW, pad.top + gH);
-        ctx.strokeStyle = 'rgba(61, 43, 22, 0.15)';
+        ctx.strokeStyle = '#404040';
         ctx.lineWidth = 1;
         ctx.stroke();
 
@@ -1906,19 +1759,19 @@
         ctx.beginPath();
         ctx.moveTo(meanX, pad.top + gH);
         ctx.lineTo(meanX, yAtX(mean));
-        ctx.strokeStyle = 'rgba(109, 98, 84, 0.35)';
+        ctx.strokeStyle = 'rgba(136, 136, 136, 0.5)';
         ctx.lineWidth = 1;
         ctx.stroke();
         ctx.setLineDash([]);
-        ctx.fillStyle = '#6d6254';
-        ctx.font = '11px Pretendard, -apple-system, sans-serif';
+        ctx.fillStyle = '#d1c5b4';
+        ctx.font = '11px "Hanken Grotesk", Pretendard, sans-serif';
         ctx.textAlign = 'center';
         ctx.fillText('펀드 평균', meanX, pad.top + gH + 16);
-        ctx.font = '10px Pretendard, -apple-system, sans-serif';
+        ctx.font = '10px "Hanken Grotesk", Pretendard, sans-serif';
         ctx.fillText(formatCurrency(Math.round(mean)), meanX, pad.top + gH + 30);
 
         // 대표 개인연금 3개 마커 (곡선 위)
-        const dotColors = { emerald: '#7e5216', purple: '#6d6254', gray: '#aaa' };
+        const dotColors = { emerald: '#e9c176', purple: '#d1c5b4', gray: '#9a8f80' };
         pensions.forEach(p => {
           const px = toX(p.totalReceiving);
           const py = yAtX(p.totalReceiving);
@@ -1926,17 +1779,17 @@
           ctx.beginPath();
           ctx.moveTo(px, pad.top + gH);
           ctx.lineTo(px, py);
-          ctx.strokeStyle = dotColors[p.color] || '#aaa';
+          ctx.strokeStyle = dotColors[p.color] || '#9a8f80';
           ctx.lineWidth = 1;
           ctx.stroke();
           ctx.setLineDash([]);
           ctx.beginPath();
           ctx.arc(px, py, 4, 0, Math.PI * 2);
-          ctx.fillStyle = dotColors[p.color] || '#aaa';
+          ctx.fillStyle = dotColors[p.color] || '#9a8f80';
           ctx.fill();
           // 라벨 (곡선 위)
-          ctx.fillStyle = '#6d6254';
-          ctx.font = '10px Pretendard, -apple-system, sans-serif';
+          ctx.fillStyle = '#d1c5b4';
+          ctx.font = '10px "Hanken Grotesk", Pretendard, sans-serif';
           ctx.textAlign = 'center';
           ctx.fillText(p.productName, px, py - 10);
         });
@@ -1945,43 +1798,43 @@
         const npsX = toX(npsTotal);
 
         // 세로 하이라이트 밴드
-        ctx.fillStyle = 'rgba(157, 107, 34, 0.06)';
+        ctx.fillStyle = 'rgba(233, 193, 118, 0.08)';
         ctx.fillRect(npsX - 22, pad.top - 10, 44, gH + 10);
 
         // 세로선
         ctx.beginPath();
         ctx.moveTo(npsX, pad.top + gH);
         ctx.lineTo(npsX, pad.top - 5);
-        ctx.strokeStyle = '#9d6b22';
+        ctx.strokeStyle = '#e9c176';
         ctx.lineWidth = 2.5;
         ctx.stroke();
 
         // 상단 뱃지
         const labelText = '국민연금';
-        ctx.font = 'bold 13px Pretendard, -apple-system, sans-serif';
+        ctx.font = 'bold 13px "Hanken Grotesk", Pretendard, sans-serif';
         const badgeW = ctx.measureText(labelText).width + 16;
         const badgeH = 26;
         const badgeX = npsX - badgeW / 2;
         const badgeY = pad.top - 42;
-        ctx.fillStyle = '#9d6b22';
+        ctx.fillStyle = '#e9c176';
         ctx.beginPath();
-        ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 6);
+        ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 0);
         ctx.fill();
-        ctx.fillStyle = '#fff';
+        ctx.fillStyle = '#121414';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(labelText, npsX, badgeY + badgeH / 2);
         ctx.textBaseline = 'alphabetic';
 
         // 하단 금액
-        ctx.fillStyle = '#9d6b22';
-        ctx.font = 'bold 12px Pretendard, -apple-system, sans-serif';
+        ctx.fillStyle = '#e9c176';
+        ctx.font = 'bold 12px "Hanken Grotesk", Pretendard, sans-serif';
         ctx.textAlign = 'center';
         ctx.fillText(formatCurrency(npsTotal), npsX, pad.top + gH + 18);
 
         // 상위 몇 % 위치인지 표시 (위에서 계산한 betterCount 재사용)
         const topPct = ((betterCount / n) * 100).toFixed(1);
-        ctx.font = '11px Pretendard, -apple-system, sans-serif';
+        ctx.font = '11px "Hanken Grotesk", Pretendard, sans-serif';
         if (betterCount === 0) {
           ctx.fillText(`전체 ${n}개 펀드 중 1위`, npsX, pad.top + gH + 34);
         } else {
@@ -2077,7 +1930,7 @@
         const toY = v => pad.top + gH * (1 - v / yHi);
 
         // 배경 그리드 (가로선 4개) + Y축 라벨
-        ctx.strokeStyle = 'rgba(61, 43, 22, 0.06)';
+        ctx.strokeStyle = 'rgba(51, 51, 51, 0.6)';
         ctx.lineWidth = 1;
         for (let i = 1; i <= 4; i++) {
           const y = pad.top + (gH / 4) * i;
@@ -2088,8 +1941,8 @@
         }
 
         // Y축 눈금 라벨 (좌측, 월 수령액)
-        ctx.font = '10px Pretendard, -apple-system, sans-serif';
-        ctx.fillStyle = '#a8a094';
+        ctx.font = '10px "Hanken Grotesk", Pretendard, sans-serif';
+        ctx.fillStyle = '#888888';
         ctx.textAlign = 'right';
         ctx.textBaseline = 'middle';
         for (let i = 0; i <= 4; i++) {
@@ -2102,21 +1955,21 @@
         ctx.save();
         ctx.translate(14, pad.top + gH / 2);
         ctx.rotate(-Math.PI / 2);
-        ctx.fillStyle = '#6d6254';
-        ctx.font = '10px Pretendard, -apple-system, sans-serif';
+        ctx.fillStyle = '#d1c5b4';
+        ctx.font = '10px "Hanken Grotesk", Pretendard, sans-serif';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText('세후 월 수령액', 0, 0);
         ctx.restore();
         ctx.textBaseline = 'alphabetic';
 
-        // 색상 팔레트 (조기 = 붉은 톤, 법정 = 브랜드, 연기 = 초록 톤)
+        // 색상 팔레트 (조기 = 붉은 톤, 법정 = 골드, 연기 = 초록 톤)
         const colors = {
-          '-5': '#c0493c', // 조기 최대 (-30%)
-          '-3': '#d97a5a', // 조기 (-18%)
-          '0':  '#9d6b22', // 법정 (브랜드)
-          '2':  '#5e8a5e', // 연기 (+14.4%)
-          '5':  '#2f6e4a'  // 연기 최대 (+36%)
+          '-5': '#e0685c', // 조기 최대 (-30%)
+          '-3': '#e8a07a', // 조기 (-18%)
+          '0':  '#e9c176', // 법정 (골드)
+          '2':  '#7fb98a', // 연기 (+14.4%)
+          '5':  '#5fc999'  // 연기 최대 (+36%)
         };
 
         // 기대수명 세로 점선
@@ -2127,13 +1980,13 @@
           ctx.beginPath();
           ctx.moveTo(lifeX, pad.top);
           ctx.lineTo(lifeX, pad.top + gH);
-          ctx.strokeStyle = 'rgba(61, 43, 22, 0.3)';
+          ctx.strokeStyle = 'rgba(154, 143, 128, 0.6)';
           ctx.lineWidth = 1;
           ctx.stroke();
           ctx.setLineDash([]);
 
-          ctx.fillStyle = '#6d6254';
-          ctx.font = '10px Pretendard, -apple-system, sans-serif';
+          ctx.fillStyle = '#d1c5b4';
+          ctx.font = '10px "Hanken Grotesk", Pretendard, sans-serif';
           ctx.textAlign = 'center';
           ctx.fillText(`기대수명 ${lifeAge}세`, lifeX, pad.top - 8);
         }
@@ -2158,7 +2011,7 @@
           ctx.arc(toX(s.startAge), toY(s.startMonthly), s.isLegal ? 5 : 4, 0, Math.PI * 2);
           ctx.fillStyle = color;
           ctx.fill();
-          ctx.strokeStyle = '#fffaf3';
+          ctx.strokeStyle = '#141414';
           ctx.lineWidth = 1.5;
           ctx.stroke();
         });
@@ -2172,7 +2025,7 @@
           ctx.beginPath();
           ctx.moveTo(labelX, pad.top);
           ctx.lineTo(labelX, pad.top + gH);
-          ctx.strokeStyle = 'rgba(61, 43, 22, 0.2)';
+          ctx.strokeStyle = 'rgba(51, 51, 51, 0.8)';
           ctx.lineWidth = 1;
           ctx.stroke();
           ctx.setLineDash([]);
@@ -2232,7 +2085,7 @@
               ctx.globalAlpha = 1;
             }
             // 누적액 텍스트
-            ctx.font = d.scenario.isLegal ? 'bold 11px Pretendard, -apple-system, sans-serif' : '11px Pretendard, -apple-system, sans-serif';
+            ctx.font = d.scenario.isLegal ? 'bold 11px "Hanken Grotesk", Pretendard, sans-serif' : '11px "Hanken Grotesk", Pretendard, sans-serif';
             ctx.fillStyle = d.color;
             ctx.textAlign = 'left';
             ctx.textBaseline = 'middle';
@@ -2241,8 +2094,8 @@
           ctx.textBaseline = 'alphabetic';
 
           // 90세 라벨 (상단)
-          ctx.font = '10px Pretendard, -apple-system, sans-serif';
-          ctx.fillStyle = '#6d6254';
+          ctx.font = '10px "Hanken Grotesk", Pretendard, sans-serif';
+          ctx.fillStyle = '#d1c5b4';
           ctx.textAlign = 'center';
           ctx.fillText(`${TOTAL_LABEL_AGE}세 누적`, labelX + 30, pad.top - 8);
         }
@@ -2251,13 +2104,13 @@
         ctx.beginPath();
         ctx.moveTo(pad.left, pad.top + gH);
         ctx.lineTo(pad.left + gW, pad.top + gH);
-        ctx.strokeStyle = 'rgba(61, 43, 22, 0.25)';
+        ctx.strokeStyle = '#404040';
         ctx.lineWidth = 1;
         ctx.stroke();
 
         // X축 라벨 (5세 간격)
-        ctx.fillStyle = '#6d6254';
-        ctx.font = '11px Pretendard, -apple-system, sans-serif';
+        ctx.fillStyle = '#d1c5b4';
+        ctx.font = '11px "Hanken Grotesk", Pretendard, sans-serif';
         ctx.textAlign = 'center';
         const labelAges = [];
         for (let a = xMin; a <= xMax; a += 5) labelAges.push(a);
@@ -2268,7 +2121,7 @@
 
         // 범례 (상단)
         const legendY = 18;
-        ctx.font = '11px Pretendard, -apple-system, sans-serif';
+        ctx.font = '11px "Hanken Grotesk", Pretendard, sans-serif';
         ctx.textBaseline = 'middle';
         const legendItems = scenarios.map(s => ({
           label: s.isLegal ? `법정 ${s.startAge}세` :
@@ -2278,7 +2131,7 @@
         }));
         // 라벨 너비 측정
         const widths = legendItems.map(item => {
-          ctx.font = item.bold ? 'bold 11px Pretendard, -apple-system, sans-serif' : '11px Pretendard, -apple-system, sans-serif';
+          ctx.font = item.bold ? 'bold 11px "Hanken Grotesk", Pretendard, sans-serif' : '11px "Hanken Grotesk", Pretendard, sans-serif';
           return ctx.measureText(item.label).width + 22;
         });
         const totalLegendW = widths.reduce((a, b) => a + b, 0);
@@ -2290,8 +2143,8 @@
           ctx.fillStyle = item.color;
           ctx.fill();
           // 라벨
-          ctx.fillStyle = item.bold ? '#3d2b16' : '#6d6254';
-          ctx.font = item.bold ? 'bold 11px Pretendard, -apple-system, sans-serif' : '11px Pretendard, -apple-system, sans-serif';
+          ctx.fillStyle = item.bold ? '#e2e2e2' : '#d1c5b4';
+          ctx.font = item.bold ? 'bold 11px "Hanken Grotesk", Pretendard, sans-serif' : '11px "Hanken Grotesk", Pretendard, sans-serif';
           ctx.textAlign = 'left';
           ctx.fillText(item.label, legX + 14, legendY);
           legX += widths[i];
