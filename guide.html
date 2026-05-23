@@ -311,9 +311,17 @@
         </div>
 
         <div>
-          <div class="mb-4">
-            <div class="text-sm font-semibold text-on-surface">지역별 10대 국민연금 임의가입률 순위</div>
-            <div class="text-xs text-text-muted mt-1">단위 %, 2026년 1월 기준 · 18~19세 인구 대비</div>
+          <div class="mb-4 flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <div class="text-sm font-semibold text-on-surface">지역별 10대 국민연금 임의가입률 순위</div>
+              <div class="text-xs text-text-muted mt-1">단위 %, 2026년 1월 기준 · 18~19세 인구 대비</div>
+            </div>
+            <div class="text-xs text-text-muted flex items-center gap-2 shrink-0">
+              <svg width="20" height="6" viewBox="0 0 20 6" aria-hidden="true">
+                <line x1="0" y1="3" x2="20" y2="3" stroke="currentColor" stroke-width="1" stroke-dasharray="4 4" />
+              </svg>
+              전국 평균 1.28%
+            </div>
           </div>
           <canvas id="teen-pension-chart" class="w-full" style="height: 360px;"></canvas>
           <div class="text-[11px] text-text-muted mt-3">자료: 김선민 의원실 · 국민연금공단</div>
@@ -601,12 +609,7 @@
           ctx.restore();
         });
 
-        // 평균 라벨 (점선 위, 차분한 톤)
-        ctx.fillStyle = '#888888';
-        ctx.font = '10.5px "Hanken Grotesk", Pretendard, sans-serif';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'bottom';
-        ctx.fillText(`전국 평균 ${NATIONAL_AVG}%`, pad.left + 2, avgY - 3);
+        // 평균 라벨은 캔버스 위 HTML 범례로 대체 (모든 막대가 avgY를 통과해 캔버스 내부엔 빈 자리가 없음)
       }
 
       draw();
