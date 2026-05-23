@@ -1422,34 +1422,34 @@
         }
       }
 
-      // 헤더
-      let headerRow = '<tr class="bg-surface-container-high">';
-      headerRow += '<th class="px-2 py-2.5 text-center text-xs font-semibold text-text-muted uppercase tracking-wider sticky left-0 z-20 bg-surface-container-high min-w-[60px] border-r border-divider-subtle">연령</th>';
-      headerRow += '<th class="px-2 py-2.5 text-center text-xs font-semibold text-primary uppercase tracking-wider sticky left-[60px] z-20 bg-surface-container-high min-w-[130px] border-r border-divider-subtle">국민연금<br><span class="font-normal normal-case tracking-normal">(물가연동)</span></th>';
+      // Tufte: 헤더 — 굵은 줄/대문자/오버라이드 제거, 1px 하단 디바이더만
+      let headerRow = '<tr>';
+      headerRow += '<th class="px-3 py-3 text-center font-label-caps text-label-caps text-text-muted sticky left-0 z-20 bg-surface min-w-[64px] border-b border-divider-subtle">연령</th>';
+      headerRow += '<th class="px-3 py-3 text-right font-label-caps text-label-caps text-primary sticky left-[64px] z-20 bg-surface min-w-[130px] border-b border-divider-subtle">국민연금</th>';
       for (const pp of allProducts) {
         const displayName = pp.name.length > 14 ? pp.name.substring(0, 14) + '...' : pp.name;
         const netRate = ((pp.returnRate - (pp.fee || 0)) * 100).toFixed(1);
-        headerRow += `<th class="px-2 py-2.5 text-center text-xs font-semibold text-text-muted min-w-[130px]" title="${pp.name}${pp.bank ? ' (' + pp.bank + ')' : ''}\n수익률 ${(pp.returnRate * 100).toFixed(1)}% − 수수료 ${((pp.fee || 0) * 100).toFixed(2)}%">${displayName}<br><span class="font-normal text-text-muted">(연 ${netRate}%)</span></th>`;
+        headerRow += `<th class="px-3 py-3 text-right font-label-caps text-label-caps text-text-muted min-w-[130px] border-b border-divider-subtle" title="${pp.name}${pp.bank ? ' (' + pp.bank + ')' : ''}\n수익률 ${(pp.returnRate * 100).toFixed(1)}% − 수수료 ${((pp.fee || 0) * 100).toFixed(2)}%">${displayName}<br><span class="font-normal normal-case tracking-normal text-text-muted">연 ${netRate}%</span></th>`;
       }
       headerRow += '</tr>';
 
-      // 총합 행 (제목행 바로 아래)
-      let totalRow = '<tr class="bg-surface-container-high font-bold border-b-2 border-divider-subtle">';
-      totalRow += `<td class="px-2 py-2.5 text-center text-on-surface sticky left-0 z-10 bg-surface-container-high min-w-[60px] border-r border-divider-subtle">${years}년<br><span class="text-xs font-semibold">총합</span></td>`;
-      totalRow += `<td class="px-2 py-2.5 text-center text-primary sticky left-[60px] z-10 bg-surface-container-high min-w-[130px] border-r border-divider-subtle tabular-nums">${formatCurrency(totalNPS)}</td>`;
+      // 총합 행 (제목행 바로 아래, 액센트만 골드)
+      let totalRow = '<tr class="bg-surface-container-low">';
+      totalRow += `<td class="px-3 py-3 text-center font-semibold text-on-surface sticky left-0 z-10 bg-surface-container-low min-w-[64px] border-b border-divider-subtle">${years}년 총합</td>`;
+      totalRow += `<td class="px-3 py-3 text-right font-semibold text-primary sticky left-[64px] z-10 bg-surface-container-low min-w-[130px] border-b border-divider-subtle tabular-nums">${formatCurrency(totalNPS)}</td>`;
       for (let i = 0; i < allProducts.length; i++) {
         const diff = totalPP[i] - totalNPS;
         const diffColor = diff >= 0 ? 'text-[#7fc08a]' : 'text-[#e08a7f]';
-        const diffSign = diff >= 0 ? '+' : '';
-        totalRow += `<td class="px-2 py-2.5 text-center text-on-surface tabular-nums">${formatCurrency(totalPP[i])}<br><span class="text-xs font-normal ${diffColor}">(${diffSign}${formatCurrency(diff)})</span></td>`;
+        const diffSign = diff >= 0 ? '+' : '−';
+        const diffAbs = formatCurrency(Math.abs(diff));
+        totalRow += `<td class="px-3 py-3 text-right font-semibold text-on-surface tabular-nums border-b border-divider-subtle">${formatCurrency(totalPP[i])}<br><span class="text-xs font-normal ${diffColor}">${diffSign}${diffAbs}</span></td>`;
       }
       totalRow += '</tr>';
 
-      // 데이터 행 (70세부터 기대수명 직전까지 접기)
+      // 데이터 행 (70세부터 기대수명 직전까지 접기, 제브라 스트라이프 없음)
       const FOLD_START = 70;
       const FOLD_END = expectedLifespan - 1;
       let dataRows = '';
-      let foldedRows = '';
       let hasFolded = false;
 
       for (let age = pensionStartAge; age <= expectedLifespan; age++) {
@@ -1463,29 +1463,30 @@
 
         const isFolded = age >= FOLD_START && age <= FOLD_END;
         const isHighlight = age === pensionStartAge || age === expectedLifespan;
-        const bgColor = isHighlight ? 'bg-surface-container-high' : (age % 5 === 0 ? 'bg-surface-container' : 'bg-surface-container-low');
+        // Tufte: 제브라 스트라이프 제거, 강조 행만 살짝 다른 톤
+        const bgColor = isHighlight ? 'bg-surface-container-low' : 'bg-surface';
 
-        let row = `<tr class="border-b border-divider-subtle ${bgColor}${isFolded ? ' folded-row hidden' : ''}">`;
-        row += `<td class="px-2 py-2 text-center font-medium text-on-surface-variant sticky left-0 z-10 ${bgColor} min-w-[60px] border-r border-divider-subtle text-sm">${age}세<br><span class="text-xs text-text-muted">${yearAtAge}</span></td>`;
-        row += `<td class="px-2 py-2 text-center text-primary font-semibold sticky left-[60px] z-10 ${bgColor} min-w-[130px] border-r border-divider-subtle tabular-nums">${formatCurrency(npsAnnual)}<br><span class="text-xs font-normal text-text-muted">월 ${formatCurrency(npsNetMonthly)}</span></td>`;
+        let row = `<tr class="${bgColor}${isFolded ? ' folded-row hidden' : ''}">`;
+        row += `<td class="px-3 py-2 text-center text-on-surface-variant sticky left-0 z-10 ${bgColor} min-w-[64px] text-sm">${age}세<br><span class="text-xs text-text-muted tabular-nums">${yearAtAge}</span></td>`;
+        row += `<td class="px-3 py-2 text-right text-primary sticky left-[64px] z-10 ${bgColor} min-w-[130px] tabular-nums">${formatCurrency(npsAnnual)}<br><span class="text-xs font-normal text-text-muted">월 ${formatCurrency(npsNetMonthly)}</span></td>`;
 
         for (let i = 0; i < allProducts.length; i++) {
           const annualBenefit = allProducts[i].monthlyBenefit * 12;
           const tax = calculatePrivatePensionTax(annualBenefit, age);
           const netAnnual = Math.round(annualBenefit - tax);
           const netMonthly = Math.round(netAnnual / 12);
-          row += `<td class="px-2 py-2 text-center"><span class="text-on-surface">${formatCurrency(netAnnual)}</span><br><span class="text-xs text-text-muted">월 ${formatCurrency(netMonthly)}</span></td>`;
+          row += `<td class="px-3 py-2 text-right tabular-nums"><span class="text-on-surface">${formatCurrency(netAnnual)}</span><br><span class="text-xs text-text-muted">월 ${formatCurrency(netMonthly)}</span></td>`;
         }
         row += '</tr>';
 
         // 접힌 구간 시작 직전에 토글 행 삽입
         if (isFolded && !hasFolded) {
           hasFolded = true;
-          let toggleRow = '<tr class="fold-toggle-row border-b border-divider-subtle bg-surface-container cursor-pointer hover:bg-surface-container-high transition-colors" onclick="toggleFoldedRows()">';
-          toggleRow += `<td class="px-2 py-3 text-center text-text-muted sticky left-0 z-10 bg-surface-container min-w-[60px] border-r border-divider-subtle"><svg class="fold-icon inline w-4 h-4 transition-transform text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></td>`;
-          toggleRow += `<td class="px-2 py-3 text-center text-text-muted text-xs font-medium sticky left-[60px] z-10 bg-surface-container min-w-[130px] border-r border-divider-subtle"><span class="fold-label" data-collapsed-label="${FOLD_START}~${FOLD_END}세 펼쳐 보기">${FOLD_START}~${FOLD_END}세 펼쳐 보기</span></td>`;
+          let toggleRow = '<tr class="fold-toggle-row bg-surface cursor-pointer hover:bg-surface-container-low transition-colors" onclick="toggleFoldedRows()">';
+          toggleRow += `<td class="px-3 py-3 text-center text-text-muted sticky left-0 z-10 bg-surface min-w-[64px]"><svg class="fold-icon inline w-4 h-4 transition-transform text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></td>`;
+          toggleRow += `<td class="px-3 py-3 text-right text-text-muted text-xs sticky left-[64px] z-10 bg-surface min-w-[130px]"><span class="fold-label" data-collapsed-label="${FOLD_START}~${FOLD_END}세 펼쳐 보기">${FOLD_START}~${FOLD_END}세 펼쳐 보기</span></td>`;
           for (let i = 0; i < allProducts.length; i++) {
-            toggleRow += '<td class="px-2 py-3 text-center text-text-muted">⋮</td>';
+            toggleRow += '<td class="px-3 py-3 text-right text-text-muted">⋮</td>';
           }
           toggleRow += '</tr>';
           dataRows += toggleRow;
@@ -1526,42 +1527,40 @@
       const container = document.getElementById('private-pension-section');
       if (!container) return;
 
-      const colorMap = {
-        emerald: { accent: 'text-primary', badge: 'border border-primary text-primary', bar: 'rate-bar-fill' },
-        purple: { accent: 'text-on-surface-variant', badge: 'border border-outline text-on-surface-variant', bar: 'rate-bar-fill-muted' },
-        gray: { accent: 'text-text-muted', badge: 'border border-divider-subtle text-text-muted', bar: 'rate-bar-fill-soft' }
-      };
+      // Tufte: 세후 총수령액 내림차순 정렬 — 독자가 비교할 순서
+      const sortedPensions = [...pensions].sort((a, b) => b.totalReceiving - a.totalReceiving);
 
-      const comparisonRows = pensions.map(p => {
-        const c = colorMap[p.color] || colorMap.gray;
+      const comparisonRows = sortedPensions.map((p, idx) => {
         const diff = p.totalReceiving - npsTotal;
-        const diffLabel = diff >= 0 ? `국민연금보다 ${formatCurrency(diff)} 많음` : `국민연금보다 ${formatCurrency(Math.abs(diff))} 적음`;
+        const diffLabel = diff >= 0
+          ? `국민연금 +${formatCurrency(diff)}`
+          : `국민연금 −${formatCurrency(Math.abs(diff))}`;
+        const accent = idx === 0 ? 'text-primary' : 'text-on-surface';
         return `
-          <article class="grid gap-3 px-5 py-5 sm:grid-cols-[minmax(0,1fr)_110px_140px_170px] sm:items-center">
+          <article class="grid gap-3 py-5 sm:grid-cols-[minmax(0,1fr)_90px_120px_180px] sm:items-baseline border-t border-divider-subtle">
             <div>
-              <span class="${c.badge} inline-flex px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider">${p.label}</span>
-              <div class="mt-3 text-lg font-semibold text-on-surface">${p.productName}</div>
-              <p class="text-sm text-text-muted mt-1">동일 추정 납입 이력 기준 세후 총수령액</p>
+              <div class="text-base font-semibold ${accent}">${p.productName}</div>
+              <p class="text-xs text-text-muted mt-1">${p.label}</p>
             </div>
-            <div class="text-left sm:text-center">
-              <div class="text-[11px] font-semibold uppercase text-text-muted tracking-wider mb-1">연 수익률</div>
-              <div class="text-sm font-semibold ${c.accent}">${(p.returnRate * 100).toFixed(1)}%</div>
-            </div>
-            <div class="text-left sm:text-center">
-              <div class="text-[11px] font-semibold uppercase text-text-muted tracking-wider mb-1">세후 월 수령액</div>
-              <div class="text-sm font-semibold text-on-surface tabular-nums">월 ${formatCurrency(p.monthlyBenefitNet)}</div>
-            </div>
+            <div class="text-left sm:text-right text-sm text-on-surface-variant tabular-nums">${(p.returnRate * 100).toFixed(1)}%</div>
+            <div class="text-left sm:text-right text-sm text-on-surface tabular-nums">월 ${formatCurrency(p.monthlyBenefitNet)}</div>
             <div class="text-left sm:text-right">
-              <div class="text-[11px] font-semibold uppercase text-text-muted tracking-wider mb-1">세후 총수령액</div>
-              <div class="text-lg font-bold ${c.accent} tabular-nums">${formatCurrency(p.totalReceiving)}</div>
-              <p class="text-xs text-text-muted mt-1">${diffLabel}</p>
+              <div class="text-base font-semibold ${accent} tabular-nums">${formatCurrency(p.totalReceiving)}</div>
+              <p class="text-xs text-text-muted mt-1 tabular-nums">${diffLabel}</p>
             </div>
           </article>`;
       }).join('');
 
-      const strongestProduct = pensions.reduce((best, current) =>
-        current.totalReceiving > best.totalReceiving ? current : best
-      , pensions[0]);
+      // 컬럼 헤더 (label-caps 작은 라벨)
+      const comparisonHeader = `
+        <div class="hidden sm:grid sm:grid-cols-[minmax(0,1fr)_90px_120px_180px] gap-3 pb-2 font-label-caps text-label-caps uppercase text-text-muted">
+          <div>상품</div>
+          <div class="text-right">연 수익률</div>
+          <div class="text-right">세후 월 수령액</div>
+          <div class="text-right">세후 총수령액</div>
+        </div>`;
+
+      const strongestProduct = sortedPensions[0];
       const leadGap = strongestProduct ? strongestProduct.totalReceiving - npsTotal : 0;
       const leadGapAbs = formatCurrency(Math.abs(leadGap));
       let gapSentence;
@@ -1574,22 +1573,27 @@
       }
 
       const breakevenPct = (breakevenRate * 100).toFixed(1);
-      const maxRate = 12;
+      const maxRate = Math.max(12, breakevenRate * 100 * 1.1, ...pensions.map(p => p.returnRate * 100));
+      // Tufte: 단일 액센트(손익분기점만 골드), 정렬은 수익률 오름차순
       const items = [
-        ...pensions.map(p => ({ name: p.productName, rate: p.returnRate * 100, barClass: colorMap[p.color]?.bar || 'rate-bar-fill-soft' })),
-        { name: '손익분기점', rate: breakevenRate * 100, barClass: 'rate-bar-fill' }
+        ...pensions.map(p => ({ name: p.productName, rate: p.returnRate * 100, isBreakeven: false })),
+        { name: '손익분기점', rate: breakevenRate * 100, isBreakeven: true }
       ].sort((a, b) => a.rate - b.rate);
 
       const barsHTML = items.map(item => {
         const width = Math.min(100, (item.rate / maxRate) * 100);
-        const isBreakeven = item.name === '손익분기점';
+        const fillStyle = item.isBreakeven
+          ? 'background:#c5a059;'
+          : 'background:#5a554b;';
+        const labelColor = item.isBreakeven ? 'text-primary font-semibold' : 'text-text-muted';
+        const valueColor = item.isBreakeven ? 'text-primary font-semibold' : 'text-on-surface-variant';
         return `
-          <div class="grid gap-2 sm:grid-cols-[96px_minmax(0,1fr)_56px] sm:items-center">
-            <span class="text-xs font-medium ${isBreakeven ? 'text-primary' : 'text-text-muted'}">${item.name}</span>
-            <div class="rate-bar-track h-3 overflow-hidden">
-              <div class="${item.barClass} h-full ${isBreakeven ? 'opacity-100' : 'opacity-85'}" style="width:${width}%"></div>
+          <div class="grid gap-2 sm:grid-cols-[110px_minmax(0,1fr)_52px] sm:items-center">
+            <span class="text-xs ${labelColor}">${item.name}</span>
+            <div class="h-2 overflow-hidden" style="background:#1e2020;">
+              <div class="h-full" style="width:${width}%;${fillStyle}"></div>
             </div>
-            <span class="text-right text-xs font-semibold ${isBreakeven ? 'text-primary' : 'text-on-surface-variant'} tabular-nums">${item.rate.toFixed(1)}%</span>
+            <span class="text-right text-xs ${valueColor} tabular-nums">${item.rate.toFixed(1)}%</span>
           </div>`;
       }).join('');
 
@@ -1605,33 +1609,35 @@
               국민연금 본인 부담분과 같은 금액을 같은 추정 가입기간 동안 개인연금에 납입했다고 가정한 비교예요.
               모든 금액은 세후 기준이고, 국민연금은 물가연동을 반영했어요.
             </p>
-            <div class="border border-divider-subtle bg-surface-container px-5 py-4 text-sm leading-relaxed text-on-surface-variant">
+            <p class="text-sm leading-relaxed text-on-surface-variant border-t border-divider-subtle pt-4">
               세 상품 중 세후 총수령액이 가장 큰
               <span class="font-semibold text-on-surface">${strongestProduct.productName}</span> 상품(연 ${(strongestProduct.returnRate * 100).toFixed(1)}% 가정)에서도,
               ${gapSentence}
               종신지급과 물가연동의 가치까지 모두 반영한 비교는 아니에요.
-            </div>
+            </p>
           </div>
 
-          <div class="border border-divider-subtle bg-surface-container-low divide-y divide-divider-subtle">
+          <div>
+            ${comparisonHeader}
             ${comparisonRows}
+            <div class="border-b border-divider-subtle"></div>
           </div>
         </div>
 
         <div class="grid gap-gutter lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
-          <div class="border border-divider-subtle bg-surface-container-low p-6 sm:p-7">
+          <div>
             <div class="font-label-caps text-label-caps uppercase text-muted-gold mb-3">손익분기점</div>
-            <p class="text-body-md sm:text-body-lg text-on-surface-variant leading-relaxed mb-5">
+            <p class="text-body-md sm:text-body-lg text-on-surface-variant leading-relaxed mb-6">
               개인연금이 국민연금의 세후 총수령액과 같아지려면
               <span class="mx-1 text-3xl font-bold tracking-tight text-primary">연 ${breakevenPct}%</span>
               수익률이 필요해요.
             </p>
-            <div class="space-y-3">
+            <div class="space-y-3 pt-4 border-t border-divider-subtle">
               ${barsHTML}
             </div>
           </div>
 
-          <div class="border border-divider-subtle bg-surface-container-low px-5 py-5 text-sm text-on-surface-variant leading-relaxed">
+          <div class="text-sm text-on-surface-variant leading-relaxed border-l border-divider-subtle pl-5">
             <div class="font-label-caps text-label-caps uppercase text-muted-gold mb-3">해석</div>
             국민연금은 물가연동과 종신지급을 반영해 수령 기간이 길수록 총수령액이 커질 수 있어요.
             개인연금은 수령액이 고정되면 시간이 지날수록 실질 구매력이 줄어들 수 있어요.
@@ -1702,7 +1708,7 @@
         // 국민연금 실제 백분위
         const betterCount = fundTotals.filter(v => v >= npsTotal).length;
 
-        const pad = { top: 55, right: 40, bottom: 65, left: 40 };
+        const pad = { top: 24, right: 40, bottom: 58, left: 40 };
         const gW = W - pad.left - pad.right;
         const gH = H - pad.top - pad.bottom;
 
@@ -1728,10 +1734,7 @@
         const densityAt = x => kdeDensity(x);
         const yAtX = x => toY(densityAt(x));
 
-        // 곡선 아래 전체 채우기
-        const grad = ctx.createLinearGradient(0, pad.top, 0, pad.top + gH);
-        grad.addColorStop(0, 'rgba(197, 160, 89, 0.18)');
-        grad.addColorStop(1, 'rgba(197, 160, 89, 0.02)');
+        // Tufte: 그라데이션 제거, 평면 단일톤 채우기
         ctx.beginPath();
         ctx.moveTo(toX(xMin), pad.top + gH);
         for (let i = 0; i <= steps; i++) {
@@ -1740,21 +1743,7 @@
         }
         ctx.lineTo(toX(xMax), pad.top + gH);
         ctx.closePath();
-        ctx.fillStyle = grad;
-        ctx.fill();
-
-        // 국민연금 오른쪽 영역(상위 N%) 강조
-        const npsXForFill = toX(npsTotal);
-        ctx.beginPath();
-        ctx.moveTo(npsXForFill, pad.top + gH);
-        const fillSteps = 120;
-        for (let i = 0; i <= fillSteps; i++) {
-          const xVal = npsTotal + (i / fillSteps) * (xMax - npsTotal);
-          ctx.lineTo(toX(xVal), toY(densityAt(xVal)));
-        }
-        ctx.lineTo(toX(xMax), pad.top + gH);
-        ctx.closePath();
-        ctx.fillStyle = 'rgba(233, 193, 118, 0.18)';
+        ctx.fillStyle = 'rgba(197, 160, 89, 0.08)';
         ctx.fill();
 
         // KDE 곡선
@@ -1766,103 +1755,86 @@
           i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
         }
         ctx.strokeStyle = 'rgba(209, 197, 180, 0.7)';
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 1.5;
         ctx.stroke();
 
-        // X축
+        // X축: 매우 옅은 baseline
         ctx.beginPath();
         ctx.moveTo(pad.left, pad.top + gH);
         ctx.lineTo(pad.left + gW, pad.top + gH);
-        ctx.strokeStyle = '#404040';
+        ctx.strokeStyle = '#333333';
         ctx.lineWidth = 1;
         ctx.stroke();
 
-        // 평균선 (점선)
+        // 평균선 (가는 점선)
         const meanX = toX(mean);
-        ctx.setLineDash([4, 4]);
+        ctx.setLineDash([2, 5]);
         ctx.beginPath();
         ctx.moveTo(meanX, pad.top + gH);
         ctx.lineTo(meanX, yAtX(mean));
-        ctx.strokeStyle = 'rgba(136, 136, 136, 0.5)';
+        ctx.strokeStyle = '#333333';
         ctx.lineWidth = 1;
         ctx.stroke();
         ctx.setLineDash([]);
-        ctx.fillStyle = '#d1c5b4';
-        ctx.font = '11px "Hanken Grotesk", Pretendard, sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText('펀드 평균', meanX, pad.top + gH + 16);
+        ctx.fillStyle = '#888888';
         ctx.font = '10px "Hanken Grotesk", Pretendard, sans-serif';
-        ctx.fillText(formatCurrency(Math.round(mean)), meanX, pad.top + gH + 30);
+        ctx.textAlign = 'center';
+        ctx.fillText(`평균 ${formatCurrency(Math.round(mean))}`, meanX, pad.top + gH + 16);
 
-        // 대표 개인연금 3개 마커 (곡선 위)
-        const dotColors = { emerald: '#e9c176', purple: '#d1c5b4', gray: '#9a8f80' };
+        // Tufte: 대표 개인연금 3개 마커 — 색 다양성 제거, 통일된 cream 톤 + 직접 라벨
         pensions.forEach(p => {
           const px = toX(p.totalReceiving);
           const py = yAtX(p.totalReceiving);
-          ctx.setLineDash([3, 3]);
+          // 베이스라인까지 가는 점선
+          ctx.setLineDash([2, 4]);
           ctx.beginPath();
           ctx.moveTo(px, pad.top + gH);
           ctx.lineTo(px, py);
-          ctx.strokeStyle = dotColors[p.color] || '#9a8f80';
+          ctx.strokeStyle = 'rgba(209, 197, 180, 0.4)';
           ctx.lineWidth = 1;
           ctx.stroke();
           ctx.setLineDash([]);
+          // 점
           ctx.beginPath();
-          ctx.arc(px, py, 4, 0, Math.PI * 2);
-          ctx.fillStyle = dotColors[p.color] || '#9a8f80';
+          ctx.arc(px, py, 3, 0, Math.PI * 2);
+          ctx.fillStyle = '#d1c5b4';
           ctx.fill();
-          // 라벨 (곡선 위)
+          // 라벨 (곡선 위, 단일 톤)
           ctx.fillStyle = '#d1c5b4';
           ctx.font = '10px "Hanken Grotesk", Pretendard, sans-serif';
           ctx.textAlign = 'center';
           ctx.fillText(p.productName, px, py - 10);
         });
 
-        // 국민연금 강조
+        // 국민연금 강조 — 단일 액센트(골드) 세로선 + 평문 라벨
         const npsX = toX(npsTotal);
-
-        // 세로 하이라이트 밴드
-        ctx.fillStyle = 'rgba(233, 193, 118, 0.08)';
-        ctx.fillRect(npsX - 22, pad.top - 10, 44, gH + 10);
-
-        // 세로선
         ctx.beginPath();
         ctx.moveTo(npsX, pad.top + gH);
-        ctx.lineTo(npsX, pad.top - 5);
+        ctx.lineTo(npsX, pad.top - 2);
         ctx.strokeStyle = '#e9c176';
-        ctx.lineWidth = 2.5;
+        ctx.lineWidth = 2;
         ctx.stroke();
 
-        // 상단 뱃지
-        const labelText = '국민연금';
-        ctx.font = 'bold 13px "Hanken Grotesk", Pretendard, sans-serif';
-        const badgeW = ctx.measureText(labelText).width + 16;
-        const badgeH = 26;
-        const badgeX = npsX - badgeW / 2;
-        const badgeY = pad.top - 42;
+        // 상단 텍스트 라벨 (뱃지 배경 제거)
         ctx.fillStyle = '#e9c176';
-        ctx.beginPath();
-        ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 0);
-        ctx.fill();
-        ctx.fillStyle = '#121414';
+        ctx.font = 'bold 12px "Hanken Grotesk", Pretendard, sans-serif';
         ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(labelText, npsX, badgeY + badgeH / 2);
-        ctx.textBaseline = 'alphabetic';
+        ctx.fillText('국민연금', npsX, pad.top - 10);
 
         // 하단 금액
         ctx.fillStyle = '#e9c176';
         ctx.font = 'bold 12px "Hanken Grotesk", Pretendard, sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText(formatCurrency(npsTotal), npsX, pad.top + gH + 18);
+        ctx.fillText(formatCurrency(npsTotal), npsX, pad.top + gH + 32);
 
-        // 상위 몇 % 위치인지 표시 (위에서 계산한 betterCount 재사용)
+        // 순위 텍스트
         const topPct = ((betterCount / n) * 100).toFixed(1);
-        ctx.font = '11px "Hanken Grotesk", Pretendard, sans-serif';
+        ctx.font = '10px "Hanken Grotesk", Pretendard, sans-serif';
+        ctx.fillStyle = '#888888';
         if (betterCount === 0) {
-          ctx.fillText(`전체 ${n}개 펀드 중 1위`, npsX, pad.top + gH + 34);
+          ctx.fillText(`전체 ${n}개 펀드 중 1위`, npsX, pad.top + gH + 46);
         } else {
-          ctx.fillText(`상위 ${topPct}%의 펀드만 도달`, npsX, pad.top + gH + 34);
+          ctx.fillText(`상위 ${topPct}%의 펀드만 도달`, npsX, pad.top + gH + 46);
         }
 
         // 캡션
@@ -1946,76 +1918,61 @@
         const yMax = Math.max(...scenarios.map(s => s.endMonthly));
         const yHi = yMax * 1.1;
 
-        const pad = { top: 60, right: 110, bottom: 70, left: 60 };
+        // Tufte: 범례 제거 → 우측 직접 라벨로 대체, 좌측은 Y 눈금만 들어가는 최소 폭
+        const isNarrow = W < 520;
+        const pad = { top: 28, right: isNarrow ? 124 : 196, bottom: 38, left: 56 };
         const gW = W - pad.left - pad.right;
         const gH = H - pad.top - pad.bottom;
 
         const toX = age => pad.left + ((age - xMin) / (xMax - xMin)) * gW;
         const toY = v => pad.top + gH * (1 - v / yHi);
 
-        // 배경 그리드 (가로선 4개) + Y축 라벨
-        ctx.strokeStyle = 'rgba(51, 51, 51, 0.6)';
-        ctx.lineWidth = 1;
-        for (let i = 1; i <= 4; i++) {
-          const y = pad.top + (gH / 4) * i;
-          ctx.beginPath();
-          ctx.moveTo(pad.left, y);
-          ctx.lineTo(pad.left + gW, y);
-          ctx.stroke();
-        }
-
-        // Y축 눈금 라벨 (좌측, 월 수령액)
+        // Tufte: 그리드 전부 제거. Y 눈금 라벨만 (0, 중간, 최대)
         ctx.font = '10px "Hanken Grotesk", Pretendard, sans-serif';
-        ctx.fillStyle = '#888888';
+        ctx.fillStyle = '#777777';
         ctx.textAlign = 'right';
         ctx.textBaseline = 'middle';
-        for (let i = 0; i <= 4; i++) {
-          const y = pad.top + (gH / 4) * i;
-          const value = yHi * (1 - i / 4);
-          if (value <= 0) continue;
-          ctx.fillText(formatCurrency(Math.round(value)), pad.left - 6, y);
-        }
-        // Y축 타이틀
-        ctx.save();
-        ctx.translate(14, pad.top + gH / 2);
-        ctx.rotate(-Math.PI / 2);
-        ctx.fillStyle = '#d1c5b4';
-        ctx.font = '10px "Hanken Grotesk", Pretendard, sans-serif';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText('세후 월 수령액', 0, 0);
-        ctx.restore();
+        const yTickValues = [yHi * 0.5, yHi * 0.95];
+        yTickValues.forEach(v => {
+          ctx.fillText(formatCurrency(Math.round(v)), pad.left - 8, toY(v));
+        });
         ctx.textBaseline = 'alphabetic';
 
-        // 색상 팔레트 (조기 = 붉은 톤, 법정 = 골드, 연기 = 초록 톤)
+        // Y축 단위 라벨 (좌상단)
+        ctx.fillStyle = '#888888';
+        ctx.font = '10px "Hanken Grotesk", Pretendard, sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText('월 수령액', pad.left - 50, pad.top - 10);
+
+        // Tufte: 단일 액센트(법정=골드) + 조기/연기는 톤 다운된 warm/cool 그레이 시퀀스
         const colors = {
-          '-5': '#e0685c', // 조기 최대 (-30%)
-          '-3': '#e8a07a', // 조기 (-18%)
-          '0':  '#e9c176', // 법정 (골드)
-          '2':  '#7fb98a', // 연기 (+14.4%)
-          '5':  '#5fc999'  // 연기 최대 (+36%)
+          '-5': '#8a6356',
+          '-3': '#a78670',
+          '0':  '#e9c176',
+          '2':  '#7d8e75',
+          '5':  '#5f7a6c'
         };
 
-        // 기대수명 세로 점선
+        // 기대수명 세로 점선 (옅게)
         const lifeAge = getExpectedLifespan(currentAge, legalAge);
         if (lifeAge >= xMin && lifeAge <= xMax) {
           const lifeX = toX(lifeAge);
-          ctx.setLineDash([3, 4]);
+          ctx.setLineDash([2, 5]);
           ctx.beginPath();
           ctx.moveTo(lifeX, pad.top);
           ctx.lineTo(lifeX, pad.top + gH);
-          ctx.strokeStyle = 'rgba(154, 143, 128, 0.6)';
+          ctx.strokeStyle = '#333333';
           ctx.lineWidth = 1;
           ctx.stroke();
           ctx.setLineDash([]);
 
-          ctx.fillStyle = '#d1c5b4';
+          ctx.fillStyle = '#888888';
           ctx.font = '10px "Hanken Grotesk", Pretendard, sans-serif';
           ctx.textAlign = 'center';
-          ctx.fillText(`기대수명 ${lifeAge}세`, lifeX, pad.top - 8);
+          ctx.fillText(`기대수명 ${lifeAge}세`, lifeX, pad.top - 10);
         }
 
-        // 각 시나리오 곡선
+        // 시나리오 곡선 — 법정 굵게(2.5px), 나머지 얇게(1.4px). 시작 마커 제거.
         scenarios.forEach(s => {
           const color = colors[String(s.offset)];
           ctx.beginPath();
@@ -2025,57 +1982,52 @@
             i === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
           });
           ctx.strokeStyle = color;
-          ctx.lineWidth = s.isLegal ? 3 : 2;
+          ctx.lineWidth = s.isLegal ? 2.5 : 1.4;
           ctx.lineJoin = 'round';
           ctx.lineCap = 'round';
           ctx.stroke();
-
-          // 시작점 마커 (개시 나이에서 시작하는 금액)
-          ctx.beginPath();
-          ctx.arc(toX(s.startAge), toY(s.startMonthly), s.isLegal ? 5 : 4, 0, Math.PI * 2);
-          ctx.fillStyle = color;
-          ctx.fill();
-          ctx.strokeStyle = '#141414';
-          ctx.lineWidth = 1.5;
-          ctx.stroke();
         });
 
-        // 90세 시점 누적 총 수령액 라벨 (각 선 오른쪽 끝)
+        // 90세 시점 우측 직접 라벨 (시나리오명 + 누적액) — 범례 대체
         if (TOTAL_LABEL_AGE >= xMin && TOTAL_LABEL_AGE <= xMax) {
           const labelX = toX(TOTAL_LABEL_AGE);
 
-          // 90세 세로 점선
-          ctx.setLineDash([2, 4]);
+          // 90세 세로 점선 (옅게)
+          ctx.setLineDash([2, 5]);
           ctx.beginPath();
           ctx.moveTo(labelX, pad.top);
           ctx.lineTo(labelX, pad.top + gH);
-          ctx.strokeStyle = 'rgba(51, 51, 51, 0.8)';
+          ctx.strokeStyle = '#333333';
           ctx.lineWidth = 1;
           ctx.stroke();
           ctx.setLineDash([]);
 
-          // 누적액 전용 포맷터 (소수점 둘째자리)
           const formatCumulative = (amount) => {
             if (amount >= 100000000) return (amount / 100000000).toFixed(2) + '억원';
             if (amount >= 10000) return (amount / 10000).toFixed(2) + '만원';
             return amount.toLocaleString() + '원';
           };
 
-          // 라벨 위치 충돌 회피용 정렬 (Y 위치 기준 정렬 후 최소 간격 보장)
-          const labelData = scenarios.map(s => ({
-            scenario: s,
-            color: colors[String(s.offset)],
-            y: toY(s.monthlyAtLabel),
-            text: formatCumulative(s.totalAtLabel)
-          })).sort((a, b) => a.y - b.y);
+          // 라벨 위치 충돌 회피 (좁은 화면에서는 누적액 생략)
+          const labelData = scenarios.map(s => {
+            const prefix = s.isLegal ? '법정' : (s.offset < 0 ? '조기' : '연기');
+            const text = isNarrow
+              ? `${prefix} ${s.startAge}세`
+              : `${prefix} ${s.startAge}세  ${formatCumulative(s.totalAtLabel)}`;
+            return {
+              scenario: s,
+              color: colors[String(s.offset)],
+              y: toY(s.monthlyAtLabel),
+              text
+            };
+          }).sort((a, b) => a.y - b.y);
 
-          const minGap = 16;
+          const minGap = 18;
           for (let i = 1; i < labelData.length; i++) {
             if (labelData[i].y - labelData[i - 1].y < minGap) {
               labelData[i].y = labelData[i - 1].y + minGap;
             }
           }
-          // 하단 경계 넘으면 위로 밀어올리기
           const bottomBound = pad.top + gH;
           for (let i = labelData.length - 1; i >= 0; i--) {
             if (labelData[i].y > bottomBound) labelData[i].y = bottomBound - (labelData.length - 1 - i) * minGap;
@@ -2084,31 +2036,27 @@
             }
           }
 
-          scenarios.forEach(s => {
-            const color = colors[String(s.offset)];
-            const lineY = toY(s.monthlyAtLabel);
-            // 라인 위 90세 점
-            ctx.beginPath();
-            ctx.arc(labelX, lineY, 3, 0, Math.PI * 2);
-            ctx.fillStyle = color;
-            ctx.fill();
-          });
-
+          // 라인 위 점 + 연결선 + 텍스트
           labelData.forEach(d => {
             const lineY = toY(d.scenario.monthlyAtLabel);
+
+            ctx.beginPath();
+            ctx.arc(labelX, lineY, 2.5, 0, Math.PI * 2);
+            ctx.fillStyle = d.color;
+            ctx.fill();
+
             const tx = labelX + 8;
-            // 연결선 (라인 끝점 → 라벨)
             if (Math.abs(d.y - lineY) > 1) {
               ctx.beginPath();
               ctx.moveTo(labelX + 3, lineY);
               ctx.lineTo(tx, d.y);
               ctx.strokeStyle = d.color;
               ctx.lineWidth = 1;
-              ctx.globalAlpha = 0.4;
+              ctx.globalAlpha = 0.35;
               ctx.stroke();
               ctx.globalAlpha = 1;
             }
-            // 누적액 텍스트
+
             ctx.font = d.scenario.isLegal ? 'bold 11px "Hanken Grotesk", Pretendard, sans-serif' : '11px "Hanken Grotesk", Pretendard, sans-serif';
             ctx.fillStyle = d.color;
             ctx.textAlign = 'left';
@@ -2117,61 +2065,31 @@
           });
           ctx.textBaseline = 'alphabetic';
 
-          // 90세 라벨 (상단)
+          // 90세 상단 라벨 (헤더)
           ctx.font = '10px "Hanken Grotesk", Pretendard, sans-serif';
-          ctx.fillStyle = '#d1c5b4';
-          ctx.textAlign = 'center';
-          ctx.fillText(`${TOTAL_LABEL_AGE}세 누적`, labelX + 30, pad.top - 8);
+          ctx.fillStyle = '#888888';
+          ctx.textAlign = 'left';
+          ctx.fillText(`${TOTAL_LABEL_AGE}세 누적`, labelX + 8, pad.top - 10);
         }
 
-        // X축 라인
+        // X축: 매우 옅은 baseline 한 줄
         ctx.beginPath();
         ctx.moveTo(pad.left, pad.top + gH);
         ctx.lineTo(pad.left + gW, pad.top + gH);
-        ctx.strokeStyle = '#404040';
+        ctx.strokeStyle = '#333333';
         ctx.lineWidth = 1;
         ctx.stroke();
 
-        // X축 라벨 (5세 간격)
-        ctx.fillStyle = '#d1c5b4';
-        ctx.font = '11px "Hanken Grotesk", Pretendard, sans-serif';
+        // X축 라벨 (5세 간격, 작은 회색)
+        ctx.fillStyle = '#888888';
+        ctx.font = '10px "Hanken Grotesk", Pretendard, sans-serif';
         ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
         const labelAges = [];
         for (let a = xMin; a <= xMax; a += 5) labelAges.push(a);
         if (labelAges[labelAges.length - 1] !== xMax) labelAges.push(xMax);
         labelAges.forEach(a => {
-          ctx.fillText(`${a}세`, toX(a), pad.top + gH + 18);
-        });
-
-        // 범례 (상단)
-        const legendY = 18;
-        ctx.font = '11px "Hanken Grotesk", Pretendard, sans-serif';
-        ctx.textBaseline = 'middle';
-        const legendItems = scenarios.map(s => ({
-          label: s.isLegal ? `법정 ${s.startAge}세` :
-                 s.offset < 0 ? `조기 ${s.startAge}세` : `연기 ${s.startAge}세`,
-          color: colors[String(s.offset)],
-          bold: s.isLegal
-        }));
-        // 라벨 너비 측정
-        const widths = legendItems.map(item => {
-          ctx.font = item.bold ? 'bold 11px "Hanken Grotesk", Pretendard, sans-serif' : '11px "Hanken Grotesk", Pretendard, sans-serif';
-          return ctx.measureText(item.label).width + 22;
-        });
-        const totalLegendW = widths.reduce((a, b) => a + b, 0);
-        let legX = (W - totalLegendW) / 2;
-        legendItems.forEach((item, i) => {
-          // 색상 점
-          ctx.beginPath();
-          ctx.arc(legX + 6, legendY, 4, 0, Math.PI * 2);
-          ctx.fillStyle = item.color;
-          ctx.fill();
-          // 라벨
-          ctx.fillStyle = item.bold ? '#e2e2e2' : '#d1c5b4';
-          ctx.font = item.bold ? 'bold 11px "Hanken Grotesk", Pretendard, sans-serif' : '11px "Hanken Grotesk", Pretendard, sans-serif';
-          ctx.textAlign = 'left';
-          ctx.fillText(item.label, legX + 14, legendY);
-          legX += widths[i];
+          ctx.fillText(`${a}세`, toX(a), pad.top + gH + 8);
         });
         ctx.textBaseline = 'alphabetic';
 
