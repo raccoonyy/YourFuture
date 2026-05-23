@@ -265,7 +265,7 @@
           </article>
 
           <div class="grid gap-4 md:grid-cols-2">
-            <article class="border border-divider-subtle bg-surface-container-low p-5">
+            <article class="border-l-2 border-l-divider-subtle pl-5 py-1">
               <div class="text-sm font-semibold text-on-surface mb-2">조기노령연금</div>
               <ul class="space-y-1 text-sm text-on-surface-variant">
                 <li>최대 5년 앞당겨 수령할 수 있습니다.</li>
@@ -273,7 +273,7 @@
                 <li>감액된 금액이 평생 유지됩니다.</li>
               </ul>
             </article>
-            <article class="border border-divider-subtle border-l-2 border-l-muted-gold bg-surface-container p-5">
+            <article class="border-l-2 border-l-muted-gold pl-5 py-1">
               <div class="text-sm font-semibold text-on-surface mb-2">연기연금</div>
               <ul class="space-y-1 text-sm text-on-surface-variant">
                 <li>최대 5년 늦춰 수령할 수 있습니다.</li>
@@ -283,7 +283,7 @@
             </article>
           </div>
 
-          <div class="border border-divider-subtle border-l-2 border-l-muted-gold bg-surface-container px-5 py-4 text-sm text-on-surface-variant">
+          <div class="border-l-2 border-l-muted-gold pl-5 py-1 text-sm text-on-surface-variant">
             임의 계속 가입은 본인이 직접 신청해야 하며, 미납 기간은 추후 납부 대상이 아닙니다.
           </div>
         </div>
@@ -310,16 +310,13 @@
           </a>
         </div>
 
-        <div class="border border-divider-subtle bg-surface-container-low p-5 sm:p-6">
-          <div class="flex items-baseline justify-between mb-4">
-            <div>
-              <div class="text-sm font-semibold text-on-surface">지역별 10대 국민연금 임의가입률 순위</div>
-              <div class="text-xs text-text-muted mt-1">단위 %, 2026년 1월 기준 · 18~19세 인구 대비</div>
-            </div>
-            <div class="text-xs text-text-muted">전국 평균 <span class="font-semibold text-primary">1.28%</span></div>
+        <div>
+          <div class="mb-4">
+            <div class="text-sm font-semibold text-on-surface">지역별 10대 국민연금 임의가입률 순위</div>
+            <div class="text-xs text-text-muted mt-1">단위 %, 2026년 1월 기준 · 18~19세 인구 대비</div>
           </div>
           <canvas id="teen-pension-chart" class="w-full" style="height: 360px;"></canvas>
-          <div class="text-[11px] text-text-muted mt-3 text-right">자료: 김선민 의원실 · 국민연금공단</div>
+          <div class="text-[11px] text-text-muted mt-3">자료: 김선민 의원실 · 국민연금공단</div>
         </div>
       </div>
     </section>
@@ -357,7 +354,7 @@
             </div>
           </article>
 
-          <div class="border border-divider-subtle bg-surface-container px-5 py-4 text-sm text-on-surface-variant">
+          <div class="border-l-2 border-l-divider-subtle pl-5 py-1 text-sm text-on-surface-variant">
             본인 연금과 유족연금 수급권이 함께 생기면 하나를 선택하는 것이 원칙입니다. 다만 선택하지 않은 급여가 유족연금이면 선택한 급여에 유족연금액의 30%가 추가될 수 있습니다.
           </div>
         </div>
@@ -398,7 +395,7 @@
             </div>
           </article>
 
-          <div class="border border-divider-subtle border-l-2 border-l-muted-gold bg-surface-container p-5">
+          <div class="border-l-2 border-l-muted-gold pl-5 py-1">
             <div class="text-sm font-semibold text-on-surface mb-2">건강보험 피부양자 자격 주의</div>
             <ul class="space-y-1 text-sm text-on-surface-variant">
               <li>공적연금 등 연소득이 피부양자 소득요건을 넘거나 재산요건을 충족하지 못하면 피부양자 자격을 잃을 수 있습니다.</li>
@@ -456,7 +453,7 @@
             </article>
           </div>
 
-          <div class="border border-divider-subtle border-l-2 border-l-muted-gold bg-surface-container px-5 py-4">
+          <div class="border-l-2 border-l-muted-gold pl-5 py-1">
             <div class="text-sm font-semibold text-on-surface mb-2">개인연금 투자 팁</div>
             <ul class="space-y-1 text-sm text-on-surface-variant">
               <li>물가 상승률 이상의 수익률을 목표로 두는 편이 좋습니다.</li>
@@ -550,46 +547,44 @@
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         ctx.clearRect(0, 0, W, H);
 
-        const pad = { top: 20, right: 16, bottom: 90, left: 36 };
+        // 직접 라벨(값+지역명)만 남기고 격자/Y축 눈금은 제거
+        const pad = { top: 22, right: 8, bottom: 90, left: 8 };
         const gW = W - pad.left - pad.right;
         const gH = H - pad.top - pad.bottom;
 
         const yMax = 4;
         const toY = v => pad.top + gH * (1 - v / yMax);
 
-        // Y축 그리드 (1%, 2%, 3%, 4%)
-        ctx.strokeStyle = 'rgba(51, 51, 51, 0.6)';
-        ctx.fillStyle = '#888888';
-        ctx.font = '11px "Hanken Grotesk", Pretendard, sans-serif';
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'middle';
-        for (let v = 0; v <= yMax; v++) {
-          const y = toY(v);
-          ctx.beginPath();
-          ctx.moveTo(pad.left, y);
-          ctx.lineTo(pad.left + gW, y);
-          ctx.stroke();
-          ctx.fillText(v + '%', pad.left - 6, y);
-        }
-
-        // 막대
         const n = data.length;
         const slot = gW / n;
         const barW = Math.min(slot * 0.62, 32);
+
+        const GANGNAM_3 = ['서울 강남구', '서울 서초구', '서울 송파구'];
+
+        // 전국 평균 점선 (막대 뒤에)
+        const avgY = toY(NATIONAL_AVG);
+        ctx.setLineDash([4, 4]);
+        ctx.strokeStyle = 'rgba(154, 143, 128, 0.45)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(pad.left, avgY);
+        ctx.lineTo(pad.left + gW, avgY);
+        ctx.stroke();
+        ctx.setLineDash([]);
 
         data.forEach((d, i) => {
           const x = pad.left + slot * i + (slot - barW) / 2;
           const y = toY(d.rate);
           const h = (pad.top + gH) - y;
 
-          // 막대 색상: 강남 3구는 밝은 골드, 나머지는 중립 톤
-          const isGangnam3 = ['서울 강남구', '서울 서초구', '서울 송파구'].includes(d.name);
-          ctx.fillStyle = isGangnam3 ? '#e9c176' : '#9a8f80';
+          // 단일 강조색: 강남 3구는 골드, 나머지는 차분한 그레이
+          const isGangnam3 = GANGNAM_3.includes(d.name);
+          ctx.fillStyle = isGangnam3 ? '#e9c176' : '#5a554b';
           ctx.fillRect(x, y, barW, h);
 
-          // 값 라벨
-          ctx.fillStyle = '#d1c5b4';
-          ctx.font = 'bold 11px "Hanken Grotesk", Pretendard, sans-serif';
+          // 값 라벨 (직접 라벨)
+          ctx.fillStyle = isGangnam3 ? '#e9c176' : '#d1c5b4';
+          ctx.font = '11px "Hanken Grotesk", Pretendard, sans-serif';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'bottom';
           ctx.fillText(d.rate.toFixed(2), x + barW / 2, y - 4);
@@ -598,7 +593,7 @@
           ctx.save();
           ctx.translate(x + barW / 2, pad.top + gH + 6);
           ctx.rotate(-Math.PI / 3);
-          ctx.fillStyle = '#d1c5b4';
+          ctx.fillStyle = isGangnam3 ? '#d1c5b4' : '#888888';
           ctx.font = '10.5px "Hanken Grotesk", Pretendard, sans-serif';
           ctx.textAlign = 'right';
           ctx.textBaseline = 'middle';
@@ -606,23 +601,12 @@
           ctx.restore();
         });
 
-        // 전국 평균 점선
-        const avgY = toY(NATIONAL_AVG);
-        ctx.setLineDash([5, 4]);
-        ctx.strokeStyle = 'rgba(154, 143, 128, 0.6)';
-        ctx.lineWidth = 1.2;
-        ctx.beginPath();
-        ctx.moveTo(pad.left, avgY);
-        ctx.lineTo(pad.left + gW, avgY);
-        ctx.stroke();
-        ctx.setLineDash([]);
-
-        // 평균 라벨
-        ctx.fillStyle = '#d1c5b4';
-        ctx.font = 'bold 10.5px "Hanken Grotesk", Pretendard, sans-serif';
-        ctx.textAlign = 'right';
+        // 평균 라벨 (점선 위, 차분한 톤)
+        ctx.fillStyle = '#888888';
+        ctx.font = '10.5px "Hanken Grotesk", Pretendard, sans-serif';
+        ctx.textAlign = 'left';
         ctx.textBaseline = 'bottom';
-        ctx.fillText(`전국 평균 ${NATIONAL_AVG}%`, pad.left + gW - 4, avgY - 3);
+        ctx.fillText(`전국 평균 ${NATIONAL_AVG}%`, pad.left + 2, avgY - 3);
       }
 
       draw();
