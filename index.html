@@ -2140,9 +2140,42 @@
       });
     }
 
+    // URL 파라미터(age, salary)가 있으면 입력 폼을 채우고 자동 계산
+    // 예: index.html?age=35&salary=6000  (salary 단위: 만원)
+    function applyUrlParamsAndAutoCalculate() {
+      const params = new URLSearchParams(window.location.search);
+      const ageParam = params.get('age');
+      const salaryParam = params.get('salary');
+      if (!ageParam && !salaryParam) return;
+
+      const ageEl = document.getElementById('currentAge');
+      const salaryEl = document.getElementById('annualSalary');
+      let ready = true;
+
+      if (ageParam !== null) {
+        const age = parseInt(ageParam, 10);
+        if (Number.isFinite(age) && age >= 20 && age <= 59) {
+          ageEl.value = String(age);
+        } else {
+          ready = false;
+        }
+      }
+      if (salaryParam !== null) {
+        const salary = parseInt(salaryParam, 10);
+        if (Number.isFinite(salary) && salary > 0) {
+          salaryEl.value = String(salary);
+        } else {
+          ready = false;
+        }
+      }
+
+      if (ready) handleCalculate();
+    }
+
     // 페이지 로드 시 초기화
     document.addEventListener('DOMContentLoaded', () => {
       initializeRevealAnimations();
+      applyUrlParamsAndAutoCalculate();
     });
   </script>
 </body>
