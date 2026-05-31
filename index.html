@@ -552,13 +552,13 @@
             <h3 class="font-headline-md text-headline-md text-on-surface mt-2">더 알아보기는 어때요?</h3>
           </div>
           <div class="grid gap-4 md:grid-cols-2 max-w-4xl mx-auto">
-            <a href="./guide.html" class="group border border-divider-subtle hover:border-primary p-6 md:p-7 flex flex-col gap-3 transition-colors">
+            <a href="./guide.html" onclick="trackEvent('cta_click', { cta_id: 'guide_card' })" class="group border border-divider-subtle hover:border-primary p-6 md:p-7 flex flex-col gap-3 transition-colors">
               <span class="font-label-caps text-label-caps text-text-muted group-hover:text-muted-gold transition-colors">연금 설계 가이드</span>
               <span class="font-headline-sm text-headline-sm text-on-surface">연금에 대해 더 알고 싶어요</span>
               <span class="text-sm text-text-muted">수령액 늘리는 법, 부부·유족연금, 개인연금과 IRP 활용까지 정리한 가이드를 읽어요.</span>
               <span class="mt-1 inline-flex items-center gap-2 text-primary text-sm group-hover:gap-3 transition-all">가이드 읽기 →</span>
             </a>
-            <a href="https://www.nps.or.kr/elctcvlcpt/comm/getOHAC0000M3.do?menuId=MN24000936" target="_blank" rel="noopener noreferrer" class="group border border-divider-subtle hover:border-primary p-6 md:p-7 flex flex-col gap-3 transition-colors">
+            <a href="https://www.nps.or.kr/elctcvlcpt/comm/getOHAC0000M3.do?menuId=MN24000936" target="_blank" rel="noopener noreferrer" onclick="trackEvent('cta_click', { cta_id: 'nps_official' })" class="group border border-divider-subtle hover:border-primary p-6 md:p-7 flex flex-col gap-3 transition-colors">
               <span class="font-label-caps text-label-caps text-text-muted group-hover:text-muted-gold transition-colors">국민연금공단 공식 조회</span>
               <span class="font-headline-sm text-headline-sm text-on-surface">정확한 연금을 계산하고 싶어요</span>
               <span class="text-sm text-text-muted">본인 가입 이력을 반영한 공식 예상연금액을 국민연금공단에서 확인해요.</span>
@@ -1239,7 +1239,23 @@
       document.getElementById('calculate-btn').disabled = false;
     }
 
-    async function handleCalculate() {
+    // GA4 이벤트 전송 헬퍼 (GTM dataLayer 사용; GTM이 없거나 차단된 환경에서도 안전)
+    function trackEvent(eventName, params) {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push(Object.assign({ event: eventName }, params || {}));
+    }
+
+    // 연봉을 1,000만원 구간으로 버킷화 (카디널리티 축소 + 분석 용이)
+    function bucketSalaryManwon(salaryManwon) {
+      if (!Number.isFinite(salaryManwon) || salaryManwon <= 0) return 'unknown';
+      if (salaryManwon < 1000) return '<1000';
+      if (salaryManwon >= 20000) return '20000+';
+      const lo = Math.floor(salaryManwon / 1000) * 1000;
+      return `${lo}-${lo + 999}`;
+    }
+
+    async function handleCalculate(source) {
+      const calcSource = source || 'manual';
       showLoading();
 
       try {
@@ -1249,7 +1265,8 @@
         }
 
         const currentAge = parseInt(document.getElementById('currentAge').value) || 30;
-        const annualSalary = (parseInt(document.getElementById('annualSalary').value) || 5000) * 10000;
+        const annualSalaryManwon = parseInt(document.getElementById('annualSalary').value) || 5000;
+        const annualSalary = annualSalaryManwon * 10000;
 
         // 검증
         if (currentAge < 20 || currentAge > 59) {
@@ -1306,6 +1323,13 @@
           fundResults,
           breakevenRate,
           incomes
+        });
+
+        // GA4: 핵심 전환 이벤트
+        trackEvent('calculate_pension', {
+          age: currentAge,
+          salary_band: bucketSalaryManwon(annualSalaryManwon),
+          source: calcSource
         });
 
       } catch (error) {
@@ -2175,13 +2199,21 @@
         }
       }
 
-      if (ready) handleCalculate();
+      if (ready) handleCalculate('url_params');
     }
 
     // 페이지 로드 시 초기화
     document.addEventListener('DOMContentLoaded', () => {
       initializeRevealAnimations();
       applyUrlParamsAndAutoCalculate();
+
+      // GA4: 계산 근거 펼침 (신뢰·체류 신호) — 열릴 때만 전송
+      const assumptionsEl = document.getElementById('assumptions-section');
+      if (assumptionsEl) {
+        assumptionsEl.addEventListener('toggle', (e) => {
+          if (e.target.open) trackEvent('assumptions_expanded');
+        });
+      }
     });
   </script>
 </body>
